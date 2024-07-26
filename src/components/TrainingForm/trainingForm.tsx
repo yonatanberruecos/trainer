@@ -44,14 +44,14 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
         <Container component="main" maxWidth="xs">
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 5,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
             }}
           >
             <Typography component="h1" variant="h5">
-              Sign Up
+              Workout routine information
             </Typography>
             <Box
               component="form"
@@ -78,7 +78,7 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
                 )}
               </FormControl>
               <FormControl fullWidth margin="normal">
-                <InputLabel id="role-label">Preference training</InputLabel>
+                <InputLabel id="role-label">Preference training place</InputLabel>
                 <Select
                   labelId="preference-label"
                   id="preference"
@@ -95,7 +95,7 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
                 )}
               </FormControl>
               <FormControl fullWidth margin="normal">
-                <InputLabel id="role-label">objective</InputLabel>
+                <InputLabel id="role-label">Objective</InputLabel>
                 <Select
                   labelId="objective-label"
                   id="objective"
@@ -112,6 +112,23 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
                   <Typography color="error">{errors.objective.message}</Typography>
                 )}
               </FormControl>
+              <TextField
+                margin="normal"
+                fullWidth
+                type='number'
+                id="days"
+                label="¿How many days a week you could train?"
+                {...register('days', { required: 'Number of days are required' })}
+                error={!!errors.days}
+                helperText={errors.days ? errors.days.message : ''}
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                id="pob"
+                label="Part of the body objective"
+                {...register('pob')}
+              />
               <TextField
                 margin="normal"
                 fullWidth

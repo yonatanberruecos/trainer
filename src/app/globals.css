@@ -26,8 +26,28 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.circularLoader {
+  text-align: center;
+  height: 460px;
+  width: 100%;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.grid-container {
+  /* display: grid;
+  grid-template-columns: 1fr 1fr;*/
+  gap: 40px;
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.grid-item {
+  background-color: #ccc;
+  padding: 20px;
+  text-align: center;
 }

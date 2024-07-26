@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header><h1>{ 'My Trainer' }</h1></header>
+        <header style={{padding:'20px 40px'}}><h1 style={{fontWeight:'bold', fontSize: '30px'}}>{ 'My Trainer' }</h1></header>
         <main>
           {children}
         </main>

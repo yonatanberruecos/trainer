@@ -10,6 +10,9 @@ export default function fit() {
     const [dataForm, setDataForm] = useState({
         preference : ''
     });
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+
     // const prompt = 'entrenamiento en el gymnasio para un hombre de 33 años';
     //const response = await fetch('http://localhost:3000/testfit'); 
 
@@ -17,7 +20,7 @@ export default function fit() {
         console.log(promt)
         const promptSend = 'entrenamiento en el gymnasio para un hombre de 33 años';
         const fetchData = async () => {
-            const response = await fetch('http://localhost:3000/fit', {
+            const response = await fetch(`${apiUrl}/fit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,25 +49,25 @@ export default function fit() {
 
     const onSubmitForm = (data: any) => {
         setDataForm(data);
-        setPromt(`Create a general guidance workout routine for ${data.days} days a week without adding the rest days to start today with a list of exersises for each day and the muscles targeted for a person with the following characteristics: gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}, limitation: ${data.illness ?? 'none'}`);
+        setPromt(`Create a general guidance workout routine for ${data.days} days a week without adding the rest days to start today with a ordered list of exersises and its definition for each day and the muscles targeted for a person with the following characteristics: gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}, limitation: ${data.illness ?? 'none'}`);
         console.log('onSubmitForm', data);
     }
 
     const renderVideo = async (item: string, index: number) => {
         try {
-            const videoData : any = await (await fetch(`http://localhost:3000/youtube/search?q=${item} correctly in ${dataForm.preference}`)).json();
-            const videoId = videoData.items[0].id.videoId
+            //const videoData : any = await (await fetch(`${apiUrl}/youtube/search?q=${item} correctly in ${dataForm.preference}`)).json();
+            // const videoId = videoData.items[0].id.videoId
             // console.log('videoId', videoId)
-            if(videoId){
+            if(true){
                 return ( 
                     <div className="grid-container" key={`itemb-${index}`}  style={{width: '90%'}}>
-                        <h3 style={{fontWeight: 'bold'}}>{item}</h3>
-                        <div style={{marginBottom: '20px', width: '60%'}}>
+                        <h3 style={{fontWeight: 'bold', width: '200px'}}>{item}</h3>
+                        <div className="video-container">
                             <iframe 
                             width="100%" 
                             height="315" 
-                            src={`https://www.youtube.com/embed/${videoId}`}
-                            // src="https://www.youtube.com/embed/QGTq58winhQ?si=GgnJdMXc86U0TQBO" 
+                            // src={`https://www.youtube.com/embed/${videoId}`}
+                            src="https://www.youtube.com/embed/QGTq58winhQ?si=GgnJdMXc86U0TQBO" 
                             frameBorder="0" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                             allowFullScreen

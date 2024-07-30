@@ -18,7 +18,7 @@ export default function fit() {
 
     useEffect(() => {
         console.log(promt)
-        const promptSend = 'entrenamiento en el gymnasio para un hombre de 33 años';
+        const promptSend = 'Entrenamiento en el gymnasio para un hombre de 33 años';
         const fetchData = async () => {
             const response = await fetch(`${apiUrl}/fit`, {
                 method: 'POST',
@@ -49,7 +49,7 @@ export default function fit() {
 
     const onSubmitForm = (data: any) => {
         setDataForm(data);
-        setPromt(`Create a general guidance workout routine for ${data.days} days a week without adding the rest days to start today with a ordered list of exersises and its definition for each day and the muscles targeted for a person with the following characteristics: gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}, limitation: ${data.illness ?? 'none'}`);
+        setPromt(`Create a general guidance workout routine for ${data.days} days a week without adding the rest days to start today with a list of exersises and their definition for each day and the muscles targeted for a person with the following characteristics: gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}, limitation: ${data.illness ?? 'none'}`);
         console.log('onSubmitForm', data);
     }
 
@@ -109,7 +109,9 @@ export default function fit() {
 
                 let exercisesTocheck = ['Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squats', 'Deadlifts', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups']
 
-                if(item.includes('Day')){
+                if(item.trim() === '*'){
+                    return '\n\n'
+                }else if(item.includes('Day ')){
                     return <p style={{fontWeight:'bold', marginTop: '20px'}} key={`item-${index}`}>{item}</p>
                 }else if (item.includes(':') && containsAllWords(item, exercisesTocheck)) {
                     console.log('exercise ', item);

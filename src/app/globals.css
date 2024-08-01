@@ -17,13 +17,23 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: rgb(255, 255, 255); /* Fallback color */
+  background: -webkit-linear-gradient(
+    to bottom,
+    transparent,
+    rgb(var(--background-end-rgb))
+  ), 
+  -moz-linear-gradient(
+    to bottom,
+    transparent,
+    rgb(var(--background-end-rgb))
+  ), 
+  linear-gradient(
+    to bottom,
+    transparent,
+    rgb(var(--background-end-rgb))
+  ), 
+  rgb(var(--background-start-rgb));
 }
 
 .circularLoader {

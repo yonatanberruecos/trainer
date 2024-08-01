@@ -245,7 +245,7 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign Up
+                Get my routine
               </Button>
             </Box>
           </Box>

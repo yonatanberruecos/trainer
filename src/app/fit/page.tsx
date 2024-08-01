@@ -60,7 +60,7 @@ export default function fit() {
             // console.log('videoId', videoId)
             if(true){
                 return ( 
-                    <div className="grid-container" key={`itemb-${index}`}  style={{width: '90%'}}>
+                    <div className="grid-container" key={`itemb-${index}`}>
                         <h3 style={{fontWeight: 'bold', width: '200px'}}>{item}</h3>
                         <div className="video-container">
                             <iframe 

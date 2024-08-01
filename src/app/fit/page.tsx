@@ -55,10 +55,9 @@ export default function fit() {
 
     const renderVideo = async (item: string, index: number) => {
         try {
-            //const videoData : any = await (await fetch(`${apiUrl}/youtube/search?q=${item} correctly in ${dataForm.preference}`)).json();
-            // const videoId = videoData.items[0].id.videoId
-            // console.log('videoId', videoId)
-            if(true){
+            const videoData : any = await (await fetch(`${apiUrl}/youtube/search?q=${item} correctly in ${dataForm.preference}`)).json();
+            const videoId = videoData.items[0].id.videoId
+            if(videoId){
                 return ( 
                     <div className="grid-container" key={`itemb-${index}`}>
                         <h3 style={{fontWeight: 'bold', width: '200px'}}>{item}</h3>

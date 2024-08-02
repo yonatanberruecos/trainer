@@ -49,7 +49,7 @@ export default function fit() {
 
     const onSubmitForm = (data: any) => {
         setDataForm(data);
-        setPromt(`Create a general guidance workout routine for ${data.days} days a week without adding the rest days to start today with a list of exersises and their definition for each day and the muscles targeted for a person with the following characteristics: gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}, limitation: ${data.illness ?? 'none'}`);
+        setPromt(`Create a general guidance workout routine for ${data.days} days a week of training and ${7 - data.days} days to rest and recovery to start today with a list of exercises and their definition for each day and the muscles targeted suitable for a person with the following characteristics: gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}, limitation: ${data.illness ?? 'none'}`);
         console.log('onSubmitForm', data);
     }
 
@@ -57,7 +57,7 @@ export default function fit() {
         try {
             const videoData : any = await (await fetch(`${apiUrl}/youtube/search?q=${item} correctly in ${dataForm.preference}`)).json();
             const videoId = videoData.items[0].id.videoId
-            if(videoId){
+            if(true){
                 return ( 
                     <div className="grid-container" key={`itemb-${index}`}>
                         <h3 style={{fontWeight: 'bold', width: '200px'}}>{item}</h3>
@@ -106,7 +106,7 @@ export default function fit() {
 
                 let wordsToCheck = ['Day', 'Workout', 'Warm-up', 'Cool-down', 'Monday', 'Workout', 'Tuesday', 'Wednesday', 'Active Rest', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Important', 'Remember', 'Listen', 'Progress', 'Nutrition', 'minutes', 'Note', 'Optional', 'Consistency', 'Exercises', 'Recovery', 'Objective', 'Consult with a Trainer', 'Adjustments', 'Hydration', 'Target', 'Frequency', 'Duration', 'Equipment', 'Rest', 'form', 'Focus on recovery', 'sleep','Hydrate', 'eat', 'Considerations', 'Management', 'Strength', 'Disease', 'Cooldown', 'Recommendations', 'trainer', 'therapist', 'doctor', 'target', 'exercises', 'set', 'reps', 'weight']
 
-                let exercisesTocheck = ['Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squats', 'Deadlifts', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups']
+                let exercisesTocheck = ['Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squats', 'Deadlifts', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups', 'Pulldown', 'T-bar']
 
                 if(item.trim() === '*'){
                     return '\n\n'

@@ -41,16 +41,16 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
       }, [watchShowExtraField]);
     
       return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="md">
           <Box
             sx={{
-              marginTop: 5,
+              marginTop: 0,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
             }}
           >
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="h4">
               Workout routine information
             </Typography>
             <Box
@@ -159,7 +159,7 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
                 margin="normal"
                 fullWidth
                 id="height"
-                label="Height(m)"
+                label="Height (m)"
                 {...register('height', { required: 'Height is required' })}
                 error={!!errors.height}
                 helperText={errors.height ? errors.height.message : ''}
@@ -167,8 +167,8 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
               <TextField
                 margin="normal"
                 fullWidth
-                id="weight(kg)"
-                label="Weight"
+                id="weight"
+                label="Weight (kg)"
                 {...register('weight', { required: 'Weight is required' })}
                 error={!!errors.weight}
                 helperText={errors.weight ? errors.weight.message : ''}

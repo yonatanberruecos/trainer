@@ -159,7 +159,7 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
                 margin="normal"
                 fullWidth
                 id="height"
-                label="Height"
+                label="Height(m)"
                 {...register('height', { required: 'Height is required' })}
                 error={!!errors.height}
                 helperText={errors.height ? errors.height.message : ''}
@@ -167,7 +167,7 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
               <TextField
                 margin="normal"
                 fullWidth
-                id="weight"
+                id="weight(kg)"
                 label="Weight"
                 {...register('weight', { required: 'Weight is required' })}
                 error={!!errors.weight}

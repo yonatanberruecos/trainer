@@ -8,7 +8,8 @@ export default function fit() {
     const [promt, setPromt] = useState('');
     const [loader, setLoader] = useState(false);
     const [dataForm, setDataForm] = useState({
-        preference : ''
+        preference : '',
+        gender: ''
     });
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
@@ -49,13 +50,13 @@ export default function fit() {
 
     const onSubmitForm = (data: any) => {
         setDataForm(data);
-        setPromt(`Create a general guidance workout routine for ${data.days} days a week of training and ${7 - data.days} days to rest and recovery to start today with a list of exercises and their definition for each day and the muscles targeted suitable for a person with the following characteristics: gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}, limitation: ${data.illness ?? 'none'}`);
+        setPromt(`Generate a general guidance workout routine for ${data.days} days a week of training and ${7 - data.days} days to rest and recovery to start today with a list of specific exercises and their definition for each day and the muscles targeted suitable specificaly to a person with the following characteristics: gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}, limitation: ${data.illness ?? 'none'}`);
         console.log('onSubmitForm', data);
     }
 
     const renderVideo = async (item: string, index: number) => {
         try {
-            const videoData : any = await (await fetch(`${apiUrl}/youtube/search?q=${item} correctly in ${dataForm.preference}`)).json();
+            const videoData : any = await (await fetch(`${apiUrl}/youtube/search?q=how to do correctly ${item} in ${dataForm.preference} for a ${dataForm.gender}`)).json();
             const videoId = videoData.items[0].id.videoId
             if(true){
                 return ( 

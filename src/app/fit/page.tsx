@@ -58,7 +58,7 @@ export default function fit() {
         try {
             const videoData : any = await (await fetch(`${apiUrl}/youtube/search?q=how to do correctly ${item} in ${dataForm.preference} for a ${dataForm.gender}`)).json();
             const videoId = videoData.items[0].id.videoId
-            if(true){
+            if(videoId){
                 return ( 
                     <div className="grid-container" key={`itemb-${index}`}>
                         <h3 style={{fontWeight: 'bold', width: '200px'}}>{item}</h3>
@@ -79,12 +79,13 @@ export default function fit() {
                  return <p key={`itemb-${index}`}>video</p>
             }
         } catch (error) {
-            console.log('error en el resquest del video', error)
+            console.log('error resquesting the video', error)
         }
     }
 
     function containsAllWords(str: string, words: string[]) {
-        return words.some(word => str.includes(word));
+        let strL = str.toLowerCase(); 
+        return words.some(word => strL.includes(word.toLowerCase()));
     }
 
     // function createGrid (index: number){
@@ -109,11 +110,63 @@ export default function fit() {
 
                 let exercisesTocheck = ['Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squats', 'Deadlifts', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups', 'Pulldown', 'T-bar']
 
+                let outdoorExercises = [
+                    "Bodyweight",
+                    "squats",
+                    "Lunges",
+                    "Burpees",
+                    "Push-ups",
+                    "Crunches",
+                    "Plank",
+                    "Mountain",
+                    "climbers",
+                    "High",
+                    "Butt",
+                    "Jumping",
+                    "Squat",
+                    "Lunge",
+                    "Push-up",
+                    "jumps",
+                    "Bicycle",
+                    "crunches",
+                    "raises",
+                    "kicks",
+                    "Flutter",
+                    "Russian",
+                    "twists",
+                    "plank",
+                    "Bridge",
+                    "Superman",
+                    "Bird",
+                    "Crab",
+                    "crawl",
+                    "Inchworm",
+                    "sprints",
+                    "climbs",
+                    "Pull-ups",
+                    "Dips",
+                    "dips",
+                    "Step-ups",
+                    "jumps",
+                    "Pull-ups",
+                    "Chin-ups",
+                    "Glute bridges",
+                    "Pull-ups",
+                    "Dips",
+                    "Bulgarian",
+                    "Deadlifts",
+                    "Hip",
+                    "Clamshell",
+                    "Fire hydrant",
+                    "Bent-over",
+                    "Overhead"
+                  ];
+
                 if(item.trim() === '*'){
                     return '\n\n'
                 }else if(item.includes('Day ')){
                     return <p style={{fontWeight:'bold', marginTop: '20px'}} key={`item-${index}`}>{item}</p>
-                }else if (item.includes(':') && containsAllWords(item, exercisesTocheck)) {
+                }else if (item.includes(':') && containsAllWords(item, dataForm.preference === 'Gym' ? exercisesTocheck : outdoorExercises)) {
                     console.log('exercise ', item);
                     return renderVideo(item, index)     
                 } else {

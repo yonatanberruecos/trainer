@@ -14,9 +14,9 @@ export default function fit() {
     });
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
-    let exercisesTocheck = ['Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squats', 'Deadlifts', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups', 'Pulldown', 'T-bar']
+    const exercisesTocheck = ['Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squat', 'Deadlift', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf","Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups', 'Pulldown', 'T-bar', "Barbell"]
 
-    let outdoorExercises = [
+    const outdoorExercises = [
         "Bodyweight",
         "squats",
         "Lunges",
@@ -69,12 +69,8 @@ export default function fit() {
         "Curls"
       ];
 
-    // const prompt = 'entrenamiento en el gymnasio para un hombre de 33 años';
-    //const response = await fetch('http://localhost:3000/testfit'); 
-
     useEffect(() => {
         console.log(promt)
-        const promptSend = 'Entrenamiento en el gymnasio para un hombre de 33 años';
         const fetchData = async () => {
             const response = await fetch(`${apiUrl}/fit`, {
                 method: 'POST',
@@ -83,11 +79,8 @@ export default function fit() {
                 },
                 body: JSON.stringify({ prompt: promt }),
             });
+
             const data = await response.text();
-            // const dataArray = data.split('**');
-            
-            // const dataArray = data.replace(/\**/g, '\n')
-            const dataString = data.replace(/\*\*/g, '\n\n');
             const dataArray = data.split('**');
             setDataTrain(dataArray);
             setLoader(false);
@@ -105,7 +98,7 @@ export default function fit() {
 
     const onSubmitForm = (data: any) => {
         setDataForm(data);
-        setPromt(`Generate a general guidance workout routine for ${data.days} days a week of training and ${7 - data.days} days to rest and recovery to start today with a list of specific exercises and their definition for each day and the muscles targeted suitable specificaly to a person with the following characteristics: gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}, limitation: ${data.illness ?? 'none'}`);
+        setPromt(`Generate a general guidance workout routine for ${data.days} days a week of training and ${7 - data.days} days to rest and recovery to start today with a list of specific exercises and their definition for each exercise and the muscles targeted with colon after each exersise suitable specificaly to a person with the following characteristics: gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness ?? 'none'}`);
         console.log('onSubmitForm', data);
     }
 
@@ -143,38 +136,24 @@ export default function fit() {
         return words.some(word => strL.includes(word.toLowerCase()));
     }
 
-    // function createGrid (index: number){
-    //     if(index % 2 === 0) {
-    //        return (<div className="grid-container">) 
-    //     }
-    // }
-    let videosTrainer: any = []
-
     return (
-        
         <div style={{padding:'40px'}}>
         { promt ?  
-        (loader ? <CircularLoader text="Gemini AI is loading..."/> : <div>
+        (loader ? <CircularLoader text="Gemini AI is loading..."/> : <Suspense fallback={<CircularProgress />}>
             {dataTrain.map((item : any, index: number) => {
-                // if(item.includes(':') && !item.includes('DayWorkout ScheduleWarm-up Cool-down')){
-                //      console.log('exercise ', item);
-                //      return renderVideo(item, index)
-                // }
-
                 // let wordsToCheck = ['Day', 'Workout', 'Warm-up', 'Cool-down', 'Monday', 'Workout', 'Tuesday', 'Wednesday', 'Active Rest', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Important', 'Remember', 'Listen', 'Progress', 'Nutrition', 'minutes', 'Note', 'Optional', 'Consistency', 'Exercises', 'Recovery', 'Objective', 'Consult with a Trainer', 'Adjustments', 'Hydration', 'Target', 'Frequency', 'Duration', 'Equipment', 'Rest', 'form', 'Focus on recovery', 'sleep','Hydrate', 'eat', 'Considerations', 'Management', 'Strength', 'Disease', 'Cooldown', 'Recommendations', 'trainer', 'therapist', 'doctor', 'target', 'exercises', 'set', 'reps', 'weight']
                 if(item.trim() === '*'){
                     return '\n\n'
-                }else if(item.includes('Day ')){
+                }else if(item.includes('Day')){
                     return <p style={{fontWeight:'bold', marginTop: '20px'}} key={`item-${index}`}>{item}</p>
                 }else if (item.includes(':') && containsAllWords(item, dataForm.preference === 'Gym' ? exercisesTocheck : outdoorExercises)) {
-                    return renderVideo(item, index)     
+                    return renderVideo(item, index);   
                 } else {
                     return <p style={{lineHeight: '30px'}} key={`item-${index}`}>{item}</p>
                 }
                 
             })}
-            {/* <p>{dataTrain}</p> */}
-        </div>): 
+        </Suspense>): 
         ( <TrainingForm onSubmitForm={onSubmitForm}></TrainingForm>)} 
         </div>
     );

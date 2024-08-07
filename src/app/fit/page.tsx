@@ -2,6 +2,7 @@
 import { Suspense, useEffect, useState } from "react";
 import TrainingForm from "@/components/TrainingForm/trainingForm";
 import { CircularProgress } from "@mui/material";
+import CircularLoader from "@/components/CircularLoader/CircularLoader";
 
 export default function fit() {
     const [dataTrain, setDataTrain] = useState<string[]>([]);
@@ -13,6 +14,60 @@ export default function fit() {
     });
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    let exercisesTocheck = ['Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squats', 'Deadlifts', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups', 'Pulldown', 'T-bar']
+
+    let outdoorExercises = [
+        "Bodyweight",
+        "squats",
+        "Lunges",
+        "Burpees",
+        "Push-ups",
+        "Crunches",
+        "Plank",
+        "Mountain",
+        "climbers",
+        "High",
+        "Butt",
+        "Jumping",
+        "Squat",
+        "Lunge",
+        "Push-up",
+        "jumps",
+        "Bicycle",
+        "crunches",
+        "raises",
+        "kicks",
+        "Flutter",
+        "Russian",
+        "twists",
+        "plank",
+        "Bridge",
+        "Superman",
+        "Bird",
+        "Crab",
+        "crawl",
+        "Inchworm",
+        "sprints",
+        "climbs",
+        "Pull-ups",
+        "Dips",
+        "dips",
+        "Step-ups",
+        "jumps",
+        "Pull-ups",
+        "Chin-ups",
+        "Glute bridges",
+        "Pull-ups",
+        "Dips",
+        "Bulgarian",
+        "Deadlifts",
+        "Hip",
+        "Clamshell",
+        "Fire hydrant",
+        "Bent-over",
+        "Overhead",
+        "Curls"
+      ];
 
     // const prompt = 'entrenamiento en el gymnasio para un hombre de 33 años';
     //const response = await fetch('http://localhost:3000/testfit'); 
@@ -99,75 +154,19 @@ export default function fit() {
         
         <div style={{padding:'40px'}}>
         { promt ?  
-        (loader ? <div className="circularLoader"><CircularProgress/></div> : <Suspense fallback={<CircularProgress />}>
+        (loader ? <CircularLoader text="Gemini AI is loading..."/> : <div>
             {dataTrain.map((item : any, index: number) => {
                 // if(item.includes(':') && !item.includes('DayWorkout ScheduleWarm-up Cool-down')){
                 //      console.log('exercise ', item);
                 //      return renderVideo(item, index)
                 // }
 
-                let wordsToCheck = ['Day', 'Workout', 'Warm-up', 'Cool-down', 'Monday', 'Workout', 'Tuesday', 'Wednesday', 'Active Rest', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Important', 'Remember', 'Listen', 'Progress', 'Nutrition', 'minutes', 'Note', 'Optional', 'Consistency', 'Exercises', 'Recovery', 'Objective', 'Consult with a Trainer', 'Adjustments', 'Hydration', 'Target', 'Frequency', 'Duration', 'Equipment', 'Rest', 'form', 'Focus on recovery', 'sleep','Hydrate', 'eat', 'Considerations', 'Management', 'Strength', 'Disease', 'Cooldown', 'Recommendations', 'trainer', 'therapist', 'doctor', 'target', 'exercises', 'set', 'reps', 'weight']
-
-                let exercisesTocheck = ['Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squats', 'Deadlifts', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups', 'Pulldown', 'T-bar']
-
-                let outdoorExercises = [
-                    "Bodyweight",
-                    "squats",
-                    "Lunges",
-                    "Burpees",
-                    "Push-ups",
-                    "Crunches",
-                    "Plank",
-                    "Mountain",
-                    "climbers",
-                    "High",
-                    "Butt",
-                    "Jumping",
-                    "Squat",
-                    "Lunge",
-                    "Push-up",
-                    "jumps",
-                    "Bicycle",
-                    "crunches",
-                    "raises",
-                    "kicks",
-                    "Flutter",
-                    "Russian",
-                    "twists",
-                    "plank",
-                    "Bridge",
-                    "Superman",
-                    "Bird",
-                    "Crab",
-                    "crawl",
-                    "Inchworm",
-                    "sprints",
-                    "climbs",
-                    "Pull-ups",
-                    "Dips",
-                    "dips",
-                    "Step-ups",
-                    "jumps",
-                    "Pull-ups",
-                    "Chin-ups",
-                    "Glute bridges",
-                    "Pull-ups",
-                    "Dips",
-                    "Bulgarian",
-                    "Deadlifts",
-                    "Hip",
-                    "Clamshell",
-                    "Fire hydrant",
-                    "Bent-over",
-                    "Overhead"
-                  ];
-
+                // let wordsToCheck = ['Day', 'Workout', 'Warm-up', 'Cool-down', 'Monday', 'Workout', 'Tuesday', 'Wednesday', 'Active Rest', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Important', 'Remember', 'Listen', 'Progress', 'Nutrition', 'minutes', 'Note', 'Optional', 'Consistency', 'Exercises', 'Recovery', 'Objective', 'Consult with a Trainer', 'Adjustments', 'Hydration', 'Target', 'Frequency', 'Duration', 'Equipment', 'Rest', 'form', 'Focus on recovery', 'sleep','Hydrate', 'eat', 'Considerations', 'Management', 'Strength', 'Disease', 'Cooldown', 'Recommendations', 'trainer', 'therapist', 'doctor', 'target', 'exercises', 'set', 'reps', 'weight']
                 if(item.trim() === '*'){
                     return '\n\n'
                 }else if(item.includes('Day ')){
                     return <p style={{fontWeight:'bold', marginTop: '20px'}} key={`item-${index}`}>{item}</p>
                 }else if (item.includes(':') && containsAllWords(item, dataForm.preference === 'Gym' ? exercisesTocheck : outdoorExercises)) {
-                    console.log('exercise ', item);
                     return renderVideo(item, index)     
                 } else {
                     return <p style={{lineHeight: '30px'}} key={`item-${index}`}>{item}</p>
@@ -175,7 +174,7 @@ export default function fit() {
                 
             })}
             {/* <p>{dataTrain}</p> */}
-        </Suspense>): 
+        </div>): 
         ( <TrainingForm onSubmitForm={onSubmitForm}></TrainingForm>)} 
         </div>
     );

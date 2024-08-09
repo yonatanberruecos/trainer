@@ -69,6 +69,16 @@ export default function fit() {
         "Curls"
       ];
 
+      const daysOfWeek = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ];
+
     useEffect(() => {
         console.log(promt)
         const fetchData = async () => {
@@ -144,11 +154,11 @@ export default function fit() {
                 // let wordsToCheck = ['Day', 'Workout', 'Warm-up', 'Cool-down', 'Monday', 'Workout', 'Tuesday', 'Wednesday', 'Active Rest', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Important', 'Remember', 'Listen', 'Progress', 'Nutrition', 'minutes', 'Note', 'Optional', 'Consistency', 'Exercises', 'Recovery', 'Objective', 'Consult with a Trainer', 'Adjustments', 'Hydration', 'Target', 'Frequency', 'Duration', 'Equipment', 'Rest', 'form', 'Focus on recovery', 'sleep','Hydrate', 'eat', 'Considerations', 'Management', 'Strength', 'Disease', 'Cooldown', 'Recommendations', 'trainer', 'therapist', 'doctor', 'target', 'exercises', 'set', 'reps', 'weight']
                 if(item.trim() === '*'){
                     return '\n\n'
-                }else if(item.includes('Day')){
+                }else if(item.includes('Day') || containsAllWords(item, daysOfWeek)){
                     return <p style={{fontWeight:'bold', marginTop: '20px'}} key={`item-${index}`}>{item}</p>
                 }else if (item.includes(':') && containsAllWords(item, dataForm.preference === 'Gym' ? exercisesTocheck : outdoorExercises)) {
                     return renderVideo(item, index);   
-                } else {
+                }else {
                     return <p style={{lineHeight: '30px'}} key={`item-${index}`}>{item}</p>
                 }
                 

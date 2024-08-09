@@ -98,7 +98,7 @@ export default function fit() {
 
     const onSubmitForm = (data: any) => {
         setDataForm(data);
-        setPromt(`Generate a general guidance workout routine for ${data.days} days a week of training and ${7 - data.days} days to rest and recovery to start today with a list of specific exercises and their definition for each exercise and the muscles targeted with colon after each exersise suitable specificaly to a person with the following characteristics: gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness ?? 'none'}`);
+        setPromt(`Generate a general guidance workout routine for ${data.days} days of training and ${7 - data.days} days to rest and recovery a week with a list day by day of specific exercises and their definition and the muscles targeted, all exercise's names listed with colon. create the routine suitable specificaly to a person with the following characteristics:gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness ?? 'none'}`);
         console.log('onSubmitForm', data);
     }
 

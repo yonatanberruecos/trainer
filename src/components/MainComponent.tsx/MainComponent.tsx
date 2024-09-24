@@ -110,13 +110,18 @@ export default function MainComponent() {
 
     const onSubmitForm = (data: any) => {
         setDataForm(data);
-        setWorkoutData((prev:any) => {
-            return {
-                ...prev,
-                ...data
+        const { name, email, ...workoutRoutineData } = data;
+
+        setWorkoutData({
+            user: {
+                name : name,
+                email : email
+            },
+            workout_routine : {
+                ...workoutRoutineData
             }
         });
-        setPromt(`Generate a general guidance workout routine for ${data.days} days of training and ${7 - data.days} days to rest and recovery a week with a list day by day of specific exercises and their definition and the muscles targeted, all exercise's names listed with colon. create the routine suitable specificaly to a person with the following characteristics:gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness ?? 'none'}`);
+        setPromt(`Generate a general guidance workout routine for ${data.days} days of training and ${7 - data.days} days to rest and recovery a week with a list day by day of specific exercises and their definition and the muscles targeted, all exercise's names listed with colon below the day. create the routine suitable specificaly to a person with the following characteristics:gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness ?? 'none'}`);
         console.log('onSubmitForm', data);
     }
 
@@ -159,7 +164,7 @@ export default function MainComponent() {
         { promt ?  
         (loader ? <CircularLoader text="Gemini AI is loading..."/> : <Suspense fallback={<CircularLoader text="Gemini AI is loading..."/>}>
             {dataTrain.map((item : any, index: number) => {
-                console.log('dataContext', workoutData);
+                // console.log('dataContext', workoutData);
                 // let wordsToCheck = ['Day', 'Workout', 'Warm-up', 'Cool-down', 'Monday', 'Workout', 'Tuesday', 'Wednesday', 'Active Rest', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Important', 'Remember', 'Listen', 'Progress', 'Nutrition', 'minutes', 'Note', 'Optional', 'Consistency', 'Exercises', 'Recovery', 'Objective', 'Consult with a Trainer', 'Adjustments', 'Hydration', 'Target', 'Frequency', 'Duration', 'Equipment', 'Rest', 'form', 'Focus on recovery', 'sleep','Hydrate', 'eat', 'Considerations', 'Management', 'Strength', 'Disease', 'Cooldown', 'Recommendations', 'trainer', 'therapist', 'doctor', 'target', 'exercises', 'set', 'reps', 'weight']
                 if(item.trim() === '*'){
                     return '\n\n'

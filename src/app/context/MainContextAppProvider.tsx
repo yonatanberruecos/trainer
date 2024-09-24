@@ -4,17 +4,23 @@ export const MainContext = createContext({});
 
 export const MainContextAppProvider = ({ children }: { children: any }) => {
     const [workoutData, setWorkoutData] = useState({
-        workout_experience: '',
-        preference_place: '',
+    user: {
+        name: '',
+        email: '',
+    },
+    workout_routine: {
+        workout: '',
+        preference: '',
         objective: '',
         gender: '',
-        number_days: 0,
-        body_objective: '',
+        days: 0,
+        pob: '',
         height: 0,
         weight: 0,
-        limitation: '',
+        haveillnes: '',
         dob: '',
-    });
+    }
+});
 
     return (
         <MainContext.Provider value={{ workoutData, setWorkoutData }}>

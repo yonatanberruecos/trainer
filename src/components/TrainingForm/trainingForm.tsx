@@ -69,9 +69,9 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
                   {...register('workout', { required: 'workout is required' })}
                   error={!!errors.workout}
                 >
-                  <MenuItem value="advanced">Advanced</MenuItem>
-                  <MenuItem value="intermediate">Intermediate</MenuItem>
-                  <MenuItem value="junior">Junior</MenuItem>
+                  <MenuItem value="ADVANCED">Advanced</MenuItem>
+                  <MenuItem value="INTERMEDIATE">Intermediate</MenuItem>
+                  <MenuItem value="JUNIOR">Junior</MenuItem>
                 </Select>
                 {errors.workout && (
                   <Typography color="error">{errors.workout.message}</Typography>
@@ -87,8 +87,8 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
                   {...register('preference', { required: 'Preference is required' })}
                   error={!!errors.preference}
                 >
-                  <MenuItem value="Gym">Gym</MenuItem>
-                  <MenuItem value="Outsite">Outsite gym</MenuItem>
+                  <MenuItem value="IN">Gym</MenuItem>
+                  <MenuItem value="OUT">Outsite gym</MenuItem>
                 </Select>
                 {errors.preference && (
                   <Typography color="error">{errors.preference.message}</Typography>
@@ -104,9 +104,9 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
                   {...register('objective', { required: 'Objective is required' })}
                   error={!!errors.objective}
                 >
-                  <MenuItem value="Loss weight">Loss weight</MenuItem>
-                  <MenuItem value="Build muscle">Build muscle</MenuItem>
-                  <MenuItem value="Improved flexibility">Improved flexibility</MenuItem>
+                  <MenuItem value="LOSS">Loss weight</MenuItem>
+                  <MenuItem value="BUILD">Build muscle</MenuItem>
+                  <MenuItem value="FLEXIBILITY">Improved flexibility</MenuItem>
                 </Select>
                 {errors.objective && (
                   <Typography color="error">{errors.objective.message}</Typography>
@@ -148,8 +148,8 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
                   {...register('gender', { required: 'Gender is required' })}
                   error={!!errors.gender}
                 >
-                  <MenuItem value="male">Male</MenuItem>
-                  <MenuItem value="female">Female</MenuItem>
+                  <MenuItem value="MALE">Male</MenuItem>
+                  <MenuItem value="FEMALE">Female</MenuItem>
                 </Select>
                 {errors.gender && (
                   <Typography color="error">{errors.gender.message}</Typography>
@@ -196,8 +196,8 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
                   {...register('haveillnes', { required: 'This selection is required' })}
                   error={!!errors.haveillnes}
                 >
-                  <MenuItem value="yes">Yes</MenuItem>
-                  <MenuItem value="no">No</MenuItem>
+                  <MenuItem value="YES">Yes</MenuItem>
+                  <MenuItem value="NO">No</MenuItem>
                 </Select>
                 {errors.haveillnes && (
                   <Typography color="error">{errors.haveillnes.message}</Typography>

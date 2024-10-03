@@ -1,7 +1,7 @@
 'use client'
 import { Suspense, useContext, useEffect, useState } from "react";
 import TrainingForm from "@/components/TrainingForm/trainingForm";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import CircularLoader from "@/components/CircularLoader/CircularLoader";
 import { MainContext } from "../../app/context/MainContextAppProvider"
 
@@ -16,7 +16,7 @@ export default function MainComponent() {
     const { workoutData, setWorkoutData } = useContext<any>(MainContext); 
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
-    const exercisesTocheck = ['bridge','bug','superman','Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squat', 'Deadlift', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf","Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups', 'Pulldown', 'T-bar', "Barbell"]
+    const exercisesTocheck = ['Hip', 'Deadlifts', 'Clamshells', 'bridge','bug','superman','Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squat', 'Deadlift', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf","Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups', 'Pulldown', 'T-bar', "Barbell"]
 
     const outdoorExercises = [
         "Bodyweight",
@@ -81,6 +81,19 @@ export default function MainComponent() {
         "Saturday"
       ];
 
+    const handleOnSave = async () => {
+        console.log('dataContext', workoutData);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/workouts/routine`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(workoutData),
+        });
+        const responseSaved = await response.json();
+        console.log('Saved', responseSaved);
+    }
+
     useEffect(() => {
         console.log(promt)
         const fetchData = async () => {
@@ -121,14 +134,14 @@ export default function MainComponent() {
                 ...workoutRoutineData
             }
         });
-        setPromt(`Generate a general guidance workout routine for ${data.days} days of training and ${7 - data.days} days to rest and recovery a week with a list day by day of specific exercises and their definition and the muscles targeted, all exercise's names listed with colon below the day. create the routine suitable specificaly to a person with the following characteristics:gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness ?? 'none'}`);
+        setPromt(`Generate a general guidance workout routine for ${data.days} days of training and ${7 - data.days} days to rest and recovery a week with a list day by day of specific exercises, the day, then exercise's name with colon and then exercises definition and the muscles targeted, create the routine suitable specificaly to a person with the following characteristics:gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness ?? 'none'}`);
         console.log('onSubmitForm', data);
     }
 
     const renderVideo = async (item: string, index: number) => {
         try {
             const videoData : any = await (await fetch(`${apiUrl}/youtube/search?q=how to do correctly ${item} in ${dataForm.preference} for a ${dataForm.gender}`)).json();
-            const videoId = videoData.items[0].id.videoId
+            const videoId = videoData?.items[0]?.id.videoId
             if(videoId){
                 return ( 
                     <div className="grid-container" key={`itemb-${index}`}>
@@ -164,7 +177,6 @@ export default function MainComponent() {
         { promt ?  
         (loader ? <CircularLoader text="Gemini AI is loading..."/> : <Suspense fallback={<CircularLoader text="Gemini AI is loading..."/>}>
             {dataTrain.map((item : any, index: number) => {
-                // console.log('dataContext', workoutData);
                 // let wordsToCheck = ['Day', 'Workout', 'Warm-up', 'Cool-down', 'Monday', 'Workout', 'Tuesday', 'Wednesday', 'Active Rest', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Important', 'Remember', 'Listen', 'Progress', 'Nutrition', 'minutes', 'Note', 'Optional', 'Consistency', 'Exercises', 'Recovery', 'Objective', 'Consult with a Trainer', 'Adjustments', 'Hydration', 'Target', 'Frequency', 'Duration', 'Equipment', 'Rest', 'form', 'Focus on recovery', 'sleep','Hydrate', 'eat', 'Considerations', 'Management', 'Strength', 'Disease', 'Cooldown', 'Recommendations', 'trainer', 'therapist', 'doctor', 'target', 'exercises', 'set', 'reps', 'weight']
                 if(item.trim() === '*'){
                     return '\n\n'
@@ -177,6 +189,17 @@ export default function MainComponent() {
                 }
                 
             })}
+            <div className="bottomContainerButtons">
+                <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={handleOnSave}
+                >
+                Save routine
+              </Button>
+            </div>
         </Suspense>): 
         ( <TrainingForm onSubmitForm={onSubmitForm}></TrainingForm>)} 
         </div>

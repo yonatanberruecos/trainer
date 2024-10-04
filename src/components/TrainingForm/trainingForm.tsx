@@ -33,7 +33,7 @@ export default function trainingForm({onSubmitForm}: ItrainingFormProps) {
       const watchShowExtraField = watch('haveillnes', '');
 
       useEffect(() => {
-        if (watchShowExtraField === 'yes') {
+        if (watchShowExtraField === 'YES') {
           setShowConditionalField(true);
         } else {
           setShowConditionalField(false);

@@ -108,6 +108,12 @@ export default function MainComponent() {
             const data = await response.text();
             const dataArray = data.split('**');
             setDataTrain(dataArray);
+            setWorkoutData((prev: any) => {
+                return {
+                    ...prev,
+                    workout_result: data
+                }
+            })
             setLoader(false);
         }
 
@@ -134,7 +140,7 @@ export default function MainComponent() {
                 ...workoutRoutineData
             }
         });
-        setPromt(`Generate a general guidance workout routine for ${data.days} days of training and ${7 - data.days} days to rest and recovery a week with a list day by day of specific exercises, the day, then exercise's name with colon and then exercises definition and the muscles targeted, create the routine suitable specificaly to a person with the following characteristics:gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness || 'none'}`);
+        setPromt(`Generate a general guidance workout routine for ${data.days} days of training and ${7 - data.days} days to rest and recovery a week with a list day by day of specific exercises, the day, then exercise's name with colon and dash punctuation mark and then exercises definition and the muscles targeted, create the routine suitable specificaly to a person with the following characteristics:gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness || 'none'}`);
         console.log('onSubmitForm', data);
     }
 

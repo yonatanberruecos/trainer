@@ -1,7 +1,16 @@
+import { Amplify } from 'aws-amplify';
 import type { Metadata } from "next";
 import { Inter, Roboto } from "next/font/google";
 import "./globals.css";
+import { COGNITO_CONFIG } from '../../aws-exports'
+import { ResourcesConfig } from "aws-amplify";
 import { MainContextAppProvider } from "./context/MainContextAppProvider";
+import AmplifyProvider from './AmplifyProvider';
+
+// Configure AWS Amplify once globally
+Amplify.configure(COGNITO_CONFIG, { ssr: false});
+
+console.log('config');
 
 const inter = Inter({ subsets: ["latin"] });
 const roboto = Roboto({
@@ -25,9 +34,11 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       </head>
       <body className={roboto.className}>
-        <header style={{padding:'20px 40px'}}><h1 style={{fontWeight:'bold', fontSize: '30px'}}>{ 'My Trainer' }</h1></header>
+        <header style={{padding:'20px 40px'}}><h1 style={{fontWeight:'bold', fontSize: '30px'}}>{ 'My Trainer test' }</h1></header>
         <main>
+        <AmplifyProvider>
           {children}
+        </AmplifyProvider>
         </main>
       </body>
     </html>

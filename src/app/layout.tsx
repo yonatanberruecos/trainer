@@ -10,8 +10,6 @@ import AmplifyProvider from './AmplifyProvider';
 // Configure AWS Amplify once globally
 Amplify.configure(COGNITO_CONFIG, { ssr: false});
 
-console.log('config');
-
 const inter = Inter({ subsets: ["latin"] });
 const roboto = Roboto({
   weight: ['400', '700'],

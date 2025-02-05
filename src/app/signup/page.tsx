@@ -13,8 +13,9 @@ export default function Signup() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    let res = null;
     try {
-        const res = await signUp({
+        res = await signUp({
         username: formData.username,
         password: formData.password,
         options: {
@@ -26,34 +27,36 @@ export default function Signup() {
         }
       });
 
-      console.log('res', res);
+      // console.log('res', res);
     } catch (error) {
       console.error('Sign-up error:', error);
       throw Error('error adding to cognito');
     }
 
-    try {
-      const { name, username, email, password} = formData
+    if(res.userId){
+      try {
+        const { name, username, email, password} = formData
 
-      const payloadUser = {
-        name,
-        username,
-        email,
-        password
+         const payloadUser = {
+           name,
+           username,
+           email,
+           password
+         }
+
+         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+             method: 'POST',
+             headers: {
+                 'Content-Type': 'application/json',
+             },
+             body: JSON.stringify(payloadUser),
+         });
+         const responseSaved = await response.json();
+
+         console.log('usuario creado', responseSaved);
+       } catch (error) {
+         console.log('error saving the user', error);
       }
-
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payloadUser),
-      });
-      const responseSaved = await response.json();
-
-      console.log('usuario creado', responseSaved);
-    } catch (error) {
-      console.log('error saving the user', error);
     }
   };
 

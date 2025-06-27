@@ -4,9 +4,9 @@ import { MainContextAppProvider } from "../context/MainContextAppProvider"
 import { useAuth } from "@/app/hooks/useAuth";
 
 export default function fit() {
-    const user = useAuth();
+    //const user = useAuth();
 
-    if (!user) return <p>Loading...</p>;
+    // if (!user) return <p>Loading...</p>;
     return (
         <MainContextAppProvider>
             <MainComponent></MainComponent>

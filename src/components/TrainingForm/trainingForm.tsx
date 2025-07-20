@@ -11,12 +11,15 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
         register,
         handleSubmit,
         formState: { errors },
-        watch
+        watch,
+        setValue,
+        getValues
     } : any = useForm();
     
     const [showConditionalField, setShowConditionalField] = useState(false);
     const [focusedField, setFocusedField] = useState<string | null>(null);
     const [currentStep, setCurrentStep] = useState(1);
+    const [selectedValues, setSelectedValues] = useState<{[key: string]: string}>({});
     const totalSteps = 3;
 
     const onSubmit = (data: any) => {
@@ -56,6 +59,18 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
 
     const getStepProgress = () => {
         return (currentStep / totalSteps) * 100;
+    };
+
+    const handleRadioChange = (fieldName: string, value: string) => {
+        setSelectedValues(prev => ({
+            ...prev,
+            [fieldName]: value
+        }));
+        setValue(fieldName, value);
+    };
+
+    const isSelected = (fieldName: string, value: string) => {
+        return selectedValues[fieldName] === value || watch(fieldName) === value;
     };
 
     return (
@@ -107,21 +122,29 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                             { value: 'INTERMEDIATE', label: 'Intermediate', icon: '💪', desc: '6+ months experience' },
                                             { value: 'ADVANCED', label: 'Advanced', icon: '🏆', desc: '2+ years experience' }
                                         ].map((option) => (
-                                            <label key={option.value} className="relative">
+                                            <div key={option.value} className="relative">
                                                 <input
                                                     type="radio"
                                                     value={option.value}
                                                     {...register('workout', { required: 'Workout experience is required' })}
                                                     className="sr-only"
+                                                    onChange={() => handleRadioChange('workout', option.value)}
                                                 />
-                                                <div className="flex items-center p-4 bg-gray-50 border-2 border-gray-200 rounded-xl cursor-pointer transition-all duration-300 hover:border-purple-300 hover:bg-purple-50 peer-checked:border-purple-500 peer-checked:bg-purple-100">
+                                                <div 
+                                                    onClick={() => handleRadioChange('workout', option.value)}
+                                                    className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
+                                                        isSelected('workout', option.value)
+                                                            ? 'border-purple-500 bg-purple-100 shadow-lg shadow-purple-500/25'
+                                                            : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+                                                    }`}
+                                                >
                                                     <span className="text-2xl mr-4">{option.icon}</span>
                                                     <div className="flex-1">
                                                         <div className="font-semibold text-gray-800">{option.label}</div>
                                                         <div className="text-sm text-gray-600">{option.desc}</div>
                                                     </div>
                                                 </div>
-                                            </label>
+                                            </div>
                                         ))}
                                     </div>
                                     {errors.workout && (
@@ -137,21 +160,29 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                             { value: 'IN', label: 'Gym', icon: '🏋️', desc: 'Full equipment access' },
                                             { value: 'OUT', label: 'Home/Outdoor', icon: '🏠', desc: 'Bodyweight & minimal equipment' }
                                         ].map((option) => (
-                                            <label key={option.value} className="relative">
+                                            <div key={option.value} className="relative">
                                                 <input
                                                     type="radio"
                                                     value={option.value}
                                                     {...register('preference', { required: 'Training preference is required' })}
                                                     className="sr-only"
+                                                    onChange={() => handleRadioChange('preference', option.value)}
                                                 />
-                                                <div className="flex items-center p-4 bg-gray-50 border-2 border-gray-200 rounded-xl cursor-pointer transition-all duration-300 hover:border-purple-300 hover:bg-purple-50 peer-checked:border-purple-500 peer-checked:bg-purple-100">
+                                                <div 
+                                                    onClick={() => handleRadioChange('preference', option.value)}
+                                                    className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
+                                                        isSelected('preference', option.value)
+                                                            ? 'border-purple-500 bg-purple-100 shadow-lg shadow-purple-500/25'
+                                                            : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+                                                    }`}
+                                                >
                                                     <span className="text-2xl mr-4">{option.icon}</span>
                                                     <div className="flex-1">
                                                         <div className="font-semibold text-gray-800">{option.label}</div>
                                                         <div className="text-sm text-gray-600">{option.desc}</div>
                                                     </div>
                                                 </div>
-                                            </label>
+                                            </div>
                                         ))}
                                     </div>
                                     {errors.preference && (
@@ -168,21 +199,29 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                             { value: 'BUILD', label: 'Build Muscle', icon: '💪', desc: 'Gain strength & size' },
                                             { value: 'FLEXIBILITY', label: 'Flexibility', icon: '🧘', desc: 'Improve mobility & flexibility' }
                                         ].map((option) => (
-                                            <label key={option.value} className="relative">
+                                            <div key={option.value} className="relative">
                                                 <input
                                                     type="radio"
                                                     value={option.value}
                                                     {...register('objective', { required: 'Objective is required' })}
                                                     className="sr-only"
+                                                    onChange={() => handleRadioChange('objective', option.value)}
                                                 />
-                                                <div className="flex items-center p-4 bg-gray-50 border-2 border-gray-200 rounded-xl cursor-pointer transition-all duration-300 hover:border-purple-300 hover:bg-purple-50 peer-checked:border-purple-500 peer-checked:bg-purple-100">
+                                                <div 
+                                                    onClick={() => handleRadioChange('objective', option.value)}
+                                                    className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
+                                                        isSelected('objective', option.value)
+                                                            ? 'border-purple-500 bg-purple-100 shadow-lg shadow-purple-500/25'
+                                                            : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+                                                    }`}
+                                                >
                                                     <span className="text-2xl mr-4">{option.icon}</span>
                                                     <div className="flex-1">
                                                         <div className="font-semibold text-gray-800">{option.label}</div>
                                                         <div className="text-sm text-gray-600">{option.desc}</div>
                                                     </div>
                                                 </div>
-                                            </label>
+                                            </div>
                                         ))}
                                     </div>
                                     {errors.objective && (
@@ -235,18 +274,26 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                             { value: 'MALE', label: 'Male', icon: '👨' },
                                             { value: 'FEMALE', label: 'Female', icon: '👩' }
                                         ].map((option) => (
-                                            <label key={option.value} className="relative">
+                                            <div key={option.value} className="relative">
                                                 <input
                                                     type="radio"
                                                     value={option.value}
                                                     {...register('gender', { required: 'Gender is required' })}
                                                     className="sr-only"
+                                                    onChange={() => handleRadioChange('gender', option.value)}
                                                 />
-                                                <div className="flex flex-col items-center p-4 bg-gray-50 border-2 border-gray-200 rounded-xl cursor-pointer transition-all duration-300 hover:border-purple-300 hover:bg-purple-50 peer-checked:border-purple-500 peer-checked:bg-purple-100">
+                                                <div 
+                                                    onClick={() => handleRadioChange('gender', option.value)}
+                                                    className={`flex flex-col items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
+                                                        isSelected('gender', option.value)
+                                                            ? 'border-purple-500 bg-purple-100 shadow-lg shadow-purple-500/25'
+                                                            : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+                                                    }`}
+                                                >
                                                     <span className="text-3xl mb-2">{option.icon}</span>
                                                     <div className="font-semibold text-gray-800">{option.label}</div>
                                                 </div>
-                                            </label>
+                                            </div>
                                         ))}
                                     </div>
                                     {errors.gender && (
@@ -370,21 +417,29 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                             { value: 'NO', label: 'No limitations', icon: '✅', desc: 'Ready to go!' },
                                             { value: 'YES', label: 'Yes, I have limitations', icon: '⚠️', desc: 'Need to consider health conditions' }
                                         ].map((option) => (
-                                            <label key={option.value} className="relative">
+                                            <div key={option.value} className="relative">
                                                 <input
                                                     type="radio"
                                                     value={option.value}
                                                     {...register('haveillnes', { required: 'This selection is required' })}
                                                     className="sr-only"
+                                                    onChange={() => handleRadioChange('haveillnes', option.value)}
                                                 />
-                                                <div className="flex items-center p-4 bg-gray-50 border-2 border-gray-200 rounded-xl cursor-pointer transition-all duration-300 hover:border-purple-300 hover:bg-purple-50 peer-checked:border-purple-500 peer-checked:bg-purple-100">
+                                                <div 
+                                                    onClick={() => handleRadioChange('haveillnes', option.value)}
+                                                    className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
+                                                        isSelected('haveillnes', option.value)
+                                                            ? 'border-purple-500 bg-purple-100 shadow-lg shadow-purple-500/25'
+                                                            : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+                                                    }`}
+                                                >
                                                     <span className="text-2xl mr-4">{option.icon}</span>
                                                     <div className="flex-1">
                                                         <div className="font-semibold text-gray-800">{option.label}</div>
                                                         <div className="text-sm text-gray-600">{option.desc}</div>
                                                     </div>
                                                 </div>
-                                            </label>
+                                            </div>
                                         ))}
                                     </div>
                                     {errors.haveillnes && (

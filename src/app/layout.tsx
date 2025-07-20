@@ -35,7 +35,9 @@ export default function RootLayout({
         <header style={{padding:'20px 40px'}}><h1 style={{fontWeight:'bold', fontSize: '30px'}}>{ 'My Trainer test' }</h1></header>
         <main>
         <AmplifyProvider>
-          {children}
+          <MainContextAppProvider>
+            {children}
+          </MainContextAppProvider>
         </AmplifyProvider>
         </main>
       </body>

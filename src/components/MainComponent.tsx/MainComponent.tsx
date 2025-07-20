@@ -129,18 +129,18 @@ export default function MainComponent() {
 
     const onSubmitForm = (data: any) => {
         setDataForm(data);
-        const { name, email, ...workoutRoutineData } = data;
+        // const { ...workoutRoutineData } = data;
 
         setWorkoutData({
             user: {
-                name : name,
-                email : email
+                name : '',
+                email : ''
             },
             workout_routine : {
-                ...workoutRoutineData
+                ...data
             }
         });
-        setPromt(`Generate a general guidance workout routine for ${data.days} days of training and ${7 - data.days} days to rest and recovery a week with a list day by day of specific exercises, the day, then exercise's name with colon and dash punctuation mark and then exercises definition and the muscles targeted, create the routine suitable specificaly to a person with the following characteristics:gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness || 'none'}`);
+        setPromt(`you are a sports training specialist that works helping people to build their body and get their objetive in a little time and you are going to generate a general guidance workout routine for ${data.days} days of training at week (split the seven days of the week in ${data.days} days of training and the others to rest), create a routine for the week with a list organized as following: day by day of specific exercises each day, then exercise's name separated with colon and dash punctuation mark and one asterisk, then exercises definition and the muscles targeted, create the routine suitable specificaly to a person with the following characteristics:gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness || 'none'}`);
         console.log('onSubmitForm', data);
     }
 
@@ -188,7 +188,7 @@ export default function MainComponent() {
                     return '\n\n'
                 }else if(item.includes('Day') || containsAllWords(item, daysOfWeek)){
                     return <p style={{fontWeight:'bold', marginTop: '20px'}} key={`item-${index}`}>{item}</p>
-                }else if (item.includes(':') && containsAllWords(item, dataForm.preference === 'IN' ? exercisesTocheck : outdoorExercises)) {
+                }else if (item.includes(':') && item.includes('*') && containsAllWords(item, dataForm.preference === 'IN' ? exercisesTocheck : outdoorExercises)) {
                     return renderVideo(item, index);   
                 }else {
                     return <p style={{lineHeight: '30px'}} key={`item-${index}`}>{item}</p>

@@ -1,15 +1,28 @@
 'use client'
 import MainComponent from "@/components/MainComponent.tsx/MainComponent"
-import { MainContextAppProvider } from "../context/MainContextAppProvider"
 import { useAuth } from "@/app/hooks/useAuth";
+import { MainContext } from "../context/MainContextAppProvider";
+import { useContext, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 
 export default function fit() {
-    //const user = useAuth();
+    // const user = useAuth();
+    const router = useRouter();
+    const { workoutData } = useContext<any>(MainContext);
 
-    // if (!user) return <p>Loading...</p>;
+    useEffect(() => {
+        const checkUser = async () => {
+          if(!workoutData.user.email){
+            router.push('/login');
+          }
+        };
+    
+        checkUser();
+      }, [router]);
+
+    if (!workoutData.user.email) return <p>Loading...</p>;
+    
     return (
-        <MainContextAppProvider>
-            <MainComponent></MainComponent>
-        </MainContextAppProvider>
+        <MainComponent></MainComponent>
     )
 };

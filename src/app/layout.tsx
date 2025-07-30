@@ -33,7 +33,7 @@ export default function RootLayout({
       </head>
       <body className={roboto.className}>
         <header style={{padding:'20px 40px'}}><h1 style={{fontWeight:'bold', fontSize: '30px'}}>{ 'My Trainer test' }</h1></header>
-        <main>
+        <main style={{paddingBottom: '120px'}}>
         <AmplifyProvider>
           <MainContextAppProvider>
             {children}

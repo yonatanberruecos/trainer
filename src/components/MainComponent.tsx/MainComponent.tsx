@@ -3,9 +3,11 @@ import { Suspense, useContext, useEffect, useState } from "react";
 import TrainingForm from "@/components/TrainingForm/trainingForm";
 import { Button, CircularProgress } from "@mui/material";
 import CircularLoader from "@/components/CircularLoader/CircularLoader";
-import { MainContext } from "../../app/context/MainContextAppProvider"
+import { MainContext } from "../../app/context/MainContextAppProvider";
+import { useRouter } from 'next/navigation';
 
 export default function MainComponent() {
+    const router = useRouter();
     const [dataTrain, setDataTrain] = useState<string[]>([]);
     const [promt, setPromt] = useState('');
     const [loader, setLoader] = useState(false);
@@ -16,7 +18,7 @@ export default function MainComponent() {
     const { workoutData, setWorkoutData } = useContext<any>(MainContext); 
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
-    const exercisesTocheck = ['Hip', 'Deadlifts', 'Clamshells', 'bridge','bug','superman','Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squat', 'Deadlift', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf","Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups', 'Pulldown', 'T-bar', "Barbell"]
+    const exercisesTocheck = ['Hip', 'Deadlifts', 'Clamshells', 'bridge','bug','superman','Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squat', 'Deadlift', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf","Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups', 'Pulldown', 'T-bar', 'Barbell', 'Burpees']
 
     const outdoorExercises = [
         "Bodyweight",
@@ -83,15 +85,25 @@ export default function MainComponent() {
 
     const handleOnSave = async () => {
         console.log('dataContext', workoutData);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/workouts/routine`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(workoutData),
-        });
-        const responseSaved = await response.json();
-        console.log('Saved', responseSaved);
+        setLoader(true);
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/workouts/routine`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(workoutData),
+            });
+            const responseSaved = await response.json();
+             setLoader(false);
+            if(responseSaved.success) {
+                router.push('/mylist');
+            }
+            console.log('Saved', responseSaved);
+        } catch (error) {
+            setLoader(false);
+            console.log('Error guardando rutina', error);
+        }
     }
 
     useEffect(() => {
@@ -131,16 +143,56 @@ export default function MainComponent() {
         setDataForm(data);
         // const { ...workoutRoutineData } = data;
 
-        setWorkoutData({
-            user: {
-                name : '',
-                email : ''
-            },
+        setWorkoutData((prev: any) => {
+            return {
+            ...prev,
             workout_routine : {
                 ...data
             }
-        });
-        setPromt(`you are a sports training specialist that works helping people to build their body and get their objetive in a little time and you are going to generate a general guidance workout routine for ${data.days} days of training at week (split the seven days of the week in ${data.days} days of training and the others to rest), create a routine for the week with a list organized as following: day by day of specific exercises each day, then exercise's name separated with colon and dash punctuation mark and one asterisk, then exercises definition and the muscles targeted, create the routine suitable specificaly to a person with the following characteristics:gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness || 'none'}`);
+        }});
+        setPromt(`you are a sport training specialist that works helping people to build their body and reach their objetives in a little time, you are going to generate a workout routine for ${data.days} days of training at week (split the seven days of the week in ${data.days} days of training and the others to rest), create the routine with a list of exercises organized wit the following format: 
+        [day 1:
+
+         first exercise name:*
+
+         exercise definition and the muscles targeted
+
+         second exercise name:*
+
+         exercise definition and the muscles targeted
+
+         n exercise name:*
+
+         exercise definition and the muscles targeted
+
+         day 2:
+
+         first exercise name:*
+
+         exercise definition and the muscles targeted
+
+         second exercise name:*
+
+         exercise definition and the muscles targeted
+
+         n exercise name:*
+
+         exercise definition and the muscles targeted
+
+         day n: 
+         first exercise name:*
+
+         exercise definition and the muscles targeted
+
+         second exercise name:*
+
+         exercise definition and the muscles targeted
+
+         n exercise name:*
+
+         exercise definition and the muscles targeted
+        ]
+         create the routine suitable specificaly to a person with the following characteristics:gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness || 'none'}`);
         console.log('onSubmitForm', data);
     }
 
@@ -151,7 +203,7 @@ export default function MainComponent() {
             if(videoId){
                 return ( 
                     <div className="grid-container" key={`itemb-${index}`}>
-                        <h3 style={{fontWeight: 'bold', width: '200px'}}>{item}</h3>
+                        <h3 className="exercisesDes">{item}</h3>
                         <div className="video-container">
                             <iframe 
                             width="100%" 
@@ -188,7 +240,7 @@ export default function MainComponent() {
                     return '\n\n'
                 }else if(item.includes('Day') || containsAllWords(item, daysOfWeek)){
                     return <p style={{fontWeight:'bold', marginTop: '20px'}} key={`item-${index}`}>{item}</p>
-                }else if (item.includes(':') && item.includes('*') && containsAllWords(item, dataForm.preference === 'IN' ? exercisesTocheck : outdoorExercises)) {
+                }else if (item.includes(':') && containsAllWords(item, dataForm.preference === 'IN' ? exercisesTocheck : outdoorExercises)) {
                     return renderVideo(item, index);   
                 }else {
                     return <p style={{lineHeight: '30px'}} key={`item-${index}`}>{item}</p>
@@ -203,7 +255,7 @@ export default function MainComponent() {
                     sx={{ mt: 3, mb: 2 }}
                     onClick={handleOnSave}
                 >
-                Save routine
+                    Save routine
               </Button>
             </div>
         </Suspense>): 

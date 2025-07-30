@@ -6,7 +6,7 @@ import { MainContext } from '../context/MainContextAppProvider';
 
 export const useAuth = () => {
   const [user, setUser] = <any>useState(null);
-  const { workoutData } = useContext<any>(MainContext);
+  const { workoutData, setWorkoutData  } = useContext<any>(MainContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -14,8 +14,18 @@ export const useAuth = () => {
       try {
         const authenticatedUser = await getCurrentUser();
         if(workoutData.user.email || authenticatedUser) {
-          console.log('authenticatedUser', authenticatedUser, workoutData)
-          setUser(workoutData.user.email || authenticatedUser?.signInDetails?.loginId);
+          const emailUser = workoutData.user.email || authenticatedUser?.signInDetails?.loginId
+          setUser(emailUser);
+          console.log('authenticatedUser', authenticatedUser, workoutData, emailUser);
+          setWorkoutData((prev: any) => {
+            return {
+              ...prev,
+              user: {
+                email: emailUser,
+                name: prev.user.name
+              }
+            }
+          });
         } else {
           router.push('/login');
         }
@@ -26,7 +36,7 @@ export const useAuth = () => {
     };
 
     checkAuth();
-  }, [router]);
+  }, []);
 
   return user;
 };

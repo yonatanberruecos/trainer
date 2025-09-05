@@ -6,9 +6,9 @@ import CircularLoader from "@/components/CircularLoader/CircularLoader";
 import { MainContext } from "../../app/context/MainContextAppProvider";
 import { useRouter } from 'next/navigation';
 
-export default function MainComponent() {
+export default function MainComponent({ workoutInfo = '' }:{ workoutInfo?: string }) {
     const router = useRouter();
-    const [dataTrain, setDataTrain] = useState<string[]>([]);
+    const [dataTrain, setDataTrain] = useState<string[]>(workoutInfo ? workoutInfo.split('**') : []);
     const [promt, setPromt] = useState('');
     const [loader, setLoader] = useState(false);
     const [dataForm, setDataForm] = useState({
@@ -106,38 +106,65 @@ export default function MainComponent() {
         }
     }
 
-    useEffect(() => {
-        console.log(promt)
-        const fetchData = async () => {
-            const response = await fetch(`${apiUrl}/fit`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ prompt: promt }),
-            });
+    const fetchData = async () => {
+        const response = await fetch(`${apiUrl}/fit`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt: promt }),
+        });
 
-            const data = await response.text();
-            const dataArray = data.split('**');
-            setDataTrain(dataArray);
-            setWorkoutData((prev: any) => {
-                return {
-                    ...prev,
-                    workout_result: data
-                }
-            })
-            setLoader(false);
-        }
-
-        if(promt){
-            try {
-                setLoader(true);
-                fetchData();
-            } catch (error) {
-                setLoader(false);
+        const data = await response.text();
+        const dataArray = data.split('**');
+        setDataTrain(dataArray);
+        setWorkoutData((prev: any) => {
+            return {
+                ...prev,
+                workout_result: data
             }
+        })
+        setLoader(false);
+    }
+
+    // useEffect(() => {
+    //     console.log(promt)
+    //     const fetchData = async () => {
+    //         const response = await fetch(`${apiUrl}/fit`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ prompt: promt }),
+    //         });
+
+    //         const data = await response.text();
+    //         const dataArray = data.split('**');
+    //         setDataTrain(dataArray);
+    //         setWorkoutData((prev: any) => {
+    //             return {
+    //                 ...prev,
+    //                 workout_result: data
+    //             }
+    //         })
+    //         setLoader(false);
+    //     }
+
+    //     if(promt){
+    //         try {
+    //             setLoader(true);
+    //             fetchData();
+    //         } catch (error) {
+    //             setLoader(false);
+    //         }
+    //     }
+    // }, [promt]);
+
+    useEffect(() => {
+        if(workoutInfo){
+           setDataTrain(workoutInfo.split('**'))
         }
-    }, [promt]);
+    }, [workoutInfo]);
 
     const onSubmitForm = (data: any) => {
         setDataForm(data);
@@ -150,50 +177,56 @@ export default function MainComponent() {
                 ...data
             }
         }});
-        setPromt(`you are a sport training specialist that works helping people to build their body and reach their objetives in a little time, you are going to generate a workout routine for ${data.days} days of training at week (split the seven days of the week in ${data.days} days of training and the others to rest), create the routine with a list of exercises organized wit the following format: 
-        [day 1:
+        setPromt(`you are a sport training specialist that works helping people to build their body and reach their objetives in a little time, generate a workout routine for ${data.days} days of training at week (create the routine for ${data.days} days of training and the others days of seven day's week to rest), create the routine with a list of exercises organized wit the following format: 
+        [day 1:**
 
-         first exercise name:*
-
-         exercise definition and the muscles targeted
-
-         second exercise name:*
+         **first exercise name:
 
          exercise definition and the muscles targeted
 
-         n exercise name:*
+         **second exercise name:
 
          exercise definition and the muscles targeted
 
-         day 2:
-
-         first exercise name:*
+         **n exercise name:
 
          exercise definition and the muscles targeted
 
-         second exercise name:*
+         day 2:**
+
+         **first exercise name:
 
          exercise definition and the muscles targeted
 
-         n exercise name:*
+         **second exercise name:
 
          exercise definition and the muscles targeted
 
-         day n: 
-         first exercise name:*
+         **n exercise name:
 
          exercise definition and the muscles targeted
 
-         second exercise name:*
+         day n: **
+         **first exercise name:
 
          exercise definition and the muscles targeted
 
-         n exercise name:*
+         **second exercise name:
+
+         exercise definition and the muscles targeted
+
+         **n exercise name:
 
          exercise definition and the muscles targeted
         ]
-         create the routine suitable specificaly to a person with the following characteristics:gender:${data.gender}, date of birth:${data.dob}, height:${data.height}m, weight:${data.weight}kg, favorite place to workout:${data.preference}, objetive:${data.objective}, part of the body objective: ${data.pob}, workout experience:${data.workout}. take in account the limitation: ${data.illness || 'none'}`);
+        create the routine suitable, focused and personalized specificaly for a person with the following characteristics:gender: ${data.gender}, date of birth: ${data.dob}, height: ${data.height}m, weight: ${data.weight}kg, favorite place to workout: ${data.preference}, objetive: ${data.objective}, part of the body objective: ${data.pob}, workout experience: ${data.workout}. take in account the limitation: ${data.illness || 'none'}`);
         console.log('onSubmitForm', data);
+        try {
+            setLoader(true);
+            fetchData();
+        } catch (error) {
+            setLoader(false);
+        }
     }
 
     const renderVideo = async (item: string, index: number) => {
@@ -232,7 +265,7 @@ export default function MainComponent() {
 
     return (
         <div style={{padding:'40px'}}>
-        { promt ?  
+        { promt || workoutInfo ?  
         (loader ? <CircularLoader text="Gemini AI is loading..."/> : <Suspense fallback={<CircularLoader text="Gemini AI is loading..."/>}>
             {dataTrain.map((item : any, index: number) => {
                 // let wordsToCheck = ['Day', 'Workout', 'Warm-up', 'Cool-down', 'Monday', 'Workout', 'Tuesday', 'Wednesday', 'Active Rest', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Important', 'Remember', 'Listen', 'Progress', 'Nutrition', 'minutes', 'Note', 'Optional', 'Consistency', 'Exercises', 'Recovery', 'Objective', 'Consult with a Trainer', 'Adjustments', 'Hydration', 'Target', 'Frequency', 'Duration', 'Equipment', 'Rest', 'form', 'Focus on recovery', 'sleep','Hydrate', 'eat', 'Considerations', 'Management', 'Strength', 'Disease', 'Cooldown', 'Recommendations', 'trainer', 'therapist', 'doctor', 'target', 'exercises', 'set', 'reps', 'weight']
@@ -247,17 +280,15 @@ export default function MainComponent() {
                 }
                 
             })}
-            <div className="bottomContainerButtons">
-                <Button
+            {!workoutInfo && (<div className="bottomContainerButtons">
+                <button
                     type="button"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                    className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl`}
                     onClick={handleOnSave}
                 >
                     Save routine
-              </Button>
-            </div>
+              </button>
+            </div>)}
         </Suspense>): 
         ( <TrainingForm onSubmitForm={onSubmitForm}></TrainingForm>)} 
         </div>

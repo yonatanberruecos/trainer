@@ -1,7 +1,8 @@
 'use client'
 import { createContext, useState } from "react";
 
-export const MainContext = createContext({});
+export const 
+MainContext = createContext({});
 
 export const MainContextAppProvider = ({ children }: { children: any }) => {
     const [workoutData, setWorkoutData] = useState({
@@ -20,7 +21,8 @@ export const MainContextAppProvider = ({ children }: { children: any }) => {
         weight: 0,
         haveillnes: '',
         dob: '',
-    }
+    },
+    workout_routine_result: ''
 });
 
     return (

@@ -115,19 +115,34 @@ const ItemsPage = () => {
     setItemToDelete(null);
   };
 
+  const handleNew = () => {
+    router.push('/fit');
+  }
+
   if (loading && !user) return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 4 }} />;
 
   return (
     <Container sx={{ mt: 4 }}>
-      <Grid container spacing={1}>
+      <Grid 
+        container 
+        spacing={12}
+        sx={{
+          justifyContent: "space-around",
+          alignItems: "center",
+        }}
+      >
          <Grid><Typography variant="h4" gutterBottom textAlign="center">
         Items List
       </Typography></Grid>
-          <Grid>button</Grid>
+          <Grid>
+            <Button onClick={handleNew} variant="contained">
+              Generate new workout
+            </Button>
+          </Grid>
       </Grid>
       <Grid container spacing={3}>
         {items.map((item, index) => (
-          <Grid item xs={12} sm={6} md={4} key={item.userworkout_id}>
+          <Grid size={{ xs: 12, md: 4, sm: 6 }} key={item.userworkout_id}>
             <Card sx={{ height: '100%', transition: '0.3s', '&:hover': { transform: 'scale(1.03)' }, position: 'relative' }}>
               <Box sx={{ position: 'absolute', top: 8, right: 8, zIndex: 1 }}>
                 <IconButton

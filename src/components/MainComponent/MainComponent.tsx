@@ -264,7 +264,7 @@ export default function MainComponent({ workoutInfo = '' }:{ workoutInfo?: strin
     }
 
     return (
-        <div style={{padding:'40px'}}>
+        <div>
         { promt || workoutInfo ?  
         (loader ? <CircularLoader text="Gemini AI is loading..."/> : <Suspense fallback={<CircularLoader text="Gemini AI is loading..."/>}>
             {dataTrain.map((item : any, index: number) => {

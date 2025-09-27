@@ -1,7 +1,7 @@
 'use client'
 import { Suspense, useContext, useEffect, useState } from "react";
 import TrainingForm from "@/components/TrainingForm/trainingForm";
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, Box, Container } from "@mui/material";
 import CircularLoader from "@/components/CircularLoader/CircularLoader";
 import { MainContext } from "../../app/context/MainContextAppProvider";
 import { useRouter } from 'next/navigation';
@@ -263,8 +263,54 @@ export default function MainComponent({ workoutInfo = '' }:{ workoutInfo?: strin
         return words.some(word => strL.includes(word.toLowerCase()));
     }
 
+    function handleMyRoutines(){
+        router.push('/mylist');
+    }
+
     return (
-        <div>
+        <Box sx={{ 
+            minHeight: '100vh',
+            background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+            py: 2
+        }}>
+            <Container maxWidth="lg">
+                {/* Header with My Routines Button */}
+                <Box sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'flex-end', 
+                    mb: 3,
+                    pt: 2
+                }}>
+                    <Button 
+                        onClick={handleMyRoutines} 
+                        variant="contained"
+                        sx={{
+                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            border: 0,
+                            borderRadius: 3,
+                            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
+                            color: 'white',
+                            height: 48,
+                            padding: '0 24px',
+                            fontSize: '1rem',
+                            fontWeight: 'bold',
+                            textTransform: 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1,
+                            '&:hover': {
+                                background: 'linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)',
+                                transform: 'translateY(-2px)',
+                                boxShadow: '0 8px 25px rgba(102, 126, 234, 0.4)',
+                            },
+                            '&:active': {
+                                transform: 'translateY(0)',
+                            }
+                        }}
+                    >
+                        📋 My Routines
+                    </Button>
+                </Box>
         { promt || workoutInfo ?  
         (loader ? <CircularLoader text="Gemini AI is loading..."/> : <Suspense fallback={<CircularLoader text="Gemini AI is loading..."/>}>
             {dataTrain.map((item : any, index: number) => {
@@ -291,6 +337,7 @@ export default function MainComponent({ workoutInfo = '' }:{ workoutInfo?: strin
             </div>)}
         </Suspense>): 
         ( <TrainingForm onSubmitForm={onSubmitForm}></TrainingForm>)} 
-        </div>
+            </Container>
+        </Box>
     );
 };

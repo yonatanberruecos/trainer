@@ -14,7 +14,7 @@ interface IdataWorkout {
 
 export default function MainFit() {
     const user = useAuth();
-    const [workoutInfo, setWorkoutInfo] = useState<string>('');
+    const [workoutInfo, setWorkoutInfo] = useState<any>('');
     const searchParams = useSearchParams();
     const routine_id = searchParams.get('routine_id'); // get ?routine_id=123
 
@@ -32,7 +32,7 @@ export default function MainFit() {
             const routine = data.filter(item => item.userworkout_id === Number(routine_id));
             // const data = [{id: "1", description: " 5-Day Workout Routine for Weight Loss (Male, Obese, Junior Experience)"}, {id: "2", description: " 5-Day Workout Routine for Weight Loss (Male, Obese, Junior Experience)"}]
             console.log('userworkout_workout_routine', routine)
-            setWorkoutInfo(routine[0].userworkout_workout_routine);
+            setWorkoutInfo(JSON.parse(routine[0].userworkout_workout_routine));
           } catch (error) {
             console.error('Error fetching items:', error);
           }

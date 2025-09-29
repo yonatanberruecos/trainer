@@ -208,6 +208,7 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
         setPromt(`you are a sport training specialist that works helping people to build their body and reach their objetives in a little time, create a workout routine with a list of exercises organized in a JSON object, The object should have the following keys:
             - "inititalRecomendations": initial recomendations an comments about the workout routine
             - "routine": An array where each item is an object that represents the exercises for each day and has the folloing keys:
+                - "day": number of the day, example:  day: "Day 1"
                 - "targetMuscle" the muscles target for the day routine.
                 - "exercises": an array of objects for each exercise where each objet has the following keys:
                     - "name": name of the exercise
@@ -406,6 +407,19 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
         { promt || workoutInfo ?  
         (loader ? <CircularLoader text="Gemini AI is loading..."/> : <Suspense fallback={<CircularLoader text="Gemini AI is loading..."/>}>
             <Box sx={{ maxWidth: '100%', mx: 'auto' }}>
+                    <Typography 
+                        variant="h6" 
+                        component="p"
+                        sx={{ 
+                            color: '#2d3748',
+                            mb: 3,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1
+                        }}
+                    >
+                        {dataTrain?.inititalRecomendations}
+                    </Typography>
                 {dataTrain?.routine?.map((item : routine, index: number) => {
                     return (
                         <>
@@ -537,6 +551,19 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
                     // }
                     // return null;
                 })}
+                <Typography 
+                    variant="h6" 
+                    component="p"
+                    sx={{ 
+                        color: '#2d3748',
+                        mb: 3,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1
+                    }}
+                >
+                    {dataTrain?.lastRecommendations}
+                </Typography>
             </Box>
             {!workoutInfo && (<div className="bottomContainerButtons">
                 <button

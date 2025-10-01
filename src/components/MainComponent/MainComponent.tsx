@@ -1,5 +1,5 @@
 'use client'
-import { Suspense, useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import TrainingForm from "@/components/TrainingForm/trainingForm";
 import { 
     Button, 
@@ -38,12 +38,13 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
     const router = useRouter();
     const [dataTrain, setDataTrain] = useState<workoutRoutine | undefined>(workoutInfo);
     const [promt, setPromt] = useState('');
-    const [loader, setLoader] = useState(false);
+    const [loader, setLoader] = useState(true);
     const [dataForm, setDataForm] = useState({
         preference : '',
         gender: ''
     });
     const { workoutData, setWorkoutData } = useContext<any>(MainContext); 
+    const mainContainer = useRef();
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
     const exercisesTocheck = ['Hip', 'Deadlifts', 'Clamshells', 'bridge','bug','superman','Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squat', 'Deadlift', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats","Lunges","Romanian Deadlifts","Calf","Raises","Bench Press","Shoulder Press","Push-ups","Tricep Extensions","Pull-ups","Barbell Rows","Seated Cable Rows","Bicep Curls","Plank","Russian Twists","Crunches", 'Extension', 'Pull-Ups', 'Step-Ups', 'Pulldown', 'T-bar', 'Barbell', 'Burpees']
@@ -190,9 +191,16 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
 
     useEffect(() => {
         if(workoutInfo){
-           setDataTrain(workoutInfo)
+            setLoader(false);
+            setDataTrain(workoutInfo);
         }
     }, [workoutInfo]);
+
+    useEffect(() => {
+        if(mainContainer.current){
+            setTimeout(() => setLoader(false), 500)
+        }
+    }, []);
 
     const onSubmitForm = (data: any) => {
         setDataForm(data);
@@ -224,7 +232,64 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
         // }
     }
 
+    const tittleDescription = (item: Day) => {
+        return (
+            <>
+                {/* Gradient Border Effect */}
+                <Box sx={{
+                    height: 4,
+                    background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)'
+                }} />
+                {/* Exercise Title */}
+                <Typography 
+                    variant="h6" 
+                    component="h3"
+                    sx={{ 
+                        fontWeight: 'bold',
+                        color: '#2d3748',
+                        mb: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        padding: '20px 20px 0 20px',
+                    }}
+                >
+                    {item.name}
+                </Typography>
+
+                <Typography 
+                    variant="h6" 
+                    component="p"
+                    sx={{ 
+                        color: '#2d3748',
+                        mb: 2,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        padding: '0px 20px 0 20px',
+                    }}
+                >
+                    {item.description}
+                </Typography>
+            </>
+        )
+    }
+
     const renderVideo = async (item: Day, index: number) => {
+        const cardStyles = {
+            mb: 3,
+            background: 'linear-gradient(135deg, #fff 0%, #f8f9ff 100%)',
+            border: '1px solid rgba(102, 126, 234, 0.1)',
+            borderRadius: 3,
+            overflow: 'hidden',
+            boxShadow: '0 4px 20px rgba(102, 126, 234, 0.1)',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 30px rgba(102, 126, 234, 0.15)',
+            }
+        }
+
         try {
             const videoData : any = await (await fetch(`${apiUrl}/youtube/search?q=how to do correctly ${item.name} in ${dataForm.preference} for a ${dataForm.gender}`)).json();
             const videoId = videoData?.items[0]?.id.videoId
@@ -232,57 +297,10 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
                 return (
                     <Card 
                         key={`itemb-${index}`}
-                        sx={{ 
-                            mb: 3,
-                            background: 'linear-gradient(135deg, #fff 0%, #f8f9ff 100%)',
-                            border: '1px solid rgba(102, 126, 234, 0.1)',
-                            borderRadius: 3,
-                            overflow: 'hidden',
-                            boxShadow: '0 4px 20px rgba(102, 126, 234, 0.1)',
-                            transition: 'all 0.3s ease',
-                            '&:hover': {
-                                transform: 'translateY(-2px)',
-                                boxShadow: '0 8px 30px rgba(102, 126, 234, 0.15)',
-                            }
-                        }}
+                        sx={cardStyles}
                     >
-                        {/* Gradient Border Effect */}
-                        <Box sx={{
-                            height: 4,
-                            background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)'
-                        }} />
-                        
+                        {tittleDescription(item)}
                         <CardContent sx={{ p: 3 }}>
-                            {/* Exercise Title */}
-                            <Typography 
-                                variant="h6" 
-                                component="h3"
-                                sx={{ 
-                                    fontWeight: 'bold',
-                                    color: '#2d3748',
-                                    mb: 3,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 1
-                                }}
-                            >
-                                🏋️ {item.name}
-                            </Typography>
-
-                            <Typography 
-                                variant="h6" 
-                                component="p"
-                                sx={{ 
-                                    color: '#2d3748',
-                                    mb: 3,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 1
-                                }}
-                            >
-                                🏋️ {item.description}
-                            </Typography>
-                            
                             {/* Video Container */}
                             <Box sx={{
                                 position: 'relative',
@@ -293,19 +311,21 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
                                 overflow: 'hidden',
                                 boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
                             }}>
-                                <iframe 
-                                    src={`https://www.youtube.com/embed/${videoId}`}
-                                    frameBorder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowFullScreen
-                                    style={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        width: '100%',
-                                        height: '100%'
-                                    }}
-                                />
+                                <Suspense fallback={<CircularLoader text="Video is loading..."/>}>
+                                    <iframe 
+                                        src={`https://www.youtube.com/embed/${videoId}`}
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '100%'
+                                        }}
+                                    />
+                                </Suspense>
                             </Box>
                         </CardContent>
                     </Card>
@@ -314,13 +334,9 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
                 return (
                     <Card 
                         key={`itemb-${index}`}
-                        sx={{ 
-                            mb: 3,
-                            background: 'linear-gradient(135deg, #fff 0%, #f8f9ff 100%)',
-                            border: '1px solid rgba(102, 126, 234, 0.1)',
-                            borderRadius: 3
-                        }}
-                    >
+                        sx={cardStyles}
+                    >   
+                        {tittleDescription(item)}
                         <CardContent>
                             <Typography variant="body1" color="text.secondary">
                                 🎥 Video not available for this exercise
@@ -334,13 +350,9 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
             return (
                 <Card 
                     key={`itemb-${index}`}
-                    sx={{ 
-                        mb: 3,
-                        background: 'linear-gradient(135deg, #fff 0%, #f8f9ff 100%)',
-                        border: '1px solid rgba(102, 126, 234, 0.1)',
-                        borderRadius: 3
-                    }}
+                    sx={cardStyles}
                 >
+                    {tittleDescription(item)}
                     <CardContent>
                         <Typography variant="body1" color="text.secondary">
                             ⚠️ Error loading video for this exercise
@@ -361,7 +373,7 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
     }
 
     return (
-        <Box sx={{ 
+        <Box ref={mainContainer} sx={{ 
             minHeight: '100vh',
             background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
             py: 2
@@ -450,7 +462,8 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            gap: 2
+                                            gap: 2,
+                                            mb: 2,
                                         }}
                                     >
                                         📅 {item.day}
@@ -575,7 +588,7 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
               </button>
             </div>)}
         </Suspense>): 
-        ( <TrainingForm onSubmitForm={onSubmitForm}></TrainingForm>)} 
+        ( loader ? <CircularLoader text="Loading..."/> : <TrainingForm onSubmitForm={onSubmitForm}></TrainingForm>)} 
             </Container>
         </Box>
     );

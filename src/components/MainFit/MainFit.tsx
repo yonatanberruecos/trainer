@@ -43,9 +43,7 @@ export default function MainFit() {
         }
       }, [user, routine_id]);
 
-    if (!user) return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 4 }} />;
+    if (user || routine_id) return (<MainComponent workoutInfo={workoutInfo}></MainComponent>)
 
-    return (
-        <MainComponent workoutInfo={workoutInfo}></MainComponent>
-    )
+    return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 4 }} />;
 };

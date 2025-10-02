@@ -42,30 +42,30 @@ const ItemsPage = () => {
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   const router = useRouter();
   
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/userworkout`); // Replace with actual API
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/userworkout?email=${encodeURIComponent(user)}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-        const data = await response.json();
-        // const data = [{id: "1", description: " 5-Day Workout Routine for Weight Loss (Male, Obese, Junior Experience)"}, {id: "2", description: " 5-Day Workout Routine for Weight Loss (Male, Obese, Junior Experience)"}]
-        setItems(data);
-      } catch (error) {
-        console.error('Error fetching items:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchItems = async () => {
+  //     try {
+  //       // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/userworkout`); // Replace with actual API
+  //       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/userworkout?email=${encodeURIComponent(user)}`, {
+  //         method: 'GET',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         }
+  //       });
+  //       const data = await response.json();
+  //       // const data = [{id: "1", description: " 5-Day Workout Routine for Weight Loss (Male, Obese, Junior Experience)"}, {id: "2", description: " 5-Day Workout Routine for Weight Loss (Male, Obese, Junior Experience)"}]
+  //       setItems(data);
+  //     } catch (error) {
+  //       console.error('Error fetching items:', error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    if(user) {
-      fetchItems();
-    }
-  }, [user]);
+  //   if(user) {
+  //     fetchItems();
+  //   }
+  // }, [user]);
 
   const handleClickCard = (routine_id: string) => {
     router.push(`/fit?routine_id=${routine_id}`);
@@ -183,11 +183,7 @@ const ItemsPage = () => {
   };
 
   return (
-    <>
-    {items.map((item) => {
-      return (<p>{truncateText(item.userworkout_routine_summary)}</p>)
-    })}
-    </>
+    <p>prueba</p>
     // <Box sx={{ 
     //   minHeight: '100vh',
     //   background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',

@@ -129,7 +129,7 @@ const ItemsPage = () => {
           <Skeleton variant="text" width={300} height={60} sx={{ mx: 'auto', mb: 2 }} />
           <Skeleton variant="rectangular" width={200} height={40} sx={{ mx: 'auto' }} />
         </Box>
-        <Grid container spacing={3}>
+        {/* <Grid container spacing={3}>
           {[1, 2, 3, 4, 5, 6].map((item) => (
             <Grid size={{ xs: 12, sm: 6, md: 4 }} key={`skeleton-${item}`}>
               <Card sx={{ height: 280 }}>
@@ -143,7 +143,7 @@ const ItemsPage = () => {
               </Card>
             </Grid>
           ))}
-        </Grid>
+        </Grid> */}
       </Container>
     );
   }
@@ -189,7 +189,7 @@ const ItemsPage = () => {
     }}>
       <Container maxWidth="lg">
         {/* Header Section */}
-        <Box sx={{ 
+        {/* <Box sx={{ 
           textAlign: 'center', 
           mb: 6,
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -251,7 +251,7 @@ const ItemsPage = () => {
               ✨ Generate New Workout
             </Button>
           </Box>
-        </Box>
+        </Box> */}
 
         {/* Empty State */}
         {items.length === 0 && !loading && (
@@ -289,7 +289,7 @@ const ItemsPage = () => {
         )}
 
         {/* Workout Cards Grid */}
-        <Grid container spacing={3}>
+        {/* <Grid container spacing={3}> */}
           {items.map((item, index) => {
             const workoutIcon = getWorkoutIcon(item.userworkout_routine_summary);
             const difficulty = getDifficulty(item.userworkout_routine_summary);
@@ -435,7 +435,7 @@ const ItemsPage = () => {
               // </Grid>
             );
           })}
-        </Grid>
+        {/* </Grid> */}
 
         {/* Kebab Menu */}
         <Menu

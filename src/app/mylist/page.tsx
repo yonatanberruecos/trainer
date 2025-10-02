@@ -296,142 +296,143 @@ const ItemsPage = () => {
             const difficultyColor = getDifficultyColor(difficulty);
             
             return (
-              <Grid key={item.userworkout_id}>
-                <Fade in={true} timeout={300 + index * 100}>
-                  <Card sx={{ 
-                    height: '100%',
-                    position: 'relative',
-                    background: 'linear-gradient(135deg, #fff 0%, #f8f9ff 100%)',
-                    border: '1px solid rgba(102, 126, 234, 0.1)',
-                    borderRadius: 3,
-                    overflow: 'hidden',
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    '&:hover': { 
-                      transform: 'translateY(-8px) scale(1.02)',
-                      boxShadow: '0 20px 40px rgba(102, 126, 234, 0.15)',
-                      borderColor: 'rgba(102, 126, 234, 0.3)'
-                    }
-                  }}>
-                    {/* Gradient Border Effect */}
-                    <Box sx={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: 4,
-                      background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)'
-                    }} />
+              <p>Card</p>
+              // <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item.userworkout_id}>
+              //   <Fade in={true} timeout={300 + index * 100}>
+              //     <Card sx={{ 
+              //       height: '100%',
+              //       position: 'relative',
+              //       background: 'linear-gradient(135deg, #fff 0%, #f8f9ff 100%)',
+              //       border: '1px solid rgba(102, 126, 234, 0.1)',
+              //       borderRadius: 3,
+              //       overflow: 'hidden',
+              //       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              //       '&:hover': { 
+              //         transform: 'translateY(-8px) scale(1.02)',
+              //         boxShadow: '0 20px 40px rgba(102, 126, 234, 0.15)',
+              //         borderColor: 'rgba(102, 126, 234, 0.3)'
+              //       }
+              //     }}>
+              //       {/* Gradient Border Effect */}
+              //       <Box sx={{
+              //         position: 'absolute',
+              //         top: 0,
+              //         left: 0,
+              //         right: 0,
+              //         height: 4,
+              //         background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)'
+              //       }} />
                     
-                    {/* Menu Button */}
-                    <Box sx={{ position: 'absolute', top: 12, right: 12, zIndex: 2 }}>
-                      <IconButton
-                        onClick={(e) => handleMenuClick(e, item.userworkout_id)}
-                        size="small"
-                        sx={{ 
-                          backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                          backdropFilter: 'blur(10px)',
-                          border: '1px solid rgba(102, 126, 234, 0.1)',
-                          width: 32,
-                          height: 32,
-                          '&:hover': { 
-                            backgroundColor: 'rgba(255, 255, 255, 1)',
-                            transform: 'scale(1.1)'
-                          }
-                        }}
-                      >
-                        <Typography sx={{ fontSize: '14px', fontWeight: 'bold', color: '#667eea' }}>⋮</Typography>
-                      </IconButton>
-                    </Box>
+              //       {/* Menu Button */}
+              //       <Box sx={{ position: 'absolute', top: 12, right: 12, zIndex: 2 }}>
+              //         <IconButton
+              //           onClick={(e) => handleMenuClick(e, item.userworkout_id)}
+              //           size="small"
+              //           sx={{ 
+              //             backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              //             backdropFilter: 'blur(10px)',
+              //             border: '1px solid rgba(102, 126, 234, 0.1)',
+              //             width: 32,
+              //             height: 32,
+              //             '&:hover': { 
+              //               backgroundColor: 'rgba(255, 255, 255, 1)',
+              //               transform: 'scale(1.1)'
+              //             }
+              //           }}
+              //         >
+              //           <Typography sx={{ fontSize: '14px', fontWeight: 'bold', color: '#667eea' }}>⋮</Typography>
+              //         </IconButton>
+              //       </Box>
 
-                    <CardActionArea onClick={() => handleClickCard(item.userworkout_id)} sx={{ height: '100%' }}>
-                      <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
-                        {/* Header with Icon and Title */}
-                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                          <Box sx={{ 
-                            fontSize: '2rem', 
-                            mr: 2,
-                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                            borderRadius: '50%',
-                            width: 48,
-                            height: 48,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                          }}>
-                            {workoutIcon}
-                          </Box>
-                          <Box sx={{ flex: 1 }}>
-                            <Typography 
-                              variant="h6" 
-                              sx={{ 
-                                fontWeight: 'bold',
-                                color: '#2d3748',
-                                mb: 0.5
-                              }}
-                            >
-                              Routine #{index + 1}
-                            </Typography>
-                            <Chip 
-                              label={difficulty}
-                              color={difficultyColor as any}
-                              size="small"
-                              sx={{ 
-                                fontSize: '0.75rem',
-                                fontWeight: 'bold'
-                              }}
-                            />
-                          </Box>
-                        </Box>
+              //       <CardActionArea onClick={() => handleClickCard(item.userworkout_id)} sx={{ height: '100%' }}>
+              //         <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
+              //           {/* Header with Icon and Title */}
+              //           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              //             <Box sx={{ 
+              //               fontSize: '2rem', 
+              //               mr: 2,
+              //               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              //               borderRadius: '50%',
+              //               width: 48,
+              //               height: 48,
+              //               display: 'flex',
+              //               alignItems: 'center',
+              //               justifyContent: 'center'
+              //             }}>
+              //               {workoutIcon}
+              //             </Box>
+              //             <Box sx={{ flex: 1 }}>
+              //               <Typography 
+              //                 variant="h6" 
+              //                 sx={{ 
+              //                   fontWeight: 'bold',
+              //                   color: '#2d3748',
+              //                   mb: 0.5
+              //                 }}
+              //               >
+              //                 Routine #{index + 1}
+              //               </Typography>
+              //               <Chip 
+              //                 label={difficulty}
+              //                 color={difficultyColor as any}
+              //                 size="small"
+              //                 sx={{ 
+              //                   fontSize: '0.75rem',
+              //                   fontWeight: 'bold'
+              //                 }}
+              //               />
+              //             </Box>
+              //           </Box>
 
-                        {/* Description */}
-                        <Box sx={{ flex: 1, mb: 2 }}>
-                          <Tooltip 
-                            title={item.userworkout_routine_summary.length > 120 ? item.userworkout_routine_summary : ''}
-                            placement="top"
-                            arrow
-                          >
-                            <Typography 
-                              variant="body2" 
-                              sx={{ 
-                                color: '#4a5568',
-                                lineHeight: 1.6,
-                                display: '-webkit-box',
-                                WebkitLineClamp: 4,
-                                WebkitBoxOrient: 'vertical',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis'
-                              }}
-                            >
-                              {truncateText(item.userworkout_routine_summary)}
-                            </Typography>
-                          </Tooltip>
-                        </Box>
+              //           {/* Description */}
+              //           <Box sx={{ flex: 1, mb: 2 }}>
+              //             <Tooltip 
+              //               title={item.userworkout_routine_summary.length > 120 ? item.userworkout_routine_summary : ''}
+              //               placement="top"
+              //               arrow
+              //             >
+              //               <Typography 
+              //                 variant="body2" 
+              //                 sx={{ 
+              //                   color: '#4a5568',
+              //                   lineHeight: 1.6,
+              //                   display: '-webkit-box',
+              //                   WebkitLineClamp: 4,
+              //                   WebkitBoxOrient: 'vertical',
+              //                   overflow: 'hidden',
+              //                   textOverflow: 'ellipsis'
+              //                 }}
+              //               >
+              //                 {truncateText(item.userworkout_routine_summary)}
+              //               </Typography>
+              //             </Tooltip>
+              //           </Box>
 
-                        {/* Footer */}
-                        <Box sx={{ 
-                          display: 'flex', 
-                          justifyContent: 'space-between', 
-                          alignItems: 'center',
-                          pt: 2,
-                          borderTop: '1px solid rgba(102, 126, 234, 0.1)'
-                        }}>
-                          <Typography variant="caption" sx={{ color: '#718096', fontWeight: 'medium' }}>
-                            Click to view details
-                          </Typography>
-                          <Box sx={{ 
-                            color: '#667eea',
-                            fontSize: '1.2rem',
-                            transform: 'translateX(0)',
-                            transition: 'transform 0.2s ease'
-                          }}>
-                            →
-                          </Box>
-                        </Box>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Fade>
-              </Grid>
+              //           {/* Footer */}
+              //           <Box sx={{ 
+              //             display: 'flex', 
+              //             justifyContent: 'space-between', 
+              //             alignItems: 'center',
+              //             pt: 2,
+              //             borderTop: '1px solid rgba(102, 126, 234, 0.1)'
+              //           }}>
+              //             <Typography variant="caption" sx={{ color: '#718096', fontWeight: 'medium' }}>
+              //               Click to view details
+              //             </Typography>
+              //             <Box sx={{ 
+              //               color: '#667eea',
+              //               fontSize: '1.2rem',
+              //               transform: 'translateX(0)',
+              //               transition: 'transform 0.2s ease'
+              //             }}>
+              //               →
+              //             </Box>
+              //           </Box>
+              //         </CardContent>
+              //       </CardActionArea>
+              //     </Card>
+              //   </Fade>
+              // </Grid>
             );
           })}
         </Grid>

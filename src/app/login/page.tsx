@@ -52,7 +52,6 @@ export default function Login() {
     
     try {
       await signIn({ username, password });
-      console.log('login info', username, password);
       setWorkoutData((prev: any) => {
         return {
           ...prev,
@@ -62,7 +61,7 @@ export default function Login() {
           }
         } 
       });
-      router.push('/fit'); // Redirect to dashboard on success
+      router.push('/mylist'); // Redirect to dashboard on success
     } catch (error: any) {
       console.error('Login error:', error);
       setError(error.message || 'Invalid credentials. Please try again.');

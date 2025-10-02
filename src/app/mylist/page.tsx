@@ -34,6 +34,7 @@ interface Item {
 }
 
 const ItemsPage = () => {
+  const user = useAuth();
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -41,7 +42,6 @@ const ItemsPage = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   const router = useRouter();
-  const user = useAuth();
   
   useEffect(() => {
     const fetchItems = async () => {
@@ -293,7 +293,7 @@ const ItemsPage = () => {
         {/* Workout Cards Grid */}
         <Grid container spacing={3}>
           {items.map((item, index) => {
-            const workoutIcon = getWorkoutIcon(item.userworkout_routine_summary);
+            // const workoutIcon = getWorkoutIcon(item.userworkout_routine_summary);
             const difficulty = getDifficulty(item.userworkout_routine_summary);
             const difficultyColor = getDifficultyColor(difficulty);
             
@@ -349,7 +349,7 @@ const ItemsPage = () => {
                       <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
                         {/* Header with Icon and Title */}
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                          <Box sx={{ 
+                          {/* <Box sx={{ 
                             fontSize: '2rem', 
                             mr: 2,
                             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -361,7 +361,7 @@ const ItemsPage = () => {
                             justifyContent: 'center'
                           }}>
                             {workoutIcon}
-                          </Box>
+                          </Box> */}
                           <Box sx={{ flex: 1 }}>
                             <Typography 
                               variant="h6" 

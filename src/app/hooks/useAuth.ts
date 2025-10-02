@@ -16,7 +16,6 @@ export const useAuth = () => {
         if(workoutData.user.email || authenticatedUser) {
           const emailUser = workoutData.user.email || authenticatedUser?.signInDetails?.loginId
           setUser(emailUser);
-          console.log('authenticatedUser', authenticatedUser, workoutData, emailUser);
           setWorkoutData((prev: any) => {
             return {
               ...prev,

@@ -6,8 +6,7 @@ import {
   Card, 
   CardContent, 
   Typography, 
-  Grid, 
-  CircularProgress, 
+  Grid,
   Container, 
   CardActionArea,
   IconButton,
@@ -25,7 +24,6 @@ import {
   Skeleton
 } from '@mui/material';
 import { useAuth } from '../hooks/useAuth';
-import { MainContext } from '../context/MainContextAppProvider';
 
 interface Item {
   userworkout_id: string;
@@ -133,7 +131,7 @@ const ItemsPage = () => {
         </Box>
         <Grid container spacing={3}>
           {[1, 2, 3, 4, 5, 6].map((item) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={`skeleton-${item}`}>
               <Card sx={{ height: 280 }}>
                 <CardContent>
                   <Skeleton variant="text" width="60%" height={32} sx={{ mb: 2 }} />
@@ -293,12 +291,12 @@ const ItemsPage = () => {
         {/* Workout Cards Grid */}
         <Grid container spacing={3}>
           {items.map((item, index) => {
-            // const workoutIcon = getWorkoutIcon(item.userworkout_routine_summary);
+            const workoutIcon = getWorkoutIcon(item.userworkout_routine_summary);
             const difficulty = getDifficulty(item.userworkout_routine_summary);
             const difficultyColor = getDifficultyColor(difficulty);
             
             return (
-              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item.userworkout_id}>
+              <Grid key={item.userworkout_id}>
                 <Fade in={true} timeout={300 + index * 100}>
                   <Card sx={{ 
                     height: '100%',
@@ -349,7 +347,7 @@ const ItemsPage = () => {
                       <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
                         {/* Header with Icon and Title */}
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                          {/* <Box sx={{ 
+                          <Box sx={{ 
                             fontSize: '2rem', 
                             mr: 2,
                             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -361,7 +359,7 @@ const ItemsPage = () => {
                             justifyContent: 'center'
                           }}>
                             {workoutIcon}
-                          </Box> */}
+                          </Box>
                           <Box sx={{ flex: 1 }}>
                             <Typography 
                               variant="h6" 

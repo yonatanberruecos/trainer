@@ -123,31 +123,31 @@ const ItemsPage = () => {
   }
 
   // Loading state with skeleton cards
-  if (loading && !user) {
-    return (
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 8 }}>
-        <Box sx={{ textAlign: 'center', mb: 6 }}>
-          <Skeleton variant="text" width={300} height={60} sx={{ mx: 'auto', mb: 2 }} />
-          <Skeleton variant="rectangular" width={200} height={40} sx={{ mx: 'auto' }} />
-        </Box>
-        <Grid container spacing={3}>
-          {[1, 2, 3, 4, 5, 6].map((item) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={`skeleton-${item}`}>
-              <Card sx={{ height: 280 }}>
-                <CardContent>
-                  <Skeleton variant="text" width="60%" height={32} sx={{ mb: 2 }} />
-                  <Skeleton variant="text" width="100%" height={20} sx={{ mb: 1 }} />
-                  <Skeleton variant="text" width="80%" height={20} sx={{ mb: 1 }} />
-                  <Skeleton variant="text" width="90%" height={20} sx={{ mb: 2 }} />
-                  <Skeleton variant="rectangular" width="100%" height={60} />
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    );
-  }
+  // if (loading && !user) {
+  //   return (
+  //     <Container maxWidth="lg" sx={{ mt: 4, mb: 8 }}>
+  //       <Box sx={{ textAlign: 'center', mb: 6 }}>
+  //         <Skeleton variant="text" width={300} height={60} sx={{ mx: 'auto', mb: 2 }} />
+  //         <Skeleton variant="rectangular" width={200} height={40} sx={{ mx: 'auto' }} />
+  //       </Box>
+  //       <Grid container spacing={3}>
+  //         {[1, 2, 3, 4, 5, 6].map((item) => (
+  //           <Grid size={{ xs: 12, sm: 6, md: 4 }} key={`skeleton-${item}`}>
+  //             <Card sx={{ height: 280 }}>
+  //               <CardContent>
+  //                 <Skeleton variant="text" width="60%" height={32} sx={{ mb: 2 }} />
+  //                 <Skeleton variant="text" width="100%" height={20} sx={{ mb: 1 }} />
+  //                 <Skeleton variant="text" width="80%" height={20} sx={{ mb: 1 }} />
+  //                 <Skeleton variant="text" width="90%" height={20} sx={{ mb: 2 }} />
+  //                 <Skeleton variant="rectangular" width="100%" height={60} />
+  //               </CardContent>
+  //             </Card>
+  //           </Grid>
+  //         ))}
+  //       </Grid>
+  //     </Container>
+  //   );
+  // }
 
   // Helper function to get workout type icon
   const getWorkoutIcon = (summary: string) => {

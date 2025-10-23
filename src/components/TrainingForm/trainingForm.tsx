@@ -266,6 +266,34 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                     )}
                                 </div>
 
+                                {/* Training Hours per Day */}
+                                <div className="relative">
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Training Hours per Day</label>
+                                    <div className="relative">
+                                        <input
+                                            type="number"
+                                            min="0.5"
+                                            max="8"
+                                            step="0.5"
+                                            placeholder="How many hours per training session?"
+                                            {...register('hours', { required: 'Training hours is required', min: 0.5, max: 8 })}
+                                            onFocus={() => handleFocus('hours')}
+                                            onBlur={handleBlur}
+                                            className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white text-lg ${
+                                                focusedField === 'hours' 
+                                                    ? 'border-purple-500 shadow-lg shadow-purple-500/25' 
+                                                    : 'border-gray-200 hover:border-gray-300'
+                                            }`}
+                                        />
+                                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                                            <span className="text-xl">⏱️</span>
+                                        </div>
+                                    </div>
+                                    {errors.hours && (
+                                        <p className="text-red-500 text-sm mt-2">{errors.hours.message}</p>
+                                    )}
+                                </div>
+
                                 {/* Gender */}
                                 <div className="relative">
                                     <label className="block text-sm font-semibold text-gray-700 mb-3">Gender</label>

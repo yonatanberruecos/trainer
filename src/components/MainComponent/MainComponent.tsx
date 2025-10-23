@@ -222,7 +222,7 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
                     - "name": name of the exercise
                     - "description" description of the exercise, target muscles and repetitions
             - "lastRecommendations": last recommedations about the routine and stretch
-            create a workout routine for the week, suitable, focused and personalized as an specialist for a person with the following characteristics: the person only can workout ${data.days} days at week and the others days of seven day's week to rest, gender: ${data.gender}, date of birth: ${data.dob}, height: ${data.height}m, weight: ${data.weight}kg, favorite place to workout: ${data.preference}, objetive: ${data.objective}, part of the body objective: ${data.pob}, workout experience: ${data.workout}. take in account the limitation: ${data.illness || 'none'}`);
+            create a workout routine for the week, suitable, focused and personalized as an specialist for a person with the following characteristics: the person only can workout ${data.days} days at week and the others days of seven day's week to rest,training hours per Day: ${data.hours} gender: ${data.gender}, date of birth: ${data.dob}, height: ${data.height}m, weight: ${data.weight}kg, favorite place to workout: ${data.preference}, objetive: ${data.objective}, part of the body objective: ${data.pob}, workout experience: ${data.workout}. take in account the limitation: ${data.illness || 'none'}`);
         console.log('onSubmitForm', data);
         // try {
         //     setLoader(true);
@@ -417,7 +417,7 @@ export default function MainComponent({ workoutInfo }:{ workoutInfo?: workoutRou
                     </Button>
                 </Box>
         { promt || workoutInfo ?  
-        (loader ? <CircularLoader text="Gemini AI is loading..."/> : <Suspense fallback={<CircularLoader text="Gemini AI is loading..."/>}>
+        (loader ? <CircularLoader text="Generating routine..."/> : <Suspense fallback={<CircularLoader text="Gemini AI is loading..."/>}>
             <Box sx={{ maxWidth: '100%', mx: 'auto' }}>
                     <Typography 
                         variant="h6" 

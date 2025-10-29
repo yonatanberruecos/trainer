@@ -268,15 +268,15 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
 
                                 {/* Training Hours per Day */}
                                 <div className="relative">
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Training Hours per Day</label>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Training Minutes per Day (Minutes)</label>
                                     <div className="relative">
                                         <input
                                             type="number"
-                                            min="0.5"
-                                            max="8"
-                                            step="0.5"
-                                            placeholder="How many hours per training session?"
-                                            {...register('hours', { required: 'Training hours is required', min: 0.5, max: 8 })}
+                                            // min="0.5"
+                                            // max="8"
+                                            // step="0.5"
+                                            placeholder="How many minutes per training session?"
+                                            {...register('hours', { required: 'Training Minutes is required' })}
                                             onFocus={() => handleFocus('hours')}
                                             onBlur={handleBlur}
                                             className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white text-lg ${

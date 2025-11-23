@@ -1,13 +1,11 @@
 'use client'
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { signUp } from 'aws-amplify/auth';
-import { Amplify } from 'aws-amplify';
-import { COGNITO_CONFIG } from '../../../aws-exports';
 import { MainContext } from '../context/MainContextAppProvider';
 import { useRouter } from 'next/navigation';
 
 export default function Signup() {
-  const [formData, setFormData] = useState({ name: '', username: '', email: '', phone:'', password: '', repeatPassword: '' });
+  const [formData, setFormData] = useState({ name: '', username: '', email: '', phone: '', password: '', repeatPassword: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
@@ -17,7 +15,7 @@ export default function Signup() {
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
+
     // Validate passwords when either password field changes
     if (name === 'password' || name === 'repeatPassword') {
       validatePasswords(name === 'password' ? value : formData.password, name === 'repeatPassword' ? value : formData.repeatPassword);
@@ -26,17 +24,17 @@ export default function Signup() {
 
   const validatePasswords = (password: string, repeatPassword: string) => {
     const errors: string[] = [];
-    
+
     // Check if password has at least one capital letter
     if (password && !/[A-Z]/.test(password)) {
       errors.push('Password must contain at least one capital letter');
     }
-    
+
     // Check if passwords match
     if (password && repeatPassword && password !== repeatPassword) {
       errors.push('Passwords do not match');
     }
-    
+
     setPasswordErrors(errors);
   };
 
@@ -67,45 +65,58 @@ export default function Signup() {
     setIsLoading(true);
     let res = null;
     try {
-        res = await signUp({
+      res = await signUp({
         username: formData.username,
         password: formData.password,
         options: {
-            userAttributes: {
-                name: formData.name,
-                email: formData.email,
-                phone_number: '+57' + formData.phone
-            },
+          userAttributes: {
+            name: formData.name,
+            email: formData.email,
+            phone_number: '+57' + formData.phone
+          },
         }
       });
 
-      // console.log('res', res);
+      const payloadVerify = {
+          email: formData.email
+      };
+
+      const responseVerify = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/verify`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payloadVerify),
+      });
+      const responseVerifySaved = await responseVerify.json();
+
+      console.log('res', responseVerifySaved);
     } catch (error) {
       console.error('Sign-up error:', error);
       setIsLoading(false);
       throw Error('error adding to cognito');
     }
 
-    if(res.userId){
+    if (res.userId) {
       try {
-        const { name, username, email, password} = formData
+        const { name, username, email, password } = formData
 
-         const payloadUser = {
-           name,
-           username,
-           email,
-           password
-         }
+        const payloadUser = {
+          name,
+          username,
+          email,
+          password
+        }
 
-         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
-             method: 'POST',
-             headers: {
-                 'Content-Type': 'application/json',
-             },
-             body: JSON.stringify(payloadUser),
-         });
-         const responseSaved = await response.json();
-         setWorkoutData((prev: any) => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payloadUser),
+        });
+        const responseSaved = await response.json();
+        setWorkoutData((prev: any) => {
           return {
             ...prev,
             user: {
@@ -113,11 +124,10 @@ export default function Signup() {
               email: email
             }
           }
-         });
-         console.log('usuario creado', responseSaved);
-         router.push('/fit');
-       } catch (error) {
-         console.log('error saving the user', error);
+        });
+        router.push('/fit');
+      } catch (error) {
+        console.log('error saving the user', error);
       }
     }
     setIsLoading(false);
@@ -152,11 +162,10 @@ export default function Signup() {
                   onChange={handleChange}
                   onFocus={() => handleFocus('name')}
                   onBlur={handleBlur}
-                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
-                    focusedField === 'name' 
-                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25' 
+                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'name'
+                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
                       : 'border-gray-200 hover:border-gray-300'
-                  }`}
+                    }`}
                   required
                 />
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
@@ -179,11 +188,10 @@ export default function Signup() {
                   onChange={handleChange}
                   onFocus={() => handleFocus('username')}
                   onBlur={handleBlur}
-                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
-                    focusedField === 'username' 
-                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25' 
+                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'username'
+                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
                       : 'border-gray-200 hover:border-gray-300'
-                  }`}
+                    }`}
                   required
                 />
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
@@ -206,11 +214,10 @@ export default function Signup() {
                   onChange={handleChange}
                   onFocus={() => handleFocus('email')}
                   onBlur={handleBlur}
-                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
-                    focusedField === 'email' 
-                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25' 
+                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'email'
+                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
                       : 'border-gray-200 hover:border-gray-300'
-                  }`}
+                    }`}
                   required
                 />
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
@@ -233,11 +240,10 @@ export default function Signup() {
                   onChange={handleChange}
                   onFocus={() => handleFocus('phone')}
                   onBlur={handleBlur}
-                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
-                    focusedField === 'phone' 
-                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25' 
+                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'phone'
+                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
                       : 'border-gray-200 hover:border-gray-300'
-                  }`}
+                    }`}
                   required
                 />
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
@@ -260,11 +266,10 @@ export default function Signup() {
                   onChange={handleChange}
                   onFocus={() => handleFocus('password')}
                   onBlur={handleBlur}
-                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
-                    focusedField === 'password' 
-                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25' 
+                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'password'
+                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
                       : 'border-gray-200 hover:border-gray-300'
-                  }`}
+                    }`}
                   required
                 />
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
@@ -287,11 +292,10 @@ export default function Signup() {
                   onChange={handleChange}
                   onFocus={() => handleFocus('repeatPassword')}
                   onBlur={handleBlur}
-                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
-                    focusedField === 'repeatPassword' 
-                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25' 
+                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'repeatPassword'
+                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
                       : 'border-gray-200 hover:border-gray-300'
-                  }`}
+                    }`}
                   required
                 />
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
@@ -329,11 +333,10 @@ export default function Signup() {
             <button
               type="submit"
               disabled={isLoading || !isFormValid()}
-              className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform ${
-                isLoading || !isFormValid()
+              className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform ${isLoading || !isFormValid()
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl'
-              }`}
+                }`}
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">

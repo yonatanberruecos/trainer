@@ -24,6 +24,7 @@ import {
   Skeleton
 } from '@mui/material';
 import { useAuth } from '../hooks/useAuth';
+import { useI18n } from '../context/I18nProvider';
 
 
 interface Item {
@@ -35,6 +36,7 @@ interface Item {
 
 const ItemsPage = () => {
   const user = useAuth();
+  const { t } = useI18n();
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -183,9 +185,9 @@ const ItemsPage = () => {
   // Helper function to get workout difficulty
   const getDifficulty = (summary: string) => {
     const lowerSummary = summary.toLowerCase();
-    if (lowerSummary.includes('beginner') || lowerSummary.includes('junior')) return 'Beginner';
-    if (lowerSummary.includes('advanced')) return 'Advanced';
-    return 'Intermediate';
+    if (lowerSummary.includes('beginner') || lowerSummary.includes('junior')) return t('mylist.beginner');
+    if (lowerSummary.includes('advanced')) return t('mylist.advanced');
+    return t('mylist.intermediate');
   };
 
   // Helper function to get difficulty color
@@ -243,10 +245,10 @@ const ItemsPage = () => {
                 WebkitTextFillColor: 'transparent'
               }}
             >
-              🏋️ My Workout Routines
+              🏋️ {t('mylist.title')}
             </Typography>
             <Typography variant="h6" sx={{ mb: 3, opacity: 0.9 }}>
-              Your personalized fitness journey starts here
+              {t('mylist.subtitle')}
             </Typography>
             <Button 
               onClick={handleNew} 
@@ -270,7 +272,7 @@ const ItemsPage = () => {
                 }
               }}
             >
-              ✨ Generate New Workout
+              ✨ {t('mylist.generateNew')}
             </Button>
           </Box>
         </Box>
@@ -286,10 +288,10 @@ const ItemsPage = () => {
               boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
             }}>
               <Typography variant="h4" sx={{ mb: 2, color: '#666' }}>
-                🎯 Ready to Start?
+                🎯 {t('mylist.readyToStart')}
               </Typography>
               <Typography variant="body1" sx={{ mb: 4, color: '#888', maxWidth: 400, mx: 'auto' }}>
-                You haven't created any workout routines yet. Let's build your first personalized routine!
+                {t('mylist.noRoutines')}
               </Typography>
               <Button 
                 onClick={handleNew} 
@@ -304,7 +306,7 @@ const ItemsPage = () => {
                   textTransform: 'none'
                 }}
               >
-                🚀 Create Your First Routine
+                🚀 {t('mylist.createFirst')}
               </Button>
             </Box>
           </Fade>
@@ -391,7 +393,7 @@ const ItemsPage = () => {
                                 mb: 0.5
                               }}
                             >
-                              Routine #{index + 1}
+                              {t('mylist.routine')} #{index + 1}
                             </Typography>
                             <Chip 
                               label={difficulty}
@@ -438,7 +440,7 @@ const ItemsPage = () => {
                           borderTop: '1px solid rgba(102, 126, 234, 0.1)'
                         }}>
                           <Typography variant="caption" sx={{ color: '#718096', fontWeight: 'medium' }}>
-                            Click to view details
+                            {t('mylist.clickToView')}
                           </Typography>
                           <Box sx={{ 
                             color: '#667eea',
@@ -488,7 +490,7 @@ const ItemsPage = () => {
               }
             }}
           >
-            🗑️ Delete
+            🗑️ {t('common.delete')}
           </MenuItem>
         </Menu>
 
@@ -513,11 +515,11 @@ const ItemsPage = () => {
               fontWeight: 'bold'
             }}
           >
-            🗑️ Confirm Delete
+            🗑️ {t('mylist.deleteTitle')}
           </DialogTitle>
           <DialogContent sx={{ pt: 3 }}>
             <Typography>
-              Are you sure you want to delete this workout routine? This action cannot be undone.
+              {t('mylist.deleteMessage')}
             </Typography>
           </DialogContent>
           <DialogActions sx={{ p: 3, gap: 1 }}>
@@ -533,7 +535,7 @@ const ItemsPage = () => {
                 }
               }}
             >
-              Cancel
+              {t('mylist.cancelButton')}
             </Button>
             <Button 
               onClick={handleDeleteConfirm} 
@@ -545,7 +547,7 @@ const ItemsPage = () => {
                 }
               }}
             >
-              Delete
+              {t('mylist.deleteButton')}
             </Button>
           </DialogActions>
         </Dialog>

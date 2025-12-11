@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { resetPassword } from 'aws-amplify/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useI18n } from '../context/I18nProvider';
 
 export default function ForgotPassword() {
   const router = useRouter();
+  const { t } = useI18n();
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
@@ -38,10 +40,10 @@ export default function ForgotPassword() {
     try {
       await resetPassword({ username: email });
       setStep('success');
-      setMessage('Password reset instructions have been sent to your email address.');
+      setMessage(t('forgotPassword.instructionsSent'));
     } catch (error: any) {
       console.error('Password reset error:', error);
-      setError(error.message || 'Failed to send reset instructions. Please try again.');
+      setError(error.message || t('forgotPassword.failedToSend'));
     } finally {
       setIsLoading(false);
     }
@@ -62,8 +64,8 @@ export default function ForgotPassword() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Check Your Email</h1>
-            <p className="text-gray-600">We've sent password reset instructions to your email</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('forgotPassword.checkEmailTitle')}</h1>
+            <p className="text-gray-600">{t('forgotPassword.checkEmailSubtitle')}</p>
           </div>
 
           {/* Success Container */}
@@ -83,8 +85,8 @@ export default function ForgotPassword() {
               </div>
 
               <div className="text-gray-600 space-y-4">
-                <p>Please check your email inbox, the verification code was sent.</p>
-                <p className="text-sm">Didn't receive the email? Check your spam folder or try again.</p>
+                <p>{t('forgotPassword.checkInbox')}</p>
+                <p className="text-sm">{t('forgotPassword.checkSpam')}</p>
               </div>
 
               <div className="space-y-3">
@@ -92,7 +94,7 @@ export default function ForgotPassword() {
                   href={`/set-new-password?email=${encodeURIComponent(email)}`}
                   className="block w-full py-3 px-6 rounded-xl font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 text-center"
                 >
-                  Enter Verification Code
+                  {t('forgotPassword.enterVerificationCode')}
                 </Link>
                 
                 <button
@@ -103,14 +105,14 @@ export default function ForgotPassword() {
                   }}
                   className="w-full py-3 px-6 rounded-xl font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-colors duration-200"
                 >
-                  Try Different Email
+                  {t('forgotPassword.tryDifferentEmail')}
                 </button>
                 
                 <Link
                   href="/login"
                   className="block w-full py-3 px-6 rounded-xl font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 transition-colors duration-200 text-center"
                 >
-                  Back to Sign In
+                  {t('forgotPassword.backToSignIn')}
                 </Link>
               </div>
             </div>
@@ -130,8 +132,8 @@ export default function ForgotPassword() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Forgot Password?</h1>
-          <p className="text-gray-600">No worries, we'll send you reset instructions</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('forgotPassword.title')}</h1>
+          <p className="text-gray-600">{t('forgotPassword.subtitle')}</p>
         </div>
 
         {/* Form Container */}
@@ -155,12 +157,12 @@ export default function ForgotPassword() {
 
             {/* Email Field */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('forgotPassword.emailLabel')}</label>
               <div className="relative">
                 <input
                   name="email"
                   type="email"
-                  placeholder="Enter your email address"
+                  placeholder={t('forgotPassword.emailPlaceholder')}
                   value={email}
                   onChange={handleChange}
                   onFocus={() => handleFocus('email')}
@@ -179,7 +181,7 @@ export default function ForgotPassword() {
                 </div>
               </div>
               <p className="mt-2 text-sm text-gray-500">
-                We'll send password reset instructions to this email address.
+                {t('forgotPassword.emailHelp')}
               </p>
             </div>
 
@@ -199,10 +201,10 @@ export default function ForgotPassword() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Sending Instructions...
+                  {t('forgotPassword.sendingInstructions')}
                 </div>
               ) : (
-                'Send Reset Instructions'
+                t('forgotPassword.sendInstructions')
               )}
             </button>
           </form>
@@ -210,9 +212,9 @@ export default function ForgotPassword() {
           {/* Footer */}
           <div className="mt-6 text-center">
             <p className="text-gray-600">
-              Remember your password?{' '}
+              {t('forgotPassword.rememberPassword')}{' '}
               <Link href="/login" className="text-indigo-600 hover:text-indigo-700 font-semibold transition-colors duration-200">
-                Back to Sign In
+                {t('forgotPassword.backToSignIn')}
               </Link>
             </p>
           </div>
@@ -221,8 +223,8 @@ export default function ForgotPassword() {
         {/* Additional Info */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-500">
-            Need help? Contact our{' '}
-            <a href="#" className="text-indigo-600 hover:text-indigo-700 transition-colors duration-200">support team</a>
+            {t('forgotPassword.needHelp')}{' '}
+            <a href="#" className="text-indigo-600 hover:text-indigo-700 transition-colors duration-200">{t('forgotPassword.supportTeam')}</a>
           </p>
         </div>
       </div>

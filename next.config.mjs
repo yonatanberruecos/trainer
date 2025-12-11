@@ -1,8 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
+  experimental: {
     missingSuspenseWithCSRBailout: false,
   },
+  i18n: {
+    locales: ["en", "es"],
+    defaultLocale: "en",
+  }
 };
 
 export default nextConfig;

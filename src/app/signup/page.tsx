@@ -3,8 +3,10 @@ import { useContext, useState } from 'react';
 import { signUp } from 'aws-amplify/auth';
 import { MainContext } from '../context/MainContextAppProvider';
 import { useRouter } from 'next/navigation';
+import { useI18n } from '../context/I18nProvider';
 
 export default function Signup() {
+  const { t } = useI18n();
   const [formData, setFormData] = useState({ name: '', username: '', email: '', phone: '', password: '', repeatPassword: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
@@ -27,12 +29,12 @@ export default function Signup() {
 
     // Check if password has at least one capital letter
     if (password && !/[A-Z]/.test(password)) {
-      errors.push('Password must contain at least one capital letter');
+      errors.push(t('signup.passwordMustContainCapital'));
     }
 
     // Check if passwords match
     if (password && repeatPassword && password !== repeatPassword) {
-      errors.push('Passwords do not match');
+      errors.push(t('signup.passwordsDoNotMatch'));
     }
 
     setPasswordErrors(errors);
@@ -143,8 +145,8 @@ export default function Signup() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
-          <p className="text-gray-600">Join us and start your fitness journey</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('signup.title')}</h1>
+          <p className="text-gray-600">{t('signup.subtitle')}</p>
         </div>
 
         {/* Form Container */}
@@ -152,12 +154,12 @@ export default function Signup() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name Field */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('signup.fullName')}</label>
               <div className="relative">
                 <input
                   name="name"
                   type="text"
-                  placeholder="Enter your full name"
+                  placeholder={t('signup.fullNamePlaceholder')}
                   value={formData.name}
                   onChange={handleChange}
                   onFocus={() => handleFocus('name')}
@@ -178,12 +180,12 @@ export default function Signup() {
 
             {/* Username Field */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('signup.username')}</label>
               <div className="relative">
                 <input
                   name="username"
                   type="text"
-                  placeholder="Choose a username"
+                  placeholder={t('signup.usernamePlaceholder')}
                   value={formData.username}
                   onChange={handleChange}
                   onFocus={() => handleFocus('username')}
@@ -204,12 +206,12 @@ export default function Signup() {
 
             {/* Email Field */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('signup.email')}</label>
               <div className="relative">
                 <input
                   name="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder={t('signup.emailPlaceholder')}
                   value={formData.email}
                   onChange={handleChange}
                   onFocus={() => handleFocus('email')}
@@ -230,12 +232,12 @@ export default function Signup() {
 
             {/* Phone Field */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('signup.phone')}</label>
               <div className="relative">
                 <input
                   name="phone"
                   type="tel"
-                  placeholder="Enter your phone number"
+                  placeholder={t('signup.phonePlaceholder')}
                   value={formData.phone}
                   onChange={handleChange}
                   onFocus={() => handleFocus('phone')}
@@ -256,12 +258,12 @@ export default function Signup() {
 
             {/* Password Field */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('signup.password')}</label>
               <div className="relative">
                 <input
                   name="password"
                   type="password"
-                  placeholder="Create a strong password"
+                  placeholder={t('signup.passwordPlaceholder')}
                   value={formData.password}
                   onChange={handleChange}
                   onFocus={() => handleFocus('password')}
@@ -282,12 +284,12 @@ export default function Signup() {
 
             {/* Repeat Password Field */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Repeat Password</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('signup.repeatPassword')}</label>
               <div className="relative">
                 <input
                   name="repeatPassword"
                   type="password"
-                  placeholder="Repeat your password"
+                  placeholder={t('signup.repeatPasswordPlaceholder')}
                   value={formData.repeatPassword}
                   onChange={handleChange}
                   onFocus={() => handleFocus('repeatPassword')}
@@ -316,7 +318,7 @@ export default function Signup() {
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">Password Requirements</h3>
+                    <h3 className="text-sm font-medium text-red-800">{t('signup.passwordRequirements')}</h3>
                     <div className="mt-2 text-sm text-red-700">
                       <ul className="list-disc pl-5 space-y-1">
                         {passwordErrors.map((error, index) => (
@@ -344,10 +346,10 @@ export default function Signup() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Creating Account...
+                  {t('signup.creatingAccount')}
                 </div>
               ) : (
-                'Create Account'
+                t('signup.createAccount')
               )}
             </button>
           </form>
@@ -355,9 +357,9 @@ export default function Signup() {
           {/* Footer */}
           <div className="mt-6 text-center">
             <p className="text-gray-600">
-              Already have an account?{' '}
+              {t('signup.alreadyHaveAccount')}{' '}
               <a href="/login" className="text-indigo-600 hover:text-indigo-700 font-semibold transition-colors duration-200">
-                Sign in
+                {t('signup.signIn')}
               </a>
             </p>
           </div>
@@ -366,10 +368,10 @@ export default function Signup() {
         {/* Additional Info */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-500">
-            By creating an account, you agree to our{' '}
-            <a href="#" className="text-indigo-600 hover:text-indigo-700 transition-colors duration-200">Terms of Service</a>
-            {' '}and{' '}
-            <a href="#" className="text-indigo-600 hover:text-indigo-700 transition-colors duration-200">Privacy Policy</a>
+            {t('signup.termsNotice')}{' '}
+            <a href="#" className="text-indigo-600 hover:text-indigo-700 transition-colors duration-200">{t('signup.termsOfService')}</a>
+            {' '}{t('signup.and')}{' '}
+            <a href="#" className="text-indigo-600 hover:text-indigo-700 transition-colors duration-200">{t('signup.privacyPolicy')}</a>
           </p>
         </div>
       </div>

@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { confirmResetPassword } from 'aws-amplify/auth';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { useI18n } from '../context/I18nProvider';
 
 export default function SetNewPassword() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useI18n();
   const emailFromParams = searchParams.get('email') || '';
 
   const [formData, setFormData] = useState({
@@ -88,7 +90,7 @@ export default function SetNewPassword() {
       });
 
       // Success - redirect to login with success message
-      router.push('/login?message=Password reset successful. Please sign in with your new password.');
+      router.push(`/login?message=${encodeURIComponent(t('setNewPassword.passwordResetSuccess'))}`);
     } catch (error: any) {
       console.error('Password reset confirmation error:', error);
 
@@ -128,8 +130,8 @@ export default function SetNewPassword() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Set New Password</h1>
-          <p className="text-gray-600">Enter the code from your email and create a new password</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('setNewPassword.title')}</h1>
+          <p className="text-gray-600">{t('setNewPassword.subtitle')}</p>
         </div>
 
         {/* Form Container */}
@@ -153,12 +155,12 @@ export default function SetNewPassword() {
 
             {/* Email Field */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('forgotPassword.emailLabel')}</label>
               <div className="relative">
                 <input
                   name="email"
                   type="email"
-                  placeholder="Enter your email address"
+                  placeholder={t('forgotPassword.emailPlaceholder')}
                   value={formData.email}
                   onChange={handleChange}
                   onFocus={() => handleFocus('email')}
@@ -180,12 +182,12 @@ export default function SetNewPassword() {
 
             {/* Verification Code Field */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Verification Code</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('setNewPassword.verificationCode')}</label>
               <div className="relative">
                 <input
                   name="code"
                   type="text"
-                  placeholder="Enter the 6-digit code from your email"
+                  placeholder={t('setNewPassword.verificationCodePlaceholder')}
                   value={formData.code}
                   onChange={handleChange}
                   onFocus={() => handleFocus('code')}
@@ -211,12 +213,12 @@ export default function SetNewPassword() {
 
             {/* New Password Field */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('setNewPassword.newPassword')}</label>
               <div className="relative">
                 <input
                   name="newPassword"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Create a strong password"
+                  placeholder={t('setNewPassword.newPasswordPlaceholder')}
                   value={formData.newPassword}
                   onChange={handleChange}
                   onFocus={() => handleFocus('newPassword')}
@@ -254,12 +256,12 @@ export default function SetNewPassword() {
 
             {/* Confirm Password Field */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('setNewPassword.confirmPassword')}</label>
               <div className="relative">
                 <input
                   name="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm your new password"
+                  placeholder={t('setNewPassword.confirmPasswordPlaceholder')}
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   onFocus={() => handleFocus('confirmPassword')}
@@ -357,10 +359,10 @@ export default function SetNewPassword() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Setting New Password...
+                  {t('setNewPassword.resettingPassword')}
                 </div>
               ) : (
-                'Set New Password'
+                t('setNewPassword.resetPassword')
               )}
             </button>
           </form>
@@ -379,8 +381,8 @@ export default function SetNewPassword() {
         {/* Additional Info */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-500">
-            Remember your password?{' '}
-            <Link href="/login" className="text-indigo-600 hover:text-indigo-700 transition-colors duration-200">Back to Sign In</Link>
+            {t('forgotPassword.rememberPassword')}{' '}
+            <Link href="/login" className="text-indigo-600 hover:text-indigo-700 transition-colors duration-200">{t('setNewPassword.backToLogin')}</Link>
           </p>
         </div>
       </div>

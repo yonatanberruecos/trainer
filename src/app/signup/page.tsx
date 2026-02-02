@@ -7,7 +7,7 @@ import { useI18n } from '../context/I18nProvider';
 
 export default function Signup() {
   const { t } = useI18n();
-  const [formData, setFormData] = useState({ name: '', username: '', email: '', phone: '', password: '', repeatPassword: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', password: '', repeatPassword: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
@@ -43,7 +43,6 @@ export default function Signup() {
   const isFormValid = () => {
     return (
       formData.name &&
-      formData.username &&
       formData.email &&
       formData.phone &&
       formData.password &&
@@ -68,8 +67,8 @@ export default function Signup() {
     let res = null;
     try {
       res = await signUp({
-        username: formData.username,
         password: formData.password,
+        username: formData.email,
         options: {
           userAttributes: {
             name: formData.name,
@@ -101,11 +100,10 @@ export default function Signup() {
 
     if (res.userId) {
       try {
-        const { name, username, email, password } = formData
+        const { name, email, password } = formData
 
         const payloadUser = {
           name,
-          username,
           email,
           password
         }
@@ -127,7 +125,7 @@ export default function Signup() {
             }
           }
         });
-        router.push('/fit');
+        router.push('/login');
       } catch (error) {
         console.log('error saving the user', error);
       }
@@ -173,32 +171,6 @@ export default function Signup() {
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                   <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            {/* Username Field */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">{t('signup.username')}</label>
-              <div className="relative">
-                <input
-                  name="username"
-                  type="text"
-                  placeholder={t('signup.usernamePlaceholder')}
-                  value={formData.username}
-                  onChange={handleChange}
-                  onFocus={() => handleFocus('username')}
-                  onBlur={handleBlur}
-                  className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'username'
-                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
-                      : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  required
-                />
-                <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
                   </svg>
                 </div>
               </div>

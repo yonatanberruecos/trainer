@@ -31,7 +31,7 @@ export default function MainFit() {
             const data: IdataWorkout[] = await response.json();
             const routine = data.filter(item => item.userworkout_id === Number(routine_id));
             // const data = [{id: "1", description: " 5-Day Workout Routine for Weight Loss (Male, Obese, Junior Experience)"}, {id: "2", description: " 5-Day Workout Routine for Weight Loss (Male, Obese, Junior Experience)"}]
-            console.log('userworkout_workout_routine', routine)
+            console.log('userworkout_workout_routine', routine[0].userworkout_workout_routine)
             setWorkoutInfo(JSON.parse(routine[0].userworkout_workout_routine));
           } catch (error) {
             console.error('Error fetching items:', error);

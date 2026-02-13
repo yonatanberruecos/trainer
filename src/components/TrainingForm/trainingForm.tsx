@@ -15,7 +15,8 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
         formState: { errors },
         watch,
         setValue,
-        getValues
+        getValues,
+        trigger
     } : any = useForm();
     
     const [showConditionalField, setShowConditionalField] = useState(false);
@@ -47,8 +48,32 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
         setFocusedField(null);
     };
 
-    const nextStep = () => {
-        if (currentStep < totalSteps) {
+    const validateCurrentStep = async () => {
+        let fieldsToValidate: string[] = [];
+        
+        // Define fields for each step
+        if (currentStep === 1) {
+            fieldsToValidate = ['workout', 'preference', 'objective'];
+        } else if (currentStep === 2) {
+            fieldsToValidate = ['days', 'hours', 'gender', 'height', 'weight', 'dob'];
+        } else if (currentStep === 3) {
+            fieldsToValidate = ['pob', 'haveillnes'];
+            // Add illness field if conditional field is shown
+            if (showConditionalField) {
+                fieldsToValidate.push('illness');
+            }
+        }
+        
+        // Trigger validation for the current step's fields
+        const result = await trigger(fieldsToValidate);
+        return result;
+    };
+
+    const nextStep = async () => {
+        // Validate current step before moving forward
+        const isValid = await validateCurrentStep();
+        
+        if (isValid && currentStep < totalSteps) {
             setCurrentStep(currentStep + 1);
         }
     };
@@ -424,7 +449,7 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                         <input
                                             type="text"
                                             placeholder={t('trainingForm.targetBodyPartPlaceholder')}
-                                            {...register('pob')}
+                                            {...register('pob', { required: 'Target body part is required' })}
                                             onFocus={() => handleFocus('pob')}
                                             onBlur={handleBlur}
                                             className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
@@ -437,6 +462,9 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                             <span className="text-lg">🎯</span>
                                         </div>
                                     </div>
+                                    {errors.pob && (
+                                        <p className="text-red-500 text-sm mt-2">{t('trainingForm.pobRequired')}</p>
+                                    )}
                                 </div>
 
                                 {/* Health Conditions */}

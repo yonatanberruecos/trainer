@@ -213,6 +213,7 @@ export default function MainComponent({ workoutInfo }: { workoutInfo?: workoutRo
         if (workoutInfo) {
             startDayaccordion();
             setLoader(false);
+            console.log('workoutInfo', workoutInfo)
             setDataTrain(workoutInfo);
         }
     }, [workoutInfo]);
@@ -225,6 +226,7 @@ export default function MainComponent({ workoutInfo }: { workoutInfo?: workoutRo
     }, []);
 
     const onSubmitForm = (data: any) => {
+        console.log('onSubmitForm', data)
         setDataForm(data);
         // const { ...workoutRoutineData } = data;
 

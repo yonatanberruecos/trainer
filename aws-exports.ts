@@ -26,8 +26,8 @@ import { LegacyConfig } from "aws-amplify/adapter-core"
 export const COGNITO_CONFIG: ResourcesConfig | LegacyConfig = {
     Auth: {
         Cognito: {
-            userPoolId: process.env.USER_POOL_ID as string,
-            userPoolClientId: process.env.USER_POOL_CLIENT_ID as string,            
+            userPoolId: 'us-east-2_T1viV6cGb',
+            userPoolClientId: '6dsug1dejjvsjed15nfkiisasq',            
             loginWith: {
                 oauth: {
                     domain: "domain",

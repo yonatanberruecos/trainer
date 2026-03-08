@@ -63,7 +63,7 @@ export default function Login() {
           }
         } 
       });
-      router.push('/mylist'); // Redirect to dashboard on success
+      location.href = '/mylist'; // Redirect to dashboard on success
     } catch (error: any) {
       console.error('Login error:', error);
       setError(error.message || t('login.invalidCredentials'));

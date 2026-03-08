@@ -262,7 +262,7 @@ const ItemsPage = () => {
                 color: 'white',
                 height: 48,
                 padding: '0 30px',
-                fontSize: '1.1rem',
+                fontSize: '1rem',
                 fontWeight: 'bold',
                 textTransform: 'none',
                 '&:hover': {

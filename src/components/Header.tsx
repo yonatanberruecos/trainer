@@ -39,17 +39,17 @@ export default function Header() {
   };
 
   return (
-    <header style={{ padding: '20px 40px' }} className="flex justify-between items-center">
-      <h1 style={{ fontWeight: 'bold', fontSize: '30px' }}>{t('header.title')}</h1>
+    <header style={{ padding: '20px 40px' }} className="flex justify-between items-center text-xs md:text-base">
+      <h1 style={{ fontWeight: 'bold', fontSize: '16px' }}>{t('header.title')}</h1>
       
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <LanguageSwitcher />
         
         {isAuthenticated && (
         <button
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 transform ${
+          className={`flex items-center text-xs md:text-base gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 transform ${
             isLoggingOut
               ? 'bg-gray-400 cursor-not-allowed'
               : 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl'

@@ -10,11 +10,19 @@ interface IdataWorkout {
   userworkout_workout_routine: string;
   userworkout_workout_id: number;
   userworkout_routine_summary: string;
+  WorkoutInformation_preference_place: string;
+  WorkoutInformation_gender: string;
+}
+
+export interface IuserData {
+  preference_place: string;
+  gender: string;
 }
 
 export default function MainFit() {
     const user = useAuth();
     const [workoutInfo, setWorkoutInfo] = useState<any>('');
+    const [userData, setUserData] = useState<IuserData>({ preference_place: '', gender: '' });
     const searchParams = useSearchParams();
     const routine_id = searchParams.get('routine_id'); // get ?routine_id=123
 
@@ -31,8 +39,8 @@ export default function MainFit() {
             const data: IdataWorkout[] = await response.json();
             const routine = data.filter(item => item.userworkout_id === Number(routine_id));
             // const data = [{id: "1", description: " 5-Day Workout Routine for Weight Loss (Male, Obese, Junior Experience)"}, {id: "2", description: " 5-Day Workout Routine for Weight Loss (Male, Obese, Junior Experience)"}]
-            console.log('userworkout_workout_routine', routine[0].userworkout_workout_routine)
             setWorkoutInfo(JSON.parse(routine[0].userworkout_workout_routine));
+            setUserData({ preference_place: routine[0].WorkoutInformation_preference_place, gender: routine[0].WorkoutInformation_gender });
           } catch (error) {
             console.error('Error fetching items:', error);
           }
@@ -43,7 +51,7 @@ export default function MainFit() {
         }
       }, [user, routine_id]);
 
-    if (user || routine_id) return (<MainComponent workoutInfo={workoutInfo}></MainComponent>)
+    if (user || routine_id) return (<MainComponent workoutInfo={workoutInfo} userData={userData}></MainComponent>)
 
     return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 4 }} />;
 };

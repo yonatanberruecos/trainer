@@ -91,7 +91,7 @@ export default function Login() {
         </div>
 
         {/* Form Container */}
-        <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-8">
+        <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-5 sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Success Message */}
             {successMessage && (

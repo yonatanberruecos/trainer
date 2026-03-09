@@ -109,6 +109,7 @@
     "backToLogin": "Back to Sign In"
   },
   "mylist": {
+    "myRoutines": "My Routines",
     "title": "My Workout Routines",
     "subtitle": "Your personalized fitness journey starts here",
     "generateNew": "Generate New Workout",
@@ -189,6 +190,7 @@
     "heightRequired": "Height is required",
     "weightRequired": "Weight is required",
     "dobRequired": "Date of birth is required",
+    "pobRequired": "Body part is required",
     "selectionRequired": "This selection is required",
     "conditionDetailsRequired": "Health condition details are required"
   }

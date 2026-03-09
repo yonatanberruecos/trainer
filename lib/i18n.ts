@@ -9,7 +9,7 @@ const LOCALE_STORAGE_KEY = 'trainer-locale';
  * @returns 'en' or 'es' based on browser language
  */
 export function detectBrowserLanguage(): Locale {
-  if (typeof window === 'undefined') return 'en';
+  if (typeof window === 'undefined') return 'es';
   
   const browserLang = navigator.language.toLowerCase();
   
@@ -19,7 +19,7 @@ export function detectBrowserLanguage(): Locale {
   }
   
   // Default to English
-  return 'en';
+  return 'es';
 }
 
 /**

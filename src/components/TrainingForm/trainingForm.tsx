@@ -15,9 +15,10 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
         formState: { errors },
         watch,
         setValue,
+        clearErrors,
         getValues,
         trigger
-    } : any = useForm();
+    } : any = useForm({ reValidateMode: 'onChange' });
     
     const [showConditionalField, setShowConditionalField] = useState(false);
     const [focusedField, setFocusedField] = useState<string | null>(null);
@@ -26,7 +27,6 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
     const totalSteps = 3;
 
     const onSubmit = (data: any) => {
-        console.log(data);
         onSubmitForm(data);
     };
 
@@ -42,6 +42,7 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
 
     const handleFocus = (fieldName: string) => {
         setFocusedField(fieldName);
+        clearErrors(fieldName);
     };
 
     const handleBlur = () => {
@@ -94,6 +95,7 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
             [fieldName]: value
         }));
         setValue(fieldName, value);
+        clearErrors(fieldName);
     };
 
     const isSelected = (fieldName: string, value: string) => {
@@ -104,14 +106,14 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
         <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50 flex items-center justify-center p-4">
             <div className="w-full max-w-lg">
                 {/* Header Section */}
-                <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full mb-6 shadow-xl">
-                        <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="text-center mb-5 sm:mb-8">
+                    <div className="inline-flex items-center justify-center w-14 h-14 sm:w-20 sm:h-20 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full mb-4 sm:mb-6 shadow-xl">
+                        <svg className="w-7 h-7 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     </div>
-                    <h1 className="text-4xl font-bold text-gray-900 mb-3">{t('trainingForm.title')}</h1>
-                    <p className="text-gray-600 text-lg">{t('trainingForm.subtitle')}</p>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">{t('trainingForm.title')}</h1>
+                    <p className="text-gray-600 text-base sm:text-lg">{t('trainingForm.subtitle')}</p>
                     
                     {/* Progress Bar */}
                     <div className="mt-6 mb-4">
@@ -129,7 +131,7 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                 </div>
 
                 {/* Form Container */}
-                <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/30 p-8">
+                <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/30 p-5 sm:p-8">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                         
                         {/* Step 1: Experience & Goals */}
@@ -449,7 +451,7 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                         <input
                                             type="text"
                                             placeholder={t('trainingForm.targetBodyPartPlaceholder')}
-                                            {...register('pob', { required: 'Target body part is required' })}
+                                            {...register('pob')}
                                             onFocus={() => handleFocus('pob')}
                                             onBlur={handleBlur}
                                             className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${

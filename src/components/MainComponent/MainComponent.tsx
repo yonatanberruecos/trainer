@@ -19,6 +19,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CircularLoader from "@/components/CircularLoader/CircularLoader";
 import { MainContext } from "../../app/context/MainContextAppProvider";
 import { useRouter } from 'next/navigation';
+import { useI18n } from "@/app/context/I18nProvider";
+import { IuserData } from "@/components/MainFit/MainFit";
 
 interface Exercise {
     name: string;
@@ -37,10 +39,11 @@ interface workoutRoutine {
     lastRecommendations: string;
 };
 
-export default function MainComponent({ workoutInfo }: { workoutInfo?: workoutRoutine }) {
+export default function MainComponent({ workoutInfo, userData }: { workoutInfo?: workoutRoutine, userData?: IuserData }) {
     const router = useRouter();
     const contentRefs: any = useRef([]);
     const buttonRefs: any = useRef([]);
+    const { locale, t } = useI18n();
     const [dataTrain, setDataTrain] = useState<workoutRoutine | undefined>(workoutInfo);
     const [promt, setPromt] = useState('');
     const [loader, setLoader] = useState(true);
@@ -176,7 +179,6 @@ export default function MainComponent({ workoutInfo }: { workoutInfo?: workoutRo
     }
 
     useEffect(() => {
-        console.log(promt)
         const fetchData = async () => {
             const response = await fetch(`${apiUrl}/fit`, {
                 method: 'POST',
@@ -213,7 +215,6 @@ export default function MainComponent({ workoutInfo }: { workoutInfo?: workoutRo
         if (workoutInfo) {
             startDayaccordion();
             setLoader(false);
-            console.log('workoutInfo', workoutInfo)
             setDataTrain(workoutInfo);
         }
     }, [workoutInfo]);
@@ -226,7 +227,6 @@ export default function MainComponent({ workoutInfo }: { workoutInfo?: workoutRo
     }, []);
 
     const onSubmitForm = (data: any) => {
-        console.log('onSubmitForm', data)
         setDataForm(data);
         // const { ...workoutRoutineData } = data;
 
@@ -238,7 +238,8 @@ export default function MainComponent({ workoutInfo }: { workoutInfo?: workoutRo
                 }
             }
         });
-        setPromt(`you are a sport training specialist that works helping people to build their body and reach their objetives in a little time, create a workout routine with a list of exercises organized in a JSON object, The object should have the following keys:
+        setPromt(
+            `you are a sports training specialist that works helping people to reach their objetives in a little time, create a workout routine with a list of exercises organized in a JSON object writed in ${locale === 'en' ? 'English' : 'Spanish'}, The object should have the following keys:
             - "inititalRecomendations": initial recomendations an comments about the workout routine
             - "routine": An array where each item is an object that represents the exercises for each day and has the folloing keys:
                 - "day": number of the day, example:  day: "Day 1"
@@ -247,14 +248,8 @@ export default function MainComponent({ workoutInfo }: { workoutInfo?: workoutRo
                     - "name": name of the exercise
                     - "description" description of the exercise, target muscles and repetitions
             - "lastRecommendations": last recommedations about the routine and stretch
-            create a perfect workout routine for the week for aiming the objectives, suitable, focused and personalized as an specialist for a person with the following characteristics: the person can workout ${data.days} days at week and the others days of seven day's week to rest, training Minutes per Day: ${data.hours} Minutes, gender: ${data.gender}, date of birth: ${data.dob}, height: ${data.height}m, weight: ${data.weight}kg, favorite place to workout: ${data.preference}, main objetive: ${data.objective}, part of the body objective: ${data.pob}, workout experience: ${data.workout}. take in account the limitation: ${data.illness || 'none'}`);
-        console.log('onSubmitForm', data);
-        // try {
-        //     setLoader(true);
-        //     fetchData();
-        // } catch (error) {
-        //     setLoader(false);
-        // }
+            create a perfect workout routine for the week for aiming the objectives, suitable, focused and personalized as an specialist for a person with the following characteristics: the person can workout ${data.days} days at week and the others days of seven day's week to rest, training Minutes per Day: ${data.hours} Minutes, gender: ${data.gender}, date of birth: ${data.dob}, height: ${data.height}m, weight: ${data.weight}kg, favorite place to workout: ${data.preference}, main objetive: ${data.objective}, part of the body objective: ${data.pob || 'all body'}, workout experience: ${data.workout}. take in account the limitation: ${data.illness || 'none'}`
+        );
     }
 
     const tittleDescription = (item: Exercise) => {
@@ -316,7 +311,13 @@ export default function MainComponent({ workoutInfo }: { workoutInfo?: workoutRo
         }
 
         try {
-            const videoData: any = await (await fetch(`${apiUrl}/youtube/search?q=how to do correctly with good technique the exercise ${item.name} in ${dataForm.preference} for a ${dataForm.gender}`)).json();
+
+            const preference = userData?.preference_place === 'OUT' ? 'at home' : 'in the gym';
+            const gender = userData?.gender === 'FEMALE' ? 'female' : 'male';
+            const spanishPromt = `como hacer correctamente con buena técnica el ejercicio ${item.name} en ${preference} para un ${gender}`;
+            const englishPromt = `how to do correctly with good technique the exercise ${item.name} in ${preference} for a ${gender}`;
+            const promt = locale === 'es' ? spanishPromt : englishPromt;
+            const videoData: any = await (await fetch(`${apiUrl}/youtube/search?q=${promt}`)).json();
             const videoId = videoData?.items[0]?.id.videoId
             if (videoId) {
                 return (
@@ -455,7 +456,7 @@ export default function MainComponent({ workoutInfo }: { workoutInfo?: workoutRo
                             }
                         }}
                     >
-                        📋 My Routines
+                        📋 {t('mylist.myRoutines')}
                     </Button>
                 </Box>
                 {promt || workoutInfo ?
@@ -552,7 +553,7 @@ export default function MainComponent({ workoutInfo }: { workoutInfo?: workoutRo
                                             </Box>
                                         </Paper>
                                         {/* <Collapse in={openAccordions[index]} timeout="auto" unmountOnExit> */}
-                                        <div ref={(el: any) => (contentRefs.current[index] = el)} className="w-full" style={{display:`${index === 0 ? 'block' : 'none'}`}}>
+                                        <div ref={(el: any) => (contentRefs.current[index] = el)} className="w-full" style={{ display: `${index === 0 ? 'block' : 'none'}` }}>
                                             {<Box sx={{ mb: 2 }}>
                                                 {item.exercises.map((exercise: Exercise) => {
                                                     return (

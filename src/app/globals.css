@@ -38,8 +38,14 @@ body {
 
 .circularLoader {
   text-align: center;
-  height: 460px;
+  height: 300px;
   width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+  .circularLoader {
+    height: 460px;
+  }
 }
 
 @layer utilities {
@@ -82,14 +88,17 @@ body {
 }
 
 .bottomContainerButtons button{
-  width: 50%;
-} 
+  width: 80%;
+}
+
+@media only screen and (min-width: 768px) {
+  .bottomContainerButtons button {
+    width: 50%;
+  }
+}
 
 @media only screen and (max-width: 600px){
-	.video-container {
+  .video-container {
     width: 100%;
-  }
-  body {
-    font-size: 1.5rem;
   }
 }

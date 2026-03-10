@@ -314,8 +314,8 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
 
             const preference = userData?.preference_place === 'OUT' ? 'at home' : 'in the gym';
             const gender = userData?.gender === 'FEMALE' ? 'female' : 'male';
-            const spanishPromt = `como hacer correctamente con buena técnica el ejercicio ${item.name} en ${preference} para un ${gender}`;
-            const englishPromt = `how to do correctly with good technique the exercise ${item.name} in ${preference} for a ${gender}`;
+            const spanishPromt = `video de como hacer correctamente con buena técnica el ejercicio ${item.name} ${preference === 'in the gym' ? 'en el gimnasio' : 'en la casa'} para ${gender === 'female' ? 'una mujer' : 'un hombre'}`;
+            const englishPromt = `video about how to do correctly with good technique the exercise ${item.name} ${preference} for a ${gender}`;
             const promt = locale === 'es' ? spanishPromt : englishPromt;
             const videoData: any = await (await fetch(`${apiUrl}/youtube/search?q=${promt}`)).json();
             const videoId = videoData?.items[0]?.id.videoId
@@ -419,7 +419,8 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
         <Box ref={mainContainer} sx={{
             minHeight: '100vh',
             background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-            py: 2
+            pt: 2,
+            paddingBottom: '145px'
         }}>
             <Container maxWidth="lg">
                 {/* Header with My Routines Button */}
@@ -655,7 +656,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                 className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl`}
                                 onClick={handleOnSave}
                             >
-                                Save routine
+                                {t('mylist.saveRoutine')}
                             </button>
                         </div>)}
                     </Suspense>) :

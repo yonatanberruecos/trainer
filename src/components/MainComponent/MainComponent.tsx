@@ -313,13 +313,13 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
         try {
 
             const preferenceEnglish = userData?.preference_place === 'OUT' ? 'at home' : 'at gym';
-            const genderEnglish = userData?.gender === 'FEMALE' ? 'a woman' : 'a man';
+            // const genderEnglish = userData?.gender === 'FEMALE' ? 'a woman' : 'a man';
             const preferenceSpanish = userData?.preference_place === 'OUT' ? 'en la casa' : 'en el gimnasio';
-            const genderSpanish = userData?.gender === 'FEMALE' ? 'una mujer' : 'un hombre';
+            // const genderSpanish = userData?.gender === 'FEMALE' ? 'una mujer' : 'un hombre';
             // const spanishPromt = `video de como hacer correctamente con buena técnica el ejercicio llamado ${item.name} ${preferenceSpanish} para ${genderSpanish}`;
             // const englishPromt = `video about how to do correctly with good technique the exercise called ${item.name} ${preferenceEnglish} for a ${genderEnglish}`;
-            const spanishPromt = `ejercicio ${item.name} ${preferenceSpanish} para ${genderSpanish}`;
-            const englishPromt = `exercise ${item.name} ${preferenceEnglish} for ${genderEnglish}`;
+            const spanishPromt = `${item.name} ${preferenceSpanish}`;
+            const englishPromt = `${item.name} ${preferenceEnglish}`;
             const promt = locale === 'es' ? spanishPromt : englishPromt;
             const videoData: any = await (await fetch(`${apiUrl}/youtube/search?q=${promt}`)).json();
             const videoId = videoData?.items[0]?.id.videoId

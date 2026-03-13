@@ -411,7 +411,7 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                 </div>
 
                                 {/* Date of Birth */}
-                                <div className="relative">
+                                <div className="relative max-w-[325px] sm:max-w-none">
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">{t('trainingForm.dateOfBirth')}</label>
                                     <div className="relative">
                                         <input

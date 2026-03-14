@@ -413,13 +413,13 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                 {/* Date of Birth */}
                                 <div className="relative max-w-[325px] sm:max-w-none">
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">{t('trainingForm.dateOfBirth')}</label>
-                                    <div className="relative">
+                                    <div className="relative max-w-[325px] sm:max-w-none ">
                                         <input
                                             type="date"
                                             {...register('dob', { required: 'Date of birth is required' })}
                                             onFocus={() => handleFocus('dob')}
                                             onBlur={handleBlur}
-                                            className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
+                                            className={`relative px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
                                                 focusedField === 'dob' 
                                                     ? 'border-purple-500 shadow-lg shadow-purple-500/25' 
                                                     : 'border-gray-200 hover:border-gray-300'

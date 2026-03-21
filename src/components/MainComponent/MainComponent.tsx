@@ -34,7 +34,7 @@ interface routine {
 }
 
 interface workoutRoutine {
-    inititalRecomendations: string
+    initialRecomendations: string
     routine: routine[]
     lastRecommendations: string;
 };
@@ -240,7 +240,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
         });
         setPromt(
             `You are a sports training specialist who works to help people achieve their goals in a short time, create a workout routine with a list of exercises organized in a JSON object writed in ${locale === 'en' ? 'English' : 'Spanish'}, The object should have the following keys:
-            - "inititalRecomendations": initial recomendations an comments about the workout routine
+            - "initialRecomendations": initial recomendations an comments about the workout routine
             - "routine": An array where each item is an object that represents the exercises for each day and has the folloing keys:
                 - "day": number of the day, example:  day: "Day 1"
                 - "targetMuscle" the muscles target for the day routine.
@@ -478,7 +478,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                     gap: 1
                                 }}
                             >
-                                {dataTrain?.inititalRecomendations}
+                                {dataTrain?.initialRecomendations}
                             </Typography>
                             {dataTrain?.routine?.map((item: routine, index: number) => {
                                 return (

@@ -92,10 +92,18 @@ export default function Signup() {
       const responseVerifySaved = await responseVerify.json();
 
       console.log('res', responseVerifySaved);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Sign-up error:', error);
       setIsLoading(false);
-      throw Error('error adding to cognito');
+
+      if (error && error.__type === 'UsernameExistsException') {
+        alert('User already exists. Redirecting to login page.');
+        router.push('/login');
+        return;
+      }
+
+      alert('There was an error during sign up. Please try again.');
+      return;
     }
 
     if (res.userId) {

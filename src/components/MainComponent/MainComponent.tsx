@@ -123,7 +123,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
     const handleOnSave = async () => {
         setLoader(true);
         try {
-            if (userData?.gender) {
+            if (workoutData?.user?.email) {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/workouts/routine`, {
                     method: 'POST',
                     headers: {

@@ -108,13 +108,13 @@ export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
             <div className="w-full max-w-lg">
                 {/* Header Section */}
                 <div className="text-center mb-5 sm:mb-8">
-                    {/* <div className="text-center mb-8">
+                    <div className="text-center mb-8">
                         <div className="inline-flex items-center justify-center w-28 h-28 mb-6 rounded-full bg-white shadow-xl ring-4 ring-indigo-100 overflow-hidden">
                             <Image src="/genfit.png" alt="Logo" width={112} height={112} className="object-contain p-2" />
                         </div>
-                        <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('login.title')}</h1>
-                        <p className="text-gray-600">{t('login.subtitle')}</p>
-                    </div> */}
+                        {/* <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('login.title')}</h1>
+                        <p className="text-gray-600">{t('login.subtitle')}</p> */}
+                    </div>
                     <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">{t('trainingForm.title')}</h1>
                     <p className="text-gray-600 text-base sm:text-lg">{t('trainingForm.subtitle')}</p>
 

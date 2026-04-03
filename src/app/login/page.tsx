@@ -4,6 +4,7 @@ import { useContext, useState, useEffect } from 'react';
 import { signIn } from 'aws-amplify/auth';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { MainContext } from '../context/MainContextAppProvider';
 import { useI18n } from '../context/I18nProvider';
 
@@ -81,10 +82,8 @@ export default function Login() {
       <div className="w-full max-w-md">
         {/* Header Section */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full mb-4 shadow-lg">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-            </svg>
+          <div className="inline-flex items-center justify-center w-28 h-28 mb-6 rounded-full bg-white shadow-xl ring-4 ring-indigo-100 overflow-hidden">
+            <Image src="/genfit.png" alt="Logo" width={112} height={112} className="object-contain p-2" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('login.title')}</h1>
           <p className="text-gray-600">{t('login.subtitle')}</p>

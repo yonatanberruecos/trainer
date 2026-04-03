@@ -49,6 +49,7 @@
   "signup": {
     "title": "Crear Cuenta",
     "subtitle": "Únete a nosotros y comienza tu viaje fitness",
+    "saveRoutine": "Registrate para guardar tu rutina y hacerle seguimiento",
     "fullName": "Nombre Completo",
     "fullNamePlaceholder": "Ingresa tu nombre completo",
     "username": "Nombre de Usuario",
@@ -126,6 +127,11 @@
     "deleteMessage": "¿Estás seguro de que deseas eliminar esta rutina de entrenamiento? Esta acción no se puede deshacer.",
     "deleteButton": "Eliminar",
     "cancelButton": "Cancelar"
+  },
+  "routine": {
+    "personalizedRoutine": "Tu Rutina Personalizada",
+    "initialRecommendations": "Recomendaciones Iniciales",
+    "lastRecommendations": "Recomendaciones Finales"
   },
   "trainingForm": {
     "title": "Tu Viaje Fitness",

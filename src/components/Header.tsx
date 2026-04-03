@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { signOut, getCurrentUser } from 'aws-amplify/auth';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useI18n } from '../app/context/I18nProvider';
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -39,8 +40,10 @@ export default function Header() {
   };
 
   return (
-    <header className="flex justify-between items-center px-4 py-4 sm:px-6 md:px-10">
-      <h1 className="font-bold text-xl sm:text-2xl md:text-3xl">{t('header.title')}</h1>
+    <header className="flex justify-between items-center px-3 py-3 sm:px-6 sm:py-4 md:px-10 w-full">
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <Image src="/PerFit.png" alt="Logo" width={32} height={32} className="object-contain sm:w-10 sm:h-10" />
+      </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
         <LanguageSwitcher />

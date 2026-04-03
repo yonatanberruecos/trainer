@@ -1,8 +1,8 @@
 'use client'
 import { useContext, useState } from 'react';
-import { signUp } from 'aws-amplify/auth';
+import { signIn, signUp } from 'aws-amplify/auth';
 import { MainContext } from '../context/MainContextAppProvider';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useI18n } from '../context/I18nProvider';
 
 export default function Signup() {
@@ -11,8 +11,10 @@ export default function Signup() {
   const [isLoading, setIsLoading] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
-  const { setWorkoutData } = useContext<any>(MainContext);
+  const { workoutData , setWorkoutData } = useContext<any>(MainContext);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const routineState = searchParams.get('routine_state'); // get ?routine_state=save
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -79,7 +81,7 @@ export default function Signup() {
       });
 
       const payloadVerify = {
-          email: formData.email
+        email: formData.email
       };
 
       const responseVerify = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/verify`, {
@@ -133,9 +135,38 @@ export default function Signup() {
             }
           }
         });
-        router.push('/login');
+
+        if (routineState === 'save') {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/workouts/routine`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({...workoutData, user: { name, email }}),
+          });
+          const responseSaved = await response.json();
+          if (responseSaved.success) {
+            const { isSignedIn } = await signIn({
+              username: formData.email,
+              password: formData.password,
+            });
+  
+            if (isSignedIn) {
+              console.log('User logged in ✅');
+              location.href = '/mylist';
+            } else {
+              console.log('User can´t login');
+              router.push('/login');
+            }
+          }else {
+            router.push('/login');
+          }
+        } else {
+          router.push('/fit');
+        }
       } catch (error) {
         console.log('error saving the user', error);
+        router.push('/login');
       }
     }
     setIsLoading(false);
@@ -152,7 +183,7 @@ export default function Signup() {
             </svg>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('signup.title')}</h1>
-          <p className="text-gray-600">{t('signup.subtitle')}</p>
+          <p className="text-gray-600">{routineState === 'save' ? t('signup.saveRoutine') : t('signup.subtitle') }</p>
         </div>
 
         {/* Form Container */}
@@ -171,8 +202,8 @@ export default function Signup() {
                   onFocus={() => handleFocus('name')}
                   onBlur={handleBlur}
                   className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'name'
-                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
-                      : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
+                    : 'border-gray-200 hover:border-gray-300'
                     }`}
                   required
                 />
@@ -197,8 +228,8 @@ export default function Signup() {
                   onFocus={() => handleFocus('email')}
                   onBlur={handleBlur}
                   className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'email'
-                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
-                      : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
+                    : 'border-gray-200 hover:border-gray-300'
                     }`}
                   required
                 />
@@ -223,8 +254,8 @@ export default function Signup() {
                   onFocus={() => handleFocus('phone')}
                   onBlur={handleBlur}
                   className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'phone'
-                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
-                      : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
+                    : 'border-gray-200 hover:border-gray-300'
                     }`}
                   required
                 />
@@ -249,8 +280,8 @@ export default function Signup() {
                   onFocus={() => handleFocus('password')}
                   onBlur={handleBlur}
                   className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'password'
-                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
-                      : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
+                    : 'border-gray-200 hover:border-gray-300'
                     }`}
                   required
                 />
@@ -275,8 +306,8 @@ export default function Signup() {
                   onFocus={() => handleFocus('repeatPassword')}
                   onBlur={handleBlur}
                   className={`w-full px-4 py-3 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'repeatPassword'
-                      ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
-                      : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-indigo-500 shadow-lg shadow-indigo-500/25'
+                    : 'border-gray-200 hover:border-gray-300'
                     }`}
                   required
                 />
@@ -316,8 +347,8 @@ export default function Signup() {
               type="submit"
               disabled={isLoading || !isFormValid()}
               className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform ${isLoading || !isFormValid()
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl'
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl'
                 }`}
             >
               {isLoading ? (
@@ -336,12 +367,12 @@ export default function Signup() {
 
           {/* Footer */}
           <div className="mt-6 text-center">
-            <p className="text-gray-600">
+            {routineState !== 'save' && (<p className="text-gray-600">
               {t('signup.alreadyHaveAccount')}{' '}
               <a href="/login" className="text-indigo-600 hover:text-indigo-700 font-semibold transition-colors duration-200">
                 {t('signup.signIn')}
               </a>
-            </p>
+            </p>)}
           </div>
         </div>
 

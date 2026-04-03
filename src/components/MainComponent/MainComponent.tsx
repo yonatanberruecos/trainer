@@ -121,22 +121,24 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
     ];
 
     const handleOnSave = async () => {
-        console.log('dataContext', workoutData);
         setLoader(true);
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/workouts/routine`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(workoutData),
-            });
-            const responseSaved = await response.json();
-            setLoader(false);
-            if (responseSaved.success) {
-                router.push('/mylist');
+            if (userData?.gender) {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/workouts/routine`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(workoutData),
+                });
+                const responseSaved = await response.json();
+                setLoader(false);
+                if (responseSaved.success) {
+                    router.push('/mylist');
+                }
+            } else {
+                router.push('/signup?routine_state=save');
             }
-            console.log('Saved', responseSaved);
         } catch (error) {
             setLoader(false);
             console.log('Error guardando rutina', error);
@@ -428,7 +430,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
         }}>
             <Container maxWidth="lg">
                 {/* Header with My Routines Button */}
-                <Box sx={{
+                {workoutData?.user?.email && (<Box sx={{
                     display: 'flex',
                     justifyContent: 'flex-end',
                     mb: 3,
@@ -463,23 +465,83 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                     >
                         📋 {t('mylist.myRoutines')}
                     </Button>
-                </Box>
+                </Box>)}
                 {promt || workoutInfo ?
                     (loader ? <CircularLoader text="Generating routine..." /> : <Suspense fallback={<CircularLoader text="Loading..." />}>
                         <Box sx={{ maxWidth: '100%', mx: 'auto' }}>
-                            <Typography
-                                variant="h6"
-                                component="p"
+                            {/* Personalized Routine Title */}
+                            <Box sx={{ textAlign: 'center', mb: 4, mt: 2 }}>
+                                <Typography
+                                    variant="h3"
+                                    component="h1"
+                                    sx={{
+                                        fontWeight: 800,
+                                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent',
+                                        backgroundClip: 'text',
+                                        letterSpacing: '-0.5px',
+                                        mb: 1,
+                                    }}
+                                >
+                                    {t('routine.personalizedRoutine')}
+                                </Typography>
+                                <Box sx={{
+                                    width: 60,
+                                    height: 4,
+                                    background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+                                    borderRadius: 2,
+                                    mx: 'auto',
+                                }} />
+                            </Box>
+
+                            {/* Initial Recommendations */}
+                            <Paper
+                                elevation={0}
                                 sx={{
-                                    color: '#2d3748',
-                                    mb: 3,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 1
+                                    mb: 4,
+                                    borderRadius: 3,
+                                    overflow: 'hidden',
+                                    border: '1px solid rgba(102, 126, 234, 0.15)',
+                                    background: 'linear-gradient(135deg, #fff 0%, #f0f4ff 100%)',
+                                    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.1)',
                                 }}
                             >
-                                {dataTrain?.initialRecomendations}
-                            </Typography>
+                                <Box sx={{
+                                    px: 3,
+                                    py: 1.5,
+                                    background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 1,
+                                }}>
+                                    <Typography sx={{ fontSize: '1.2rem' }}>📋</Typography>
+                                    <Typography
+                                        variant="subtitle1"
+                                        sx={{
+                                            fontWeight: 700,
+                                            color: 'white',
+                                            letterSpacing: '0.5px',
+                                            textTransform: 'uppercase',
+                                            fontSize: '0.85rem',
+                                        }}
+                                    >
+                                        {t('routine.initialRecommendations')}
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ p: 3 }}>
+                                    <Typography
+                                        variant="body1"
+                                        sx={{
+                                            color: '#4a5568',
+                                            lineHeight: 1.85,
+                                            fontSize: '1rem',
+                                        }}
+                                    >
+                                        {dataTrain?.initialRecomendations}
+                                    </Typography>
+                                </Box>
+                            </Paper>
                             {dataTrain?.routine?.map((item: routine, index: number) => {
                                 return (
                                     <>
@@ -640,19 +702,54 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                 // }
                                 // return null;
                             })}
-                            <Typography
-                                variant="h6"
-                                component="p"
+                            {/* Last Recommendations */}
+                            <Paper
+                                elevation={0}
                                 sx={{
-                                    color: '#2d3748',
+                                    mt: 2,
                                     mb: 3,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 1
+                                    borderRadius: 3,
+                                    overflow: 'hidden',
+                                    border: '1px solid rgba(72, 187, 120, 0.2)',
+                                    background: 'linear-gradient(135deg, #fff 0%, #f0fff4 100%)',
+                                    boxShadow: '0 4px 20px rgba(72, 187, 120, 0.1)',
                                 }}
                             >
-                                {dataTrain?.lastRecommendations}
-                            </Typography>
+                                <Box sx={{
+                                    px: 3,
+                                    py: 1.5,
+                                    background: 'linear-gradient(90deg, #38a169 0%, #48bb78 100%)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 1,
+                                }}>
+                                    <Typography sx={{ fontSize: '1.2rem' }}>💪</Typography>
+                                    <Typography
+                                        variant="subtitle1"
+                                        sx={{
+                                            fontWeight: 700,
+                                            color: 'white',
+                                            letterSpacing: '0.5px',
+                                            textTransform: 'uppercase',
+                                            fontSize: '0.85rem',
+                                        }}
+                                    >
+                                        {t('routine.lastRecommendations')}
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ p: 3 }}>
+                                    <Typography
+                                        variant="body1"
+                                        sx={{
+                                            color: '#4a5568',
+                                            lineHeight: 1.85,
+                                            fontSize: '1rem',
+                                        }}
+                                    >
+                                        {dataTrain?.lastRecommendations}
+                                    </Typography>
+                                </Box>
+                            </Paper>
                         </Box>
                         {!workoutInfo && (<div className="bottomContainerButtons">
                             <button

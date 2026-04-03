@@ -1,13 +1,14 @@
 'use client'
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useContext, useEffect, useState } from 'react';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { MainContext } from '../context/MainContextAppProvider';
 
 export const useAuth = () => {
+  const router = useRouter();
+  const pathName = usePathname();
   const [user, setUser] = <any>useState(null);
   const { workoutData, setWorkoutData  } = useContext<any>(MainContext);
-  const router = useRouter();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -26,11 +27,15 @@ export const useAuth = () => {
             }
           });
         } else {
-          router.push('/login');
+          if(pathName !== '/fit') {
+            router.push('/login');
+          }
         }
       } catch {
-        // Redirect to login if user is not authenticated
-        router.push('/login');
+        // Redirect if call to getCurrentUser fails
+        if(pathName !== '/fit') {
+          router.push('/login');
+        }
       }
     };
 

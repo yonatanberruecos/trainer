@@ -1,13 +1,14 @@
 'use client'
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useI18n } from '../../app/context/I18nProvider';
 
 interface ItrainingFormProps {
-  onSubmitForm: (data: any) => void
+    onSubmitForm: (data: any) => void
 }
 
-export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
+export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
     const { t } = useI18n();
     const {
         register,
@@ -18,12 +19,12 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
         clearErrors,
         getValues,
         trigger
-    } : any = useForm({ reValidateMode: 'onChange' });
-    
+    }: any = useForm({ reValidateMode: 'onChange' });
+
     const [showConditionalField, setShowConditionalField] = useState(false);
     const [focusedField, setFocusedField] = useState<string | null>(null);
     const [currentStep, setCurrentStep] = useState(1);
-    const [selectedValues, setSelectedValues] = useState<{[key: string]: string}>({});
+    const [selectedValues, setSelectedValues] = useState<{ [key: string]: string }>({});
     const totalSteps = 3;
 
     const onSubmit = (data: any) => {
@@ -51,7 +52,7 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
 
     const validateCurrentStep = async () => {
         let fieldsToValidate: string[] = [];
-        
+
         // Define fields for each step
         if (currentStep === 1) {
             fieldsToValidate = ['workout', 'preference', 'objective'];
@@ -64,7 +65,7 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                 fieldsToValidate.push('illness');
             }
         }
-        
+
         // Trigger validation for the current step's fields
         const result = await trigger(fieldsToValidate);
         return result;
@@ -73,7 +74,7 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
     const nextStep = async () => {
         // Validate current step before moving forward
         const isValid = await validateCurrentStep();
-        
+
         if (isValid && currentStep < totalSteps) {
             setCurrentStep(currentStep + 1);
         }
@@ -107,14 +108,16 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
             <div className="w-full max-w-lg">
                 {/* Header Section */}
                 <div className="text-center mb-5 sm:mb-8">
-                    <div className="inline-flex items-center justify-center w-14 h-14 sm:w-20 sm:h-20 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full mb-4 sm:mb-6 shadow-xl">
-                        <svg className="w-7 h-7 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                    </div>
+                    {/* <div className="text-center mb-8">
+                        <div className="inline-flex items-center justify-center w-28 h-28 mb-6 rounded-full bg-white shadow-xl ring-4 ring-indigo-100 overflow-hidden">
+                            <Image src="/genfit.png" alt="Logo" width={112} height={112} className="object-contain p-2" />
+                        </div>
+                        <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('login.title')}</h1>
+                        <p className="text-gray-600">{t('login.subtitle')}</p>
+                    </div> */}
                     <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">{t('trainingForm.title')}</h1>
                     <p className="text-gray-600 text-base sm:text-lg">{t('trainingForm.subtitle')}</p>
-                    
+
                     {/* Progress Bar */}
                     <div className="mt-6 mb-4">
                         <div className="flex justify-between text-sm text-gray-500 mb-2">
@@ -122,7 +125,7 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                             <span>{Math.round(getStepProgress())}% {t('trainingForm.complete')}</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-3">
-                            <div 
+                            <div
                                 className="bg-gradient-to-r from-purple-600 to-indigo-600 h-3 rounded-full transition-all duration-500 ease-out"
                                 style={{ width: `${getStepProgress()}%` }}
                             ></div>
@@ -133,7 +136,7 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                 {/* Form Container */}
                 <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/30 p-5 sm:p-8">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                        
+
                         {/* Step 1: Experience & Goals */}
                         {currentStep === 1 && (
                             <div className="space-y-6">
@@ -159,13 +162,12 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                                     className="sr-only"
                                                     onChange={() => handleRadioChange('workout', option.value)}
                                                 />
-                                                <div 
+                                                <div
                                                     onClick={() => handleRadioChange('workout', option.value)}
-                                                    className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
-                                                        isSelected('workout', option.value)
+                                                    className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${isSelected('workout', option.value)
                                                             ? 'border-purple-500 bg-purple-100 shadow-lg shadow-purple-500/25'
                                                             : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     <span className="text-2xl mr-4">{option.icon}</span>
                                                     <div className="flex-1">
@@ -197,13 +199,12 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                                     className="sr-only"
                                                     onChange={() => handleRadioChange('preference', option.value)}
                                                 />
-                                                <div 
+                                                <div
                                                     onClick={() => handleRadioChange('preference', option.value)}
-                                                    className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
-                                                        isSelected('preference', option.value)
+                                                    className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${isSelected('preference', option.value)
                                                             ? 'border-purple-500 bg-purple-100 shadow-lg shadow-purple-500/25'
                                                             : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     <span className="text-2xl mr-4">{option.icon}</span>
                                                     <div className="flex-1">
@@ -236,13 +237,12 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                                     className="sr-only"
                                                     onChange={() => handleRadioChange('objective', option.value)}
                                                 />
-                                                <div 
+                                                <div
                                                     onClick={() => handleRadioChange('objective', option.value)}
-                                                    className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
-                                                        isSelected('objective', option.value)
+                                                    className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${isSelected('objective', option.value)
                                                             ? 'border-purple-500 bg-purple-100 shadow-lg shadow-purple-500/25'
                                                             : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     <span className="text-2xl mr-4">{option.icon}</span>
                                                     <div className="flex-1">
@@ -280,11 +280,10 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                             {...register('days', { required: 'Number of days is required', min: 1, max: 7 })}
                                             onFocus={() => handleFocus('days')}
                                             onBlur={handleBlur}
-                                            className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white text-lg ${
-                                                focusedField === 'days' 
-                                                    ? 'border-purple-500 shadow-lg shadow-purple-500/25' 
+                                            className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white text-lg ${focusedField === 'days'
+                                                    ? 'border-purple-500 shadow-lg shadow-purple-500/25'
                                                     : 'border-gray-200 hover:border-gray-300'
-                                            }`}
+                                                }`}
                                         />
                                         <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                                             <span className="text-xl">📅</span>
@@ -308,11 +307,10 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                             {...register('hours', { required: 'Training Minutes is required' })}
                                             onFocus={() => handleFocus('hours')}
                                             onBlur={handleBlur}
-                                            className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white text-lg ${
-                                                focusedField === 'hours' 
-                                                    ? 'border-purple-500 shadow-lg shadow-purple-500/25' 
+                                            className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white text-lg ${focusedField === 'hours'
+                                                    ? 'border-purple-500 shadow-lg shadow-purple-500/25'
                                                     : 'border-gray-200 hover:border-gray-300'
-                                            }`}
+                                                }`}
                                         />
                                         <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                                             <span className="text-xl">⏱️</span>
@@ -339,13 +337,12 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                                     className="sr-only"
                                                     onChange={() => handleRadioChange('gender', option.value)}
                                                 />
-                                                <div 
+                                                <div
                                                     onClick={() => handleRadioChange('gender', option.value)}
-                                                    className={`flex flex-col items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
-                                                        isSelected('gender', option.value)
+                                                    className={`flex flex-col items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${isSelected('gender', option.value)
                                                             ? 'border-purple-500 bg-purple-100 shadow-lg shadow-purple-500/25'
                                                             : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     <span className="text-3xl mb-2">{option.icon}</span>
                                                     <div className="font-semibold text-gray-800">{option.label}</div>
@@ -370,11 +367,10 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                                 {...register('height', { required: 'Height is required' })}
                                                 onFocus={() => handleFocus('height')}
                                                 onBlur={handleBlur}
-                                                className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
-                                                    focusedField === 'height' 
-                                                        ? 'border-purple-500 shadow-lg shadow-purple-500/25' 
+                                                className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'height'
+                                                        ? 'border-purple-500 shadow-lg shadow-purple-500/25'
                                                         : 'border-gray-200 hover:border-gray-300'
-                                                }`}
+                                                    }`}
                                             />
                                             <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                                                 <span className="text-lg">📏</span>
@@ -394,11 +390,10 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                                 {...register('weight', { required: 'Weight is required' })}
                                                 onFocus={() => handleFocus('weight')}
                                                 onBlur={handleBlur}
-                                                className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
-                                                    focusedField === 'weight' 
-                                                        ? 'border-purple-500 shadow-lg shadow-purple-500/25' 
+                                                className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'weight'
+                                                        ? 'border-purple-500 shadow-lg shadow-purple-500/25'
                                                         : 'border-gray-200 hover:border-gray-300'
-                                                }`}
+                                                    }`}
                                             />
                                             <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                                                 <span className="text-lg">⚖️</span>
@@ -419,11 +414,10 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                             {...register('dob', { required: 'Date of birth is required' })}
                                             onFocus={() => handleFocus('dob')}
                                             onBlur={handleBlur}
-                                            className={`relative px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
-                                                focusedField === 'dob' 
-                                                    ? 'border-purple-500 shadow-lg shadow-purple-500/25' 
+                                            className={`relative px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'dob'
+                                                    ? 'border-purple-500 shadow-lg shadow-purple-500/25'
                                                     : 'border-gray-200 hover:border-gray-300'
-                                            }`}
+                                                }`}
                                         />
                                         <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                                             <span className="text-lg">🎂</span>
@@ -454,11 +448,10 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                             {...register('pob')}
                                             onFocus={() => handleFocus('pob')}
                                             onBlur={handleBlur}
-                                            className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${
-                                                focusedField === 'pob' 
-                                                    ? 'border-purple-500 shadow-lg shadow-purple-500/25' 
+                                            className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white ${focusedField === 'pob'
+                                                    ? 'border-purple-500 shadow-lg shadow-purple-500/25'
                                                     : 'border-gray-200 hover:border-gray-300'
-                                            }`}
+                                                }`}
                                         />
                                         <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                                             <span className="text-lg">🎯</span>
@@ -485,13 +478,12 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                                     className="sr-only"
                                                     onChange={() => handleRadioChange('haveillnes', option.value)}
                                                 />
-                                                <div 
+                                                <div
                                                     onClick={() => handleRadioChange('haveillnes', option.value)}
-                                                    className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
-                                                        isSelected('haveillnes', option.value)
+                                                    className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${isSelected('haveillnes', option.value)
                                                             ? 'border-purple-500 bg-purple-100 shadow-lg shadow-purple-500/25'
                                                             : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     <span className="text-2xl mr-4">{option.icon}</span>
                                                     <div className="flex-1">
@@ -518,11 +510,10 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                                 {...register('illness', { required: 'Health condition details are required' })}
                                                 onFocus={() => handleFocus('illness')}
                                                 onBlur={handleBlur}
-                                                className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white resize-none ${
-                                                    focusedField === 'illness' 
-                                                        ? 'border-purple-500 shadow-lg shadow-purple-500/25' 
+                                                className={`w-full px-4 py-4 pl-12 bg-gray-50/50 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:bg-white resize-none ${focusedField === 'illness'
+                                                        ? 'border-purple-500 shadow-lg shadow-purple-500/25'
                                                         : 'border-gray-200 hover:border-gray-300'
-                                                }`}
+                                                    }`}
                                             />
                                             <div className="absolute left-4 top-4">
                                                 <span className="text-lg">📝</span>
@@ -547,7 +538,7 @@ export default function TrainingForm({onSubmitForm}: ItrainingFormProps) {
                                     {t('trainingForm.previous')}
                                 </button>
                             )}
-                            
+
                             {currentStep < totalSteps ? (
                                 <button
                                     type="button"

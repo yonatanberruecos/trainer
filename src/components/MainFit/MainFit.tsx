@@ -51,7 +51,8 @@ export default function MainFit() {
         }
       }, [user, routine_id]);
 
-    if (user || routine_id) return (<MainComponent workoutInfo={workoutInfo} userData={userData}></MainComponent>)
+    // if (user || routine_id) return (<MainComponent workoutInfo={workoutInfo} userData={userData}></MainComponent>)
 
-    return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 4 }} />;
+    // return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 4 }} />;
+    return (<MainComponent workoutInfo={workoutInfo} userData={userData}></MainComponent>)
 };

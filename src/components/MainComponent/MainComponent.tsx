@@ -241,7 +241,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
             }
         });
         setPromt(
-            `You are a sports training specialist who works to help people achieve their goals in a short time, create a workout routine with a list of exercises organized in a JSON object writed in ${locale === 'en' ? 'English' : 'Spanish'}, The object should have the following keys:
+            `You are a sports training specialist who works helping people to achieve their goals in the shortest possible time, create a workout routine with a list of exercises organized in a JSON object writed in ${locale === 'en' ? 'English' : 'Spanish'}, The object should have the following keys:
             - "initialRecomendations": initial recomendations an comments about the workout routine
             - "routine": An array where each item is an object that represents the exercises for each day and has the folloing keys:
                 - "day": number of the day, example:  day: "Day 1"
@@ -314,14 +314,14 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
 
         try {
 
-            const preferenceEnglish = userData?.preference_place === 'OUT' ? 'at home' : 'at gym';
+            const preferenceEnglish = userData?.preference_place === 'OUT' ? 'at home' : 'at the gym';
             // const genderEnglish = userData?.gender === 'FEMALE' ? 'a woman' : 'a man';
             const preferenceSpanish = userData?.preference_place === 'OUT' ? 'en la casa' : 'en el gimnasio';
             // const genderSpanish = userData?.gender === 'FEMALE' ? 'una mujer' : 'un hombre';
             // const spanishPromt = `video de como hacer correctamente con buena técnica el ejercicio llamado ${item.name} ${preferenceSpanish} para ${genderSpanish}`;
             // const englishPromt = `video about how to do correctly with good technique the exercise called ${item.name} ${preferenceEnglish} for a ${genderEnglish}`;
-            const spanishPromt = `${item.name} ${preferenceSpanish}`;
-            const englishPromt = `${item.name} ${preferenceEnglish}`;
+            const spanishPromt = `como hacer el ejercicio ${item.name} ${preferenceSpanish}`;
+            const englishPromt = `how to do the exercise ${item.name} ${preferenceEnglish}`;
             const promt = locale === 'es' ? spanishPromt : englishPromt;
             const videoData: any = await (await fetch(`${apiUrl}/youtube/search?q=${promt}`)).json();
             const videoId = videoData?.items[0]?.id.videoId

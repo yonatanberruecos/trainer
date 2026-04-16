@@ -128,6 +128,12 @@
     "deleteButton": "Eliminar",
     "cancelButton": "Cancelar"
   },
+  "privacy": {
+    "pageTitle": "Legal",
+    "effectiveDate": "Fecha de Vigencia",
+    "privacyTab": "Política de Privacidad",
+    "termsTab": "Términos de Servicio"
+  },
   "routine": {
     "personalizedRoutine": "Tu Rutina Personalizada",
     "initialRecommendations": "Recomendaciones Iniciales",

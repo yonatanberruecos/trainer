@@ -1,8 +1,7 @@
-// components/CircularLoader.js
 import React from 'react';
 import { Box, CircularProgress, Typography } from '@mui/material';
 
-const CircularLoader = ({ text = "Loading..." }) => {
+const CircularLoader = ({ text = 'Loading...' }) => {
   return (
     <Box
       sx={{
@@ -15,12 +14,29 @@ const CircularLoader = ({ text = "Loading..." }) => {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        backgroundColor: 'rgba(255, 255, 255, 0.7)', // optional: to add a semi-transparent background
-        zIndex: 9999, // ensure it's above other elements
+        backgroundColor: 'rgba(9, 9, 15, 0.85)',
+        backdropFilter: 'blur(6px)',
+        zIndex: 9999,
+        gap: 2,
       }}
     >
-      <CircularProgress />
-      <Typography variant="h6" sx={{ marginTop: 2 }}>
+      <CircularProgress
+        sx={{
+          color: '#00ff87',
+          filter: 'drop-shadow(0 0 8px rgba(0, 255, 135, 0.6))',
+        }}
+        size={52}
+        thickness={3}
+      />
+      <Typography
+        variant="h6"
+        sx={{
+          color: '#f0f0f5',
+          fontWeight: 600,
+          fontSize: '1rem',
+          letterSpacing: '0.5px',
+        }}
+      >
         {text}
       </Typography>
     </Box>

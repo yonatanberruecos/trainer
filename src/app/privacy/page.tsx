@@ -24,28 +24,28 @@ export default function PrivacyPage() {
     }, [searchParams]);
 
     return (
-        <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' }}>
+        <div className="min-h-screen" style={{ background: '#09090f' }}>
             {/* Hero Header */}
-            <div style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }} className="py-12 px-4">
+            <div style={{ background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)' }} className="py-12 px-4">
                 <div className="max-w-4xl mx-auto text-center">
-                    <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2 tracking-tight">
+                    <h1 className="text-3xl md:text-4xl font-extrabold mb-2 tracking-tight" style={{ color: '#09090f' }}>
                         {t('privacy.pageTitle')}
                     </h1>
-                    <p className="text-indigo-100 text-sm md:text-base">
+                    <p className="text-sm md:text-base" style={{ color: 'rgba(9,9,15,0.7)' }}>
                         {t('privacy.effectiveDate')}: {isEs ? EFFECTIVE_DATE_ES : EFFECTIVE_DATE_EN}
                     </p>
                 </div>
             </div>
 
             {/* Tab Bar */}
-            <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+            <div className="sticky top-0 z-40 shadow-sm" style={{ background: '#111118', borderBottom: '1px solid rgba(0,255,135,0.12)' }}>
                 <div className="max-w-4xl mx-auto flex">
                     <button
                         onClick={() => setActiveTab('privacy')}
                         className={`flex-1 py-4 text-sm font-semibold transition-all duration-200 border-b-2 ${
                             activeTab === 'privacy'
-                                ? 'border-indigo-600 text-indigo-600'
-                                : 'border-transparent text-gray-500 hover:text-gray-700'
+                                ? 'border-[#00ff87] text-[#00ff87]'
+                                : 'border-transparent text-[#8888a0] hover:text-[#f0f0f5]'
                         }`}
                     >
                         {t('privacy.privacyTab')}
@@ -54,8 +54,8 @@ export default function PrivacyPage() {
                         onClick={() => setActiveTab('terms')}
                         className={`flex-1 py-4 text-sm font-semibold transition-all duration-200 border-b-2 ${
                             activeTab === 'terms'
-                                ? 'border-indigo-600 text-indigo-600'
-                                : 'border-transparent text-gray-500 hover:text-gray-700'
+                                ? 'border-[#00ff87] text-[#00ff87]'
+                                : 'border-transparent text-[#8888a0] hover:text-[#f0f0f5]'
                         }`}
                     >
                         {t('privacy.termsTab')}
@@ -65,7 +65,7 @@ export default function PrivacyPage() {
 
             {/* Content */}
             <div className="max-w-4xl mx-auto px-4 py-10 pb-32">
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="rounded-2xl overflow-hidden" style={{ background: '#111118', border: '1px solid rgba(255,255,255,0.07)', boxShadow: '0 24px 64px rgba(0,0,0,0.5)' }}>
 
                     {/* ── Privacy Policy ── */}
                     {activeTab === 'privacy' && (
@@ -80,7 +80,7 @@ export default function PrivacyPage() {
 
                 {/* Back link */}
                 <div className="mt-6 text-center">
-                    <Link href="/fit" className="text-sm text-gray-500 hover:text-indigo-600 transition-colors">
+                    <Link href="/fit" className="text-sm transition-colors" style={{ color: '#8888a0' }}>
                         ← {t('common.back')}
                     </Link>
                 </div>
@@ -572,17 +572,20 @@ function PolicySection({
     last?: boolean;
 }) {
     return (
-        <section className={`${last ? '' : 'border-b border-gray-100 mb-8 pb-8'}`}>
-            <h2 className="flex items-center gap-3 text-lg md:text-xl font-bold text-gray-900 mb-4">
+        <section className={`${last ? '' : 'mb-8 pb-8'}`} style={last ? {} : { borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+            <h2 className="flex items-center gap-3 text-lg md:text-xl font-bold mb-4" style={{ color: '#f0f0f5' }}>
                 <span
-                    className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white"
-                    style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
+                    className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
+                    style={{ background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)', color: '#09090f' }}
                 >
                     {number}
                 </span>
                 {title}
             </h2>
-            <div className="pl-11 text-gray-600 leading-relaxed space-y-3 text-sm md:text-base [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_a]:text-indigo-600 [&_a:hover]:underline">
+            <div
+                className="pl-11 leading-relaxed space-y-3 text-sm md:text-base [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5"
+                style={{ color: '#c0c0d0' }}
+            >
                 {children}
             </div>
         </section>
@@ -591,17 +594,17 @@ function PolicySection({
 
 function SubHeading({ children }: { children: React.ReactNode }) {
     return (
-        <h4 className="font-semibold text-gray-800 mt-4 mb-1">{children}</h4>
+        <h4 className="font-semibold mt-4 mb-1" style={{ color: '#f0f0f5' }}>{children}</h4>
     );
 }
 
 function EmailHighlight({ email }: { email: string }) {
-    return <span className="font-medium text-indigo-600">{email}</span>;
+    return <span className="font-medium" style={{ color: '#00ff87' }}>{email}</span>;
 }
 
 function WarningBox({ children }: { children: React.ReactNode }) {
     return (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800 text-sm leading-relaxed">
+        <div className="rounded-xl p-4 text-sm leading-relaxed" style={{ background: 'rgba(255, 200, 0, 0.07)', border: '1px solid rgba(255, 200, 0, 0.2)', color: '#ffd700' }}>
             <div className="flex gap-3">
                 <span className="text-xl flex-shrink-0">⚠️</span>
                 <p>{children}</p>

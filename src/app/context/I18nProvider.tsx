@@ -17,7 +17,7 @@ interface I18nProviderProps {
 }
 
 export function I18nProvider({ children }: I18nProviderProps) {
-  const [locale, setLocaleState] = useState<Locale>('en');
+  const [locale, setLocaleState] = useState<Locale>('es');
   const [translations, setTranslations] = useState<any>({});
   const [isLoading, setIsLoading] = useState(true);
 

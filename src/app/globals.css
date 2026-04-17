@@ -2,40 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Trainix Design Tokens ── */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --tx-green:        #00ff87;
+  --tx-cyan:         #00d4ff;
+  --tx-dark:         #09090f;
+  --tx-surface:      #111118;
+  --tx-surface-2:    #1a1a26;
+  --tx-border:       rgba(255, 255, 255, 0.07);
+  --tx-border-accent:rgba(0, 255, 135, 0.25);
+  --tx-text:         #f0f0f5;
+  --tx-text-muted:   #8888a0;
+  --tx-gradient:     linear-gradient(135deg, #00ff87 0%, #00d4ff 100%);
+  --tx-gradient-rev: linear-gradient(135deg, #00d4ff 0%, #00ff87 100%);
+  --tx-glow-green:   0 0 20px rgba(0, 255, 135, 0.3);
+  --tx-glow-cyan:    0 0 20px rgba(0, 212, 255, 0.3);
 }
 
 body {
-  background: rgb(255, 255, 255); /* Fallback color */
-  background: -webkit-linear-gradient(
-    to bottom,
-    transparent,
-    rgb(var(--background-end-rgb))
-  ), 
-  -moz-linear-gradient(
-    to bottom,
-    transparent,
-    rgb(var(--background-end-rgb))
-  ), 
-  linear-gradient(
-    to bottom,
-    transparent,
-    rgb(var(--background-end-rgb))
-  ), 
-  rgb(var(--background-start-rgb));
+  background-color: var(--tx-dark);
+  color: var(--tx-text);
 }
 
+/* ── Loader ── */
 .circularLoader {
   text-align: center;
   height: 300px;
@@ -54,17 +43,17 @@ body {
   }
 }
 
+/* ── Legacy layout helpers ── */
 .grid-container {
-  /* display: grid;
-  grid-template-columns: 1fr 1fr;*/
   gap: 40px;
   margin-top: 40px;
   display: flex;
   flex-wrap: wrap;
   width: 100%;
 }
+
 .grid-item {
-  background-color: #ccc;
+  background-color: var(--tx-surface);
   padding: 20px;
   text-align: center;
 }
@@ -74,20 +63,21 @@ body {
   margin-bottom: 20px;
 }
 
+/* ── Save-routine sticky bar ── */
 .bottomContainerButtons {
   position: fixed;
   height: 178px;
-  background: white;
+  background: var(--tx-surface);
+  border-top: 1px solid var(--tx-border-accent);
   width: 100%;
   bottom: 0;
   left: 0;
   right: 0;
   text-align: center;
   padding-top: 20px;
-  border-top: 1px solid gray;
 }
 
-.bottomContainerButtons button{
+.bottomContainerButtons button {
   width: 80%;
 }
 
@@ -97,8 +87,20 @@ body {
   }
 }
 
-@media only screen and (max-width: 600px){
+@media only screen and (max-width: 600px) {
   .video-container {
     width: 100%;
   }
+}
+
+/* ── Trainix glow utility ── */
+.tx-glow {
+  box-shadow: var(--tx-glow-green);
+}
+
+.tx-gradient-text {
+  background: var(--tx-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

@@ -20,8 +20,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "My personal trainer",
-  description: "Generate workout routine with gemini ai help",
+  title: "Trainix — AI Workout Routines",
+  description: "Generate your personalized AI-powered workout routine with Trainix by GenFit.",
   manifest: "/manifest.json",
 };
 
@@ -34,10 +34,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="theme-color" content="#6366f1" />
+        <meta name="theme-color" content="#00ff87" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="My Trainer" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Trainix" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${roboto.className} overflow-x-hidden`}>

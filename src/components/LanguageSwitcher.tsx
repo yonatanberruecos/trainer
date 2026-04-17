@@ -11,29 +11,31 @@ export default function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <button
-        onClick={() => handleLanguageChange('en')}
-        className={`px-3 py-1.5 rounded-lg font-medium transition-all duration-200 ${
-          locale === 'en'
-            ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-        }`}
-        aria-label="Switch to English"
-      >
-        🇺🇸 EN
-      </button>
-      <button
-        onClick={() => handleLanguageChange('es')}
-        className={`px-3 py-1.5 rounded-lg font-medium transition-all duration-200 ${
-          locale === 'es'
-            ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-        }`}
-        aria-label="Cambiar a Español"
-      >
-        🇪🇸 ES
-      </button>
+    <div
+      className="flex items-center gap-1 p-1 rounded-xl"
+      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}
+    >
+      {(['en', 'es'] as Locale[]).map((lang) => (
+        <button
+          key={lang}
+          onClick={() => handleLanguageChange(lang)}
+          aria-label={lang === 'en' ? 'Switch to English' : 'Cambiar a Español'}
+          className="px-2.5 py-1 rounded-lg text-sm font-semibold transition-all duration-200"
+          style={
+            locale === lang
+              ? {
+                  background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)',
+                  color: '#09090f',
+                  boxShadow: '0 0 12px rgba(0, 255, 135, 0.35)',
+                }
+              : {
+                  color: '#8888a0',
+                }
+          }
+        >
+          {lang === 'en' ? '🇺🇸 EN' : '🇪🇸 ES'}
+        </button>
+      ))}
     </div>
   );
 }

@@ -257,10 +257,10 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
     const tittleDescription = (item: Exercise) => {
         return (
             <>
-                {/* Gradient Border Effect */}
+                {/* Brand accent bar */}
                 <Box sx={{
-                    height: 4,
-                    background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)'
+                    height: 3,
+                    background: 'linear-gradient(90deg, #00ff87 0%, #00d4ff 100%)'
                 }} />
                 {/* Exercise Title */}
                 <Typography
@@ -268,7 +268,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                     component="h3"
                     sx={{
                         fontWeight: 'bold',
-                        color: '#2d3748',
+                        color: '#f0f0f5',
                         mb: 1,
                         display: 'flex',
                         alignItems: 'center',
@@ -280,14 +280,12 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                 </Typography>
 
                 <Typography
-                    variant="h6"
+                    variant="body1"
                     component="p"
                     sx={{
-                        color: '#2d3748',
+                        color: '#c0c0d0',
                         mb: 2,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1,
+                        lineHeight: 1.7,
                         padding: '0px 20px 0 20px',
                     }}
                 >
@@ -300,15 +298,16 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
     const renderVideo = async (item: Exercise, index: number) => {
         const cardStyles = {
             mb: 3,
-            background: 'linear-gradient(135deg, #fff 0%, #f8f9ff 100%)',
-            border: '1px solid rgba(102, 126, 234, 0.1)',
+            background: '#1a1a26',
+            border: '1px solid rgba(255, 255, 255, 0.07)',
             borderRadius: 3,
             overflow: 'hidden',
-            boxShadow: '0 4px 20px rgba(102, 126, 234, 0.1)',
+            boxShadow: '0 4px 24px rgba(0, 0, 0, 0.35)',
             transition: 'all 0.3s ease',
             '&:hover': {
                 transform: 'translateY(-2px)',
-                boxShadow: '0 8px 30px rgba(102, 126, 234, 0.15)',
+                boxShadow: '0 8px 32px rgba(0, 255, 135, 0.12)',
+                borderColor: 'rgba(0, 255, 135, 0.2)',
             }
         }
 
@@ -424,7 +423,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
     return (
         <Box ref={mainContainer} sx={{
             minHeight: '100vh',
-            background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+            background: '#09090f',
             pt: 2,
             paddingBottom: '145px'
         }}>
@@ -440,11 +439,11 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                         onClick={handleMyRoutines}
                         variant="contained"
                         sx={{
-                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)',
                             border: 0,
                             borderRadius: 3,
-                            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
-                            color: 'white',
+                            boxShadow: '0 4px 20px rgba(0, 255, 135, 0.3)',
+                            color: '#09090f',
                             height: 48,
                             padding: '0 24px',
                             fontSize: '1rem',
@@ -454,9 +453,9 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                             alignItems: 'center',
                             gap: 1,
                             '&:hover': {
-                                background: 'linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)',
+                                background: 'linear-gradient(135deg, #00d4ff 0%, #00ff87 100%)',
                                 transform: 'translateY(-2px)',
-                                boxShadow: '0 8px 25px rgba(102, 126, 234, 0.4)',
+                                boxShadow: '0 8px 30px rgba(0, 255, 135, 0.45)',
                             },
                             '&:active': {
                                 transform: 'translateY(0)',
@@ -476,7 +475,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                     component="h1"
                                     sx={{
                                         fontWeight: 800,
-                                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                        background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)',
                                         WebkitBackgroundClip: 'text',
                                         WebkitTextFillColor: 'transparent',
                                         backgroundClip: 'text',
@@ -488,10 +487,11 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                 </Typography>
                                 <Box sx={{
                                     width: 60,
-                                    height: 4,
-                                    background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+                                    height: 3,
+                                    background: 'linear-gradient(90deg, #00ff87 0%, #00d4ff 100%)',
                                     borderRadius: 2,
                                     mx: 'auto',
+                                    boxShadow: '0 0 12px rgba(0, 255, 135, 0.5)',
                                 }} />
                             </Box>
 
@@ -502,15 +502,15 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                     mb: 4,
                                     borderRadius: 3,
                                     overflow: 'hidden',
-                                    border: '1px solid rgba(102, 126, 234, 0.15)',
-                                    background: 'linear-gradient(135deg, #fff 0%, #f0f4ff 100%)',
-                                    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.1)',
+                                    border: '1px solid rgba(0, 255, 135, 0.2)',
+                                    background: '#111118',
+                                    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.4)',
                                 }}
                             >
                                 <Box sx={{
                                     px: 3,
                                     py: 1.5,
-                                    background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+                                    background: 'linear-gradient(90deg, #00ff87 0%, #00d4ff 100%)',
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: 1,
@@ -520,7 +520,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                         variant="subtitle1"
                                         sx={{
                                             fontWeight: 700,
-                                            color: 'white',
+                                            color: '#09090f',
                                             letterSpacing: '0.5px',
                                             textTransform: 'uppercase',
                                             fontSize: '0.85rem',
@@ -533,7 +533,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                     <Typography
                                         variant="body1"
                                         sx={{
-                                            color: '#4a5568',
+                                            color: '#c0c0d0',
                                             lineHeight: 1.85,
                                             fontSize: '1rem',
                                         }}
@@ -549,21 +549,24 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                         <Paper
                                             key={`day-${index}`}
                                             elevation={0}
-                                            // onClick={() => toggle(index)}
                                             sx={{
                                                 mb: 4,
                                                 mt: index > 0 ? 4 : 2,
-                                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                                background: '#111118',
+                                                border: '1px solid rgba(0, 255, 135, 0.25)',
                                                 borderRadius: 3,
                                                 overflow: 'hidden',
                                                 cursor: 'pointer',
                                                 transition: 'all 0.3s ease',
                                                 '&:hover': {
                                                     transform: 'translateY(-2px)',
-                                                    boxShadow: '0 8px 25px rgba(102, 126, 234, 0.4)',
+                                                    boxShadow: '0 8px 32px rgba(0, 255, 135, 0.2)',
+                                                    borderColor: 'rgba(0, 255, 135, 0.45)',
                                                 }
                                             }}
                                         >
+                                            {/* Green/cyan top accent bar */}
+                                            <Box sx={{ height: 3, background: 'linear-gradient(90deg, #00ff87 0%, #00d4ff 100%)' }} />
                                             <Box sx={{
                                                 p: 3,
                                                 textAlign: 'center',
@@ -578,13 +581,15 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                                     component="h2"
                                                     sx={{
                                                         fontWeight: 'bold',
-                                                        color: 'white',
-                                                        textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                                                        background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)',
+                                                        WebkitBackgroundClip: 'text',
+                                                        WebkitTextFillColor: 'transparent',
+                                                        backgroundClip: 'text',
                                                         display: 'flex',
                                                         alignItems: 'center',
                                                         justifyContent: 'center',
                                                         gap: 2,
-                                                        mb: 2,
+                                                        mb: 1,
                                                     }}
                                                 >
                                                     📅 {item.day}
@@ -594,8 +599,8 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                                     variant="h6"
                                                     component="h3"
                                                     sx={{
-                                                        fontWeight: 'bold',
-                                                        color: 'rgba(255, 255, 255, 0.95)',
+                                                        fontWeight: 600,
+                                                        color: '#c0c0d0',
                                                         mb: 1,
                                                         display: 'flex',
                                                         alignItems: 'center',
@@ -609,7 +614,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                                     onClick={() => toggle(index)}
                                                     ref={(el: any) => (buttonRefs.current[index] = el)}
                                                     sx={{
-                                                        color: 'white',
+                                                        color: '#00ff87',
                                                         transition: 'transform 0.3s ease',
                                                         transform: `${index === 0 ? '' : 'rotate(180deg)'}`,
                                                         mt: 1
@@ -710,15 +715,15 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                     mb: 3,
                                     borderRadius: 3,
                                     overflow: 'hidden',
-                                    border: '1px solid rgba(72, 187, 120, 0.2)',
-                                    background: 'linear-gradient(135deg, #fff 0%, #f0fff4 100%)',
-                                    boxShadow: '0 4px 20px rgba(72, 187, 120, 0.1)',
+                                    border: '1px solid rgba(0, 212, 255, 0.2)',
+                                    background: '#111118',
+                                    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.4)',
                                 }}
                             >
                                 <Box sx={{
                                     px: 3,
                                     py: 1.5,
-                                    background: 'linear-gradient(90deg, #38a169 0%, #48bb78 100%)',
+                                    background: 'linear-gradient(90deg, #00d4ff 0%, #00ff87 100%)',
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: 1,
@@ -728,7 +733,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                         variant="subtitle1"
                                         sx={{
                                             fontWeight: 700,
-                                            color: 'white',
+                                            color: '#09090f',
                                             letterSpacing: '0.5px',
                                             textTransform: 'uppercase',
                                             fontSize: '0.85rem',
@@ -741,7 +746,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                     <Typography
                                         variant="body1"
                                         sx={{
-                                            color: '#4a5568',
+                                            color: '#c0c0d0',
                                             lineHeight: 1.85,
                                             fontSize: '1rem',
                                         }}
@@ -754,7 +759,12 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                         {!workoutInfo && (<div className="bottomContainerButtons">
                             <button
                                 type="button"
-                                className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl`}
+                                className="w-full py-4 px-6 rounded-xl font-bold transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
+                                style={{
+                                    background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)',
+                                    color: '#09090f',
+                                    boxShadow: '0 0 24px rgba(0, 255, 135, 0.35)',
+                                }}
                                 onClick={handleOnSave}
                             >
                                 {t('mylist.saveRoutine')}

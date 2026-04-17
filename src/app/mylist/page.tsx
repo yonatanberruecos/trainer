@@ -206,40 +206,34 @@ const ItemsPage = () => {
   };
 
   return (
-    <Box sx={{ 
+    <Box sx={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+      background: '#09090f',
       py: 4
     }}>
       <Container maxWidth="lg">
         {/* Header Section */}
-        <Box sx={{ 
-          textAlign: 'center', 
+        <Box sx={{
+          textAlign: 'center',
           mb: 6,
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: '#111118',
+          border: '1px solid rgba(0, 255, 135, 0.2)',
           borderRadius: 4,
           p: 4,
-          color: 'white',
           position: 'relative',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          boxShadow: '0 0 40px rgba(0, 255, 135, 0.08)',
         }}>
-          <Box sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(10px)'
-          }} />
+          {/* Top accent line */}
+          <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #00ff87 0%, #00d4ff 100%)' }} />
           <Box sx={{ position: 'relative', zIndex: 1 }}>
-            <Typography 
-              variant="h3" 
-              component="h1" 
-              sx={{ 
-                fontWeight: 'bold', 
+            <Typography
+              variant="h3"
+              component="h1"
+              sx={{
+                fontWeight: 'bold',
                 mb: 2,
-                background: 'linear-gradient(45deg, #fff 30%, #f0f0f0 90%)',
+                background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)',
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent'
@@ -247,28 +241,28 @@ const ItemsPage = () => {
             >
               🏋️ {t('mylist.title')}
             </Typography>
-            <Typography variant="h6" sx={{ mb: 3, opacity: 0.9 }}>
+            <Typography variant="h6" sx={{ mb: 3, color: '#8888a0' }}>
               {t('mylist.subtitle')}
             </Typography>
-            <Button 
-              onClick={handleNew} 
+            <Button
+              onClick={handleNew}
               variant="contained"
               size="large"
               sx={{
-                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)',
                 border: 0,
                 borderRadius: 3,
-                boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-                color: 'white',
+                boxShadow: '0 0 20px rgba(0, 255, 135, 0.35)',
+                color: '#09090f',
                 height: 48,
                 padding: '0 30px',
                 fontSize: '1rem',
                 fontWeight: 'bold',
                 textTransform: 'none',
                 '&:hover': {
-                  background: 'linear-gradient(45deg, #FE6B8B 60%, #FF8E53 100%)',
+                  background: 'linear-gradient(135deg, #00d4ff 0%, #00ff87 100%)',
                   transform: 'translateY(-2px)',
-                  boxShadow: '0 6px 10px 2px rgba(255, 105, 135, .3)',
+                  boxShadow: '0 0 32px rgba(0, 255, 135, 0.5)',
                 }
               }}
             >
@@ -280,30 +274,33 @@ const ItemsPage = () => {
         {/* Empty State */}
         {items.length === 0 && !loading && (
           <Fade in={true}>
-            <Box sx={{ 
-              textAlign: 'center', 
+            <Box sx={{
+              textAlign: 'center',
               py: 8,
-              background: 'white',
+              background: '#111118',
               borderRadius: 4,
-              boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+              border: '1px solid rgba(255,255,255,0.07)',
             }}>
-              <Typography variant="h4" sx={{ mb: 2, color: '#666' }}>
+              <Typography variant="h4" sx={{ mb: 2, color: '#f0f0f5' }}>
                 🎯 {t('mylist.readyToStart')}
               </Typography>
-              <Typography variant="body1" sx={{ mb: 4, color: '#888', maxWidth: 400, mx: 'auto' }}>
+              <Typography variant="body1" sx={{ mb: 4, color: '#8888a0', maxWidth: 400, mx: 'auto' }}>
                 {t('mylist.noRoutines')}
               </Typography>
-              <Button 
-                onClick={handleNew} 
+              <Button
+                onClick={handleNew}
                 variant="contained"
                 size="large"
                 sx={{
-                  background: 'linear-gradient(45deg, #667eea 30%, #764ba2 90%)',
+                  background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)',
                   borderRadius: 3,
                   px: 4,
                   py: 1.5,
                   fontSize: '1.1rem',
-                  textTransform: 'none'
+                  color: '#09090f',
+                  fontWeight: 'bold',
+                  textTransform: 'none',
+                  boxShadow: '0 0 20px rgba(0, 255, 135, 0.3)',
                 }}
               >
                 🚀 {t('mylist.createFirst')}
@@ -322,59 +319,59 @@ const ItemsPage = () => {
             return (
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={'routine' + item.userworkout_id.toString()}>
                 <Fade in={true} timeout={300 + index * 100}>
-                  <Card sx={{ 
+                  <Card sx={{
                     height: '100%',
                     position: 'relative',
-                    background: 'linear-gradient(135deg, #fff 0%, #f8f9ff 100%)',
-                    border: '1px solid rgba(102, 126, 234, 0.1)',
+                    background: '#111118',
+                    border: '1px solid rgba(255,255,255,0.07)',
                     borderRadius: 3,
                     overflow: 'hidden',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    '&:hover': { 
-                      transform: 'translateY(-8px) scale(1.02)',
-                      boxShadow: '0 20px 40px rgba(102, 126, 234, 0.15)',
-                      borderColor: 'rgba(102, 126, 234, 0.3)'
+                    '&:hover': {
+                      transform: 'translateY(-6px)',
+                      boxShadow: '0 16px 40px rgba(0, 255, 135, 0.12)',
+                      borderColor: 'rgba(0, 255, 135, 0.3)'
                     }
                   }}>
-                    {/* Gradient Border Effect */}
+                    {/* Top accent bar */}
                     <Box sx={{
                       position: 'absolute',
                       top: 0,
                       left: 0,
                       right: 0,
-                      height: 4,
-                      background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)'
+                      height: 3,
+                      background: 'linear-gradient(90deg, #00ff87 0%, #00d4ff 100%)'
                     }} />
-                    
+
                     {/* Menu Button */}
                     <Box sx={{ position: 'absolute', top: 12, right: 12, zIndex: 2 }}>
                       <IconButton
                         onClick={(e) => handleMenuClick(e, item.userworkout_id)}
                         size="small"
-                        sx={{ 
-                          backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                          backdropFilter: 'blur(10px)',
-                          border: '1px solid rgba(102, 126, 234, 0.1)',
+                        sx={{
+                          backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                          border: '1px solid rgba(255,255,255,0.1)',
                           width: 32,
                           height: 32,
-                          '&:hover': { 
-                            backgroundColor: 'rgba(255, 255, 255, 1)',
+                          '&:hover': {
+                            backgroundColor: 'rgba(0, 255, 135, 0.12)',
+                            borderColor: 'rgba(0, 255, 135, 0.3)',
                             transform: 'scale(1.1)'
                           }
                         }}
                       >
-                        <Typography sx={{ fontSize: '14px', fontWeight: 'bold', color: '#667eea' }}>⋮</Typography>
+                        <Typography sx={{ fontSize: '14px', fontWeight: 'bold', color: '#00ff87' }}>⋮</Typography>
                       </IconButton>
                     </Box>
 
                     <CardActionArea onClick={() => handleClickCard(item.userworkout_id)} sx={{ height: '100%' }}>
                       <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
-                        {/* Header with Icon and Title */}
+                        {/* Header */}
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                          <Box sx={{ 
-                            fontSize: '2rem', 
+                          <Box sx={{
+                            fontSize: '1.6rem',
                             mr: 2,
-                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)',
                             borderRadius: '50%',
                             width: 48,
                             height: 48,
@@ -385,39 +382,36 @@ const ItemsPage = () => {
                             {workoutIcon}
                           </Box>
                           <Box sx={{ flex: 1 }}>
-                            <Typography 
-                              variant="h6" 
-                              sx={{ 
+                            <Typography
+                              variant="h6"
+                              sx={{
                                 fontWeight: 'bold',
-                                color: '#2d3748',
+                                color: '#f0f0f5',
                                 mb: 0.5
                               }}
                             >
                               {t('mylist.routine')} #{index + 1}
                             </Typography>
-                            <Chip 
+                            <Chip
                               label={difficulty}
                               color={difficultyColor as any}
                               size="small"
-                              sx={{ 
-                                fontSize: '0.75rem',
-                                fontWeight: 'bold'
-                              }}
+                              sx={{ fontSize: '0.75rem', fontWeight: 'bold' }}
                             />
                           </Box>
                         </Box>
 
                         {/* Description */}
                         <Box sx={{ flex: 1, mb: 2 }}>
-                          <Tooltip 
+                          <Tooltip
                             title={item.userworkout_routine_summary.length > 120 ? item.userworkout_routine_summary : ''}
                             placement="top"
                             arrow
                           >
-                            <Typography 
-                              variant="body2" 
-                              sx={{ 
-                                color: '#4a5568',
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                color: '#8888a0',
                                 lineHeight: 1.6,
                                 display: '-webkit-box',
                                 WebkitLineClamp: 4,
@@ -432,22 +426,17 @@ const ItemsPage = () => {
                         </Box>
 
                         {/* Footer */}
-                        <Box sx={{ 
-                          display: 'flex', 
-                          justifyContent: 'space-between', 
+                        <Box sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
                           alignItems: 'center',
                           pt: 2,
-                          borderTop: '1px solid rgba(102, 126, 234, 0.1)'
+                          borderTop: '1px solid rgba(255,255,255,0.07)'
                         }}>
-                          <Typography variant="caption" sx={{ color: '#718096', fontWeight: 'medium' }}>
+                          <Typography variant="caption" sx={{ color: '#8888a0', fontWeight: 'medium' }}>
                             {t('mylist.clickToView')}
                           </Typography>
-                          <Box sx={{ 
-                            color: '#667eea',
-                            fontSize: '1.2rem',
-                            transform: 'translateX(0)',
-                            transition: 'transform 0.2s ease'
-                          }}>
+                          <Box sx={{ color: '#00ff87', fontSize: '1.2rem' }}>
                             →
                           </Box>
                         </Box>
@@ -476,17 +465,18 @@ const ItemsPage = () => {
           PaperProps={{
             sx: {
               borderRadius: 2,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-              border: '1px solid rgba(102, 126, 234, 0.1)'
+              background: '#1a1a26',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+              border: '1px solid rgba(255,255,255,0.1)'
             }
           }}
         >
-          <MenuItem 
+          <MenuItem
             onClick={handleDeleteClick}
             sx={{
-              color: '#e53e3e',
+              color: '#ff6b6b',
               '&:hover': {
-                backgroundColor: 'rgba(229, 62, 62, 0.1)'
+                backgroundColor: 'rgba(255, 60, 60, 0.1)'
               }
             }}
           >
@@ -503,47 +493,51 @@ const ItemsPage = () => {
           PaperProps={{
             sx: {
               borderRadius: 3,
-              boxShadow: '0 20px 60px rgba(0,0,0,0.15)'
+              background: '#111118',
+              border: '1px solid rgba(255,255,255,0.1)',
+              boxShadow: '0 24px 64px rgba(0,0,0,0.6)'
             }
           }}
         >
-          <DialogTitle 
+          <DialogTitle
             id="delete-dialog-title"
             sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
+              background: 'linear-gradient(90deg, #00ff87 0%, #00d4ff 100%)',
+              color: '#09090f',
               fontWeight: 'bold'
             }}
           >
             🗑️ {t('mylist.deleteTitle')}
           </DialogTitle>
           <DialogContent sx={{ pt: 3 }}>
-            <Typography>
+            <Typography sx={{ color: '#c0c0d0' }}>
               {t('mylist.deleteMessage')}
             </Typography>
           </DialogContent>
           <DialogActions sx={{ p: 3, gap: 1 }}>
-            <Button 
-              onClick={handleDeleteCancel} 
+            <Button
+              onClick={handleDeleteCancel}
               variant="outlined"
               sx={{
-                borderColor: '#e2e8f0',
-                color: '#4a5568',
+                borderColor: 'rgba(255,255,255,0.15)',
+                color: '#8888a0',
                 '&:hover': {
-                  borderColor: '#cbd5e0',
-                  backgroundColor: '#f7fafc'
+                  borderColor: 'rgba(255,255,255,0.3)',
+                  backgroundColor: 'rgba(255,255,255,0.05)'
                 }
               }}
             >
               {t('mylist.cancelButton')}
             </Button>
-            <Button 
-              onClick={handleDeleteConfirm} 
+            <Button
+              onClick={handleDeleteConfirm}
               variant="contained"
               sx={{
-                background: 'linear-gradient(45deg, #e53e3e 30%, #c53030 90%)',
+                background: 'rgba(255, 60, 60, 0.2)',
+                color: '#ff6b6b',
+                border: '1px solid rgba(255, 60, 60, 0.3)',
                 '&:hover': {
-                  background: 'linear-gradient(45deg, #c53030 30%, #9c2626 90%)'
+                  background: 'rgba(255, 60, 60, 0.35)',
                 }
               }}
             >

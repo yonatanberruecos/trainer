@@ -72,7 +72,10 @@
     "privacyPolicy": "Política de Privacidad",
     "passwordRequirements": "Requisitos de Contraseña",
     "passwordMustContainCapital": "La contraseña debe contener al menos una letra mayúscula",
-    "passwordsDoNotMatch": "Las contraseñas no coinciden"
+    "passwordsDoNotMatch": "Las contraseñas no coinciden",
+    "confirmEmail": "Confirmar Correo Electrónico",
+    "confirmEmailPlaceholder": "Vuelve a ingresar tu correo electrónico",
+    "emailsDoNotMatch": "Las direcciones de correo no coinciden"
   },
   "forgotPassword": {
     "title": "¿Olvidaste tu Contraseña?",
@@ -137,7 +140,10 @@
   "routine": {
     "personalizedRoutine": "Tu Rutina Personalizada",
     "initialRecommendations": "Recomendaciones Iniciales",
-    "lastRecommendations": "Recomendaciones Finales"
+    "lastRecommendations": "Recomendaciones Finales",
+    "loaderGenerating": "Generando rutina...",
+    "loaderLoading": "Cargando...",
+    "loaderVideo": "Cargando video..."
   },
   "trainingForm": {
     "title": "Tu Viaje Fitness",
@@ -193,6 +199,7 @@
     "previous": "Anterior",
     "nextStep": "Siguiente Paso",
     "getMyRoutine": "Obtener Mi Rutina",
+    "generateNewRoutine": "Generar nueva rutina",
     "securityNotice": "Tu información es segura y solo se utilizará para crear tu rutina de entrenamiento personalizada",
     "workoutRequired": "La experiencia de entrenamiento es requerida",
     "preferenceRequired": "La preferencia de entrenamiento es requerida",

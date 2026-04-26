@@ -145,27 +145,6 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
         }
     }
 
-    const fetchData = async () => {
-        const response = await fetch(`${apiUrl}/fit`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ prompt: promt }),
-        });
-
-        const data: workoutRoutine = await response.json();
-        // const dataArray = data.split('**');
-        setDataTrain(data);
-        setWorkoutData((prev: any) => {
-            return {
-                ...prev,
-                workout_result: data
-            }
-        })
-        setLoader(false);
-    }
-
     const startDayaccordion = () => {
         contentRefs.current.forEach((ref: any, index: number) => {
             if (ref) {
@@ -190,8 +169,8 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                 body: JSON.stringify({ prompt: promt }),
             });
 
-            const data: workoutRoutine = await response.json();
-            // const dataArray = data.split('**');
+            const responseData: workoutRoutine[] = await response.json();
+            const data = responseData[0];
             setDataTrain(data);
             setWorkoutData((prev: any) => {
                 return {
@@ -242,7 +221,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
         });
         setPromt(
             `You are a sports training specialist who works helping people to achieve their goals in the shortest possible time, create a workout routine with a list of exercises organized in a JSON object writed in ${locale === 'en' ? 'English' : 'Spanish'}, The object should have the following keys:
-            - "initialRecomendations": initial recomendations an comments about the workout routine
+            - "initialRecomendations": initial recomendations and comments about the workout routine
             - "routine": An array where each item is an object that represents the exercises for each day and has the folloing keys:
                 - "day": number of the day, example:  day: "Day 1"
                 - "targetMuscle" the muscles target for the day routine.
@@ -250,7 +229,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                     - "name": name of the exercise
                     - "description" description of the exercise, target muscles and repetitions
             - "lastRecommendations": last recommedations about the routine and stretch
-            create the perfect training routine for the week to achieve the main goal in the shortest possible time, suitable, focused and personalized as an specialist for a person with the following characteristics: the person can workout ${data.days} days at week and the others days of seven day's week to rest, training Minutes per Day: ${data.hours} Minutes, gender: ${data.gender}, date of birth: ${data.dob}, height: ${data.height}m, weight: ${data.weight}kg, favorite place to workout: ${data.preference}, main goal: ${data.objective}, part of the body objective: ${data.pob || 'all body'}, workout experience: ${data.workout}. take in account the limitation: ${data.illness || 'none'}`
+            create the perfect training routine for the week to achieve the main goal in the shortest possible time, suitable, focused and personalized as an specialist for a person with the following characteristics: the person can workout ${data.days} days at week and the others days of seven day's week to rest, training Minutes per Day: ${data.hours} Minutes, gender: ${data.gender}, date of birth: ${data.dob}, height: ${data.height}m, weight: ${data.weight}kg, favorite place to practice: ${data.preference === 'IN' ? 'gym' : 'house'}, main goal: ${data.objective}, target body part: ${data.pob || 'all body'}, workout experience: ${data.workout}. limitation: ${data.illness || 'none'}`
         );
     }
 
@@ -342,7 +321,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                 overflow: 'hidden',
                                 boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
                             }}>
-                                <Suspense fallback={<CircularLoader text="Video is loading..." />}>
+                                <Suspense fallback={<CircularLoader text={t('routine.loaderVideo')} />}>
                                     <iframe
                                         src={`https://www.youtube.com/embed/${videoId}`}
                                         frameBorder="0"
@@ -466,7 +445,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                     </Button>
                 </Box>)}
                 {promt || workoutInfo ?
-                    (loader ? <CircularLoader text="Generating routine..." /> : <Suspense fallback={<CircularLoader text="Loading..." />}>
+                    (loader ? <CircularLoader text={t('routine.loaderGenerating')} /> : <Suspense fallback={<CircularLoader text={t('routine.loaderLoading')} />}>
                         <Box sx={{ maxWidth: '100%', mx: 'auto' }}>
                             {/* Personalized Routine Title */}
                             <Box sx={{ textAlign: 'center', mb: 4, mt: 2 }}>
@@ -494,6 +473,66 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                     boxShadow: '0 0 12px rgba(0, 255, 135, 0.5)',
                                 }} />
                             </Box>
+
+                            {/* Action buttons */}
+                            {!workoutInfo && (
+                                <Box sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    gap: 2,
+                                    mb: 4,
+                                    flexWrap: 'wrap',
+                                }}>
+                                    <Button
+                                        onClick={handleOnSave}
+                                        variant="contained"
+                                        sx={{
+                                            background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)',
+                                            border: 0,
+                                            borderRadius: 3,
+                                            boxShadow: '0 4px 20px rgba(0, 255, 135, 0.3)',
+                                            color: '#09090f',
+                                            height: 48,
+                                            padding: '0 24px',
+                                            fontSize: '1rem',
+                                            fontWeight: 'bold',
+                                            textTransform: 'none',
+                                            '&:hover': {
+                                                background: 'linear-gradient(135deg, #00d4ff 0%, #00ff87 100%)',
+                                                transform: 'translateY(-2px)',
+                                                boxShadow: '0 8px 30px rgba(0, 255, 135, 0.45)',
+                                            },
+                                            '&:active': { transform: 'translateY(0)' },
+                                        }}
+                                    >
+                                        💾 {t('mylist.saveRoutine')}
+                                    </Button>
+                                    <Button
+                                        onClick={() => window.location.href = '/fit'}
+                                        variant="outlined"
+                                        sx={{
+                                            background: 'rgba(255,255,255,0.06)',
+                                            border: '1px solid rgba(255,255,255,0.12)',
+                                            borderRadius: 3,
+                                            color: '#8888a0',
+                                            height: 48,
+                                            padding: '0 24px',
+                                            fontSize: '1rem',
+                                            fontWeight: 'bold',
+                                            textTransform: 'none',
+                                            '&:hover': {
+                                                background: 'rgba(255,255,255,0.1)',
+                                                borderColor: 'rgba(255,255,255,0.2)',
+                                                color: '#f0f0f5',
+                                                transform: 'translateY(-2px)',
+                                            },
+                                            '&:active': { transform: 'translateY(0)' },
+                                        }}
+                                    >
+                                        ↺ {t('trainingForm.generateNewRoutine')}
+                                    </Button>
+                                </Box>
+                            )}
 
                             {/* Initial Recommendations */}
                             <Paper
@@ -771,7 +810,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                             </button>
                         </div>)}
                     </Suspense>) :
-                    (loader ? <CircularLoader text="Loading..." /> : <TrainingForm onSubmitForm={onSubmitForm}></TrainingForm>)}
+                    (loader ? <CircularLoader text={t('routine.loaderLoading')} /> : <TrainingForm onSubmitForm={onSubmitForm}></TrainingForm>)}
             </Container>
         </Box>
     );

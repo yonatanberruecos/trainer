@@ -72,7 +72,10 @@
     "privacyPolicy": "Privacy Policy",
     "passwordRequirements": "Password Requirements",
     "passwordMustContainCapital": "Password must contain at least one capital letter",
-    "passwordsDoNotMatch": "Passwords do not match"
+    "passwordsDoNotMatch": "Passwords do not match",
+    "confirmEmail": "Confirm Email Address",
+    "confirmEmailPlaceholder": "Re-enter your email address",
+    "emailsDoNotMatch": "Email addresses do not match"
   },
   "forgotPassword": {
     "title": "Forgot Password?",
@@ -137,7 +140,10 @@
   "routine": {
     "personalizedRoutine": "Your Personalized Routine",
     "initialRecommendations": "Initial Recommendations",
-    "lastRecommendations": "Final Recommendations"
+    "lastRecommendations": "Final Recommendations",
+    "loaderGenerating": "Generating routine...",
+    "loaderLoading": "Loading...",
+    "loaderVideo": "Video is loading..."
   },
   "trainingForm": {
     "title": "Your Fitness Journey",
@@ -193,6 +199,7 @@
     "previous": "Previous",
     "nextStep": "Next Step",
     "getMyRoutine": "Get My Routine",
+    "generateNewRoutine": "Generate new routine",
     "securityNotice": "Your information is secure and will only be used to create your personalized workout routine",
     "workoutRequired": "Workout experience is required",
     "preferenceRequired": "Training preference is required",

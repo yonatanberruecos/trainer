@@ -55,70 +55,6 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
     const mainContainer = useRef();
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
-    const exercisesTocheck = ['Hip', 'Deadlifts', 'Clamshells', 'bridge', 'bug', 'superman', 'Bench Press', 'dumbbells', 'Push-ups', 'Raises', 'Pushdowns', 'Grip', 'Crushers', 'Press', 'Extensions', 'Squat', 'Deadlift', 'Thrusts', 'Bridges', 'Pull-ups', 'Bent', 'Curl', 'Pulls', 'Cable', 'Dumbbell', 'Lunges', 'Bulgarian', 'Incline', 'Bird Dog', 'Plank', "Squats", "Lunges", "Romanian Deadlifts", "Calf", "Raises", "Bench Press", "Shoulder Press", "Push-ups", "Tricep Extensions", "Pull-ups", "Barbell Rows", "Seated Cable Rows", "Bicep Curls", "Plank", "Russian Twists", "Crunches", 'Extension', 'Pull-Ups', 'Step-Ups', 'Pulldown', 'T-bar', 'Barbell', 'Burpees']
-
-    const outdoorExercises = [
-        "Bodyweight",
-        "squats",
-        "Lunges",
-        "Burpees",
-        "Push-ups",
-        "Crunches",
-        "Plank",
-        "Mountain",
-        "climbers",
-        "High",
-        "Butt",
-        "Jumping",
-        "Squat",
-        "Lunge",
-        "Push-up",
-        "jumps",
-        "Bicycle",
-        "crunches",
-        "raises",
-        "kicks",
-        "Flutter",
-        "Russian",
-        "twists",
-        "plank",
-        "Bridge",
-        "Superman",
-        "Bird",
-        "Crab",
-        "crawl",
-        "Inchworm",
-        "sprints",
-        "climbs",
-        "Pull-ups",
-        "Dips",
-        "dips",
-        "Step-ups",
-        "jumps",
-        "Pull-ups",
-        "Chin-ups",
-        "Glute bridges",
-        "Pull-ups",
-        "Dips",
-        "Bulgarian",
-        "Deadlifts",
-        "Hip",
-        "Clamshell",
-        "Fire hydrant",
-        "Bent-over",
-        "Overhead",
-        "Curls"
-    ];
-
-    const daysOfWeek = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday"
-    ];
 
     const handleOnSave = async () => {
         setLoader(true);
@@ -169,8 +105,8 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                 body: JSON.stringify({ prompt: promt }),
             });
 
-            const responseData: workoutRoutine[] = await response.json();
-            const data = responseData[0];
+            const responseData: workoutRoutine[] | workoutRoutine = await response.json();
+            const data = Array.isArray(responseData) ? responseData[0] : responseData;
             setDataTrain(data);
             setWorkoutData((prev: any) => {
                 return {
@@ -229,7 +165,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                     - "name": name of the exercise
                     - "description" description of the exercise, target muscles and repetitions
             - "lastRecommendations": last recommedations about the routine and stretch
-            create the perfect training routine for the week to achieve the main goal in the shortest possible time, suitable, focused and personalized as an specialist for a person with the following characteristics: the person can workout ${data.days} days at week and the others days of seven day's week to rest, training Minutes per Day: ${data.hours} Minutes, gender: ${data.gender}, date of birth: ${data.dob}, height: ${data.height}m, weight: ${data.weight}kg, favorite place to practice: ${data.preference === 'IN' ? 'gym' : 'house'}, main goal: ${data.objective}, target body part: ${data.pob || 'all body'}, workout experience: ${data.workout}. limitation: ${data.illness || 'none'}`
+            create the perfect training routine for the week to achieve the main goal in the shortest possible time, suitable, focused and personalized as an specialist for a person with the following characteristics: the person can workout ${data.days} days at week and the others days of seven day's week to rest, training Minutes per Day: ${data.hours} Minutes, gender: ${data.gender}, date of birth: ${data.dob}, height: ${data.height}m, weight: ${data.weight}kg, favorite place to practice: ${data.preference === 'IN' ? 'gym' : 'house'}, main goal: ${data.objective === 'LOSS' ? 'weight loss' : data.objective === 'BUILD' ? 'build muscle' : 'gain flexibility'}, target body part: ${data.pob || 'all body'}, workout experience: ${data.workout}. limitation: ${data.illness || 'none'}`
         );
     }
 

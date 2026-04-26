@@ -197,9 +197,9 @@ export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
                                 {/* Primary Goal */}
                                 <FieldGroup label={t('trainingForm.primaryGoal')} error={errors.objective ? t('trainingForm.objectiveRequired') : ''}>
                                     {[
-                                        { value: 'LOSS WEIGHT', label: t('trainingForm.weightLoss'), icon: '🔥', desc: t('trainingForm.weightLossDesc') },
-                                        { value: 'BUILD MUSCLE', label: t('trainingForm.buildMuscle'), icon: '💪', desc: t('trainingForm.buildMuscleDesc') },
-                                        { value: 'GAIN FLEXIBILITY', label: t('trainingForm.flexibility'), icon: '🧘', desc: t('trainingForm.flexibilityDesc') },
+                                        { value: 'LOSS', label: t('trainingForm.weightLoss'), icon: '🔥', desc: t('trainingForm.weightLossDesc') },
+                                        { value: 'BUILD', label: t('trainingForm.buildMuscle'), icon: '💪', desc: t('trainingForm.buildMuscleDesc') },
+                                        { value: 'FLEXIBILITY', label: t('trainingForm.flexibility'), icon: '🧘', desc: t('trainingForm.flexibilityDesc') },
                                     ].map((opt) => (
                                         <RadioCard
                                             key={opt.value}

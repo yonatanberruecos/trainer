@@ -51,6 +51,10 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
         preference: '',
         gender: ''
     });
+    const [videoIds, setVideoIds] = useState<Record<string, string | null>>({});
+    const [loadingDays, setLoadingDays] = useState<Set<number>>(new Set());
+    const loadedDays = useRef<Set<number>>(new Set());
+    const fetchingDays = useRef<Set<number>>(new Set());
     const { workoutData, setWorkoutData } = useContext<any>(MainContext);
     const mainContainer = useRef();
 
@@ -143,6 +147,46 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
         }
     }, []);
 
+    const fetchDayVideos = async (dayIndex: number) => {
+        if (loadedDays.current.has(dayIndex) || fetchingDays.current.has(dayIndex)) return;
+        if (!dataTrain?.routine?.[dayIndex]) return;
+
+        fetchingDays.current.add(dayIndex);
+        setLoadingDays(prev => new Set(prev).add(dayIndex));
+        const day = dataTrain.routine[dayIndex];
+
+        for (let i = 0; i < day.exercises.length; i++) {
+            const exercise = day.exercises[i];
+            if (i > 0) await new Promise(resolve => setTimeout(resolve, 1000));
+            const key = `${dayIndex}-${i}`;
+            try {
+                const preferenceEnglish = userData?.preference_place === 'OUT' ? 'at home' : 'at the gym';
+                const preferenceSpanish = userData?.preference_place === 'OUT' ? 'en la casa' : 'en el gimnasio';
+                const searchQuery = locale === 'es'
+                    ? `como hacer el ejercicio ${exercise.name} ${preferenceSpanish}`
+                    : `how to do the exercise ${exercise.name} ${preferenceEnglish}`;
+                const videoData: any = await (await fetch(`${apiUrl}/youtube/search?q=${searchQuery}`)).json();
+                const videoId: string | null = videoData?.items?.[0]?.id?.videoId ?? null;
+                setVideoIds(prev => ({ ...prev, [key]: videoId }));
+            } catch {
+                setVideoIds(prev => ({ ...prev, [key]: null }));
+            }
+        }
+
+        loadedDays.current.add(dayIndex);
+        fetchingDays.current.delete(dayIndex);
+        setLoadingDays(prev => { const s = new Set(prev); s.delete(dayIndex); return s; });
+    };
+
+    useEffect(() => {
+        if (!dataTrain?.routine) return;
+        loadedDays.current = new Set();
+        fetchingDays.current = new Set();
+        setVideoIds({});
+        setLoadingDays(new Set());
+        fetchDayVideos(0);
+    }, [dataTrain]);
+
     const onSubmitForm = (data: any) => {
         setDataForm(data);
         // const { ...workoutRoutineData } = data;
@@ -210,7 +254,8 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
         )
     }
 
-    const renderVideo = async (item: Exercise, index: number) => {
+    const renderVideo = (item: Exercise, dayIndex: number, exerciseIndex: number) => {
+        const key = `${dayIndex}-${exerciseIndex}`;
         const cardStyles = {
             mb: 3,
             background: '#1a1a26',
@@ -224,86 +269,54 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                 boxShadow: '0 8px 32px rgba(0, 255, 135, 0.12)',
                 borderColor: 'rgba(0, 255, 135, 0.2)',
             }
-        }
+        };
 
-        try {
+        const videoId = videoIds[key];
 
-            const preferenceEnglish = userData?.preference_place === 'OUT' ? 'at home' : 'at the gym';
-            const preferenceSpanish = userData?.preference_place === 'OUT' ? 'en la casa' : 'en el gimnasio';
-            const spanishPromt = `como hacer el ejercicio ${item.name} ${preferenceSpanish}`;
-            const englishPromt = `how to do the exercise ${item.name} ${preferenceEnglish}`;
-            const promt = locale === 'es' ? spanishPromt : englishPromt;
-            const videoData: any = await (await fetch(`${apiUrl}/youtube/search?q=${promt}`)).json();
-            const videoId = videoData?.items[0]?.id.videoId
-            if (videoId) {
-                return (
-                    <Card
-                        key={`itemb-${index}`}
-                        sx={cardStyles}
-                    >
-                        {tittleDescription(item)}
-                        <CardContent sx={{ p: 3 }}>
-                            {/* Video Container */}
-                            <Box sx={{
-                                position: 'relative',
-                                width: '100%',
-                                paddingBottom: '56.25%', // 16:9 aspect ratio
-                                height: 0,
-                                borderRadius: 2,
-                                overflow: 'hidden',
-                                boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-                            }}>
-                                <Suspense fallback={<CircularLoader text={t('routine.loaderVideo')} />}>
-                                    <iframe
-                                        src={`https://www.youtube.com/embed/${videoId}??hl=${locale}`}
-                                        frameBorder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                        style={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                            width: '100%',
-                                            height: '100%'
-                                        }}
-                                    />
-                                </Suspense>
-                            </Box>
-                        </CardContent>
-                    </Card>
-                )
-            } else {
-                return (
-                    <Card
-                        key={`itemb-${index}`}
-                        sx={cardStyles}
-                    >
-                        {tittleDescription(item)}
-                        <CardContent>
-                            <Typography variant="body1" color="text.secondary">
-                                🎥 Video not available for this exercise
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                )
-            }
-        } catch (error) {
-            console.log('error resquesting the video', error)
+        if (videoId) {
             return (
-                <Card
-                    key={`itemb-${index}`}
-                    sx={cardStyles}
-                >
+                <Card key={`itemb-${key}`} sx={cardStyles}>
                     {tittleDescription(item)}
-                    <CardContent>
-                        <Typography variant="body1" color="text.secondary">
-                            ⚠️ Error loading video for this exercise
-                        </Typography>
+                    <CardContent sx={{ p: 3 }}>
+                        <Box sx={{
+                            position: 'relative',
+                            width: '100%',
+                            paddingBottom: '56.25%',
+                            height: 0,
+                            borderRadius: 2,
+                            overflow: 'hidden',
+                            boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+                        }}>
+                            <iframe
+                                src={`https://www.youtube.com/embed/${videoId}?hl=${locale}`}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    width: '100%',
+                                    height: '100%',
+                                    border: 0,
+                                }}
+                            />
+                        </Box>
                     </CardContent>
                 </Card>
-            )
+            );
         }
-    }
+
+        return (
+            <Card key={`itemb-${key}`} sx={cardStyles}>
+                {tittleDescription(item)}
+                <CardContent>
+                    <Typography variant="body1" color="text.secondary">
+                        🎥 Video not available for this exercise
+                    </Typography>
+                </CardContent>
+            </Card>
+        );
+    };
 
     function containsAllWords(str: string, words: string[]) {
         let strL = str.toLowerCase();
@@ -318,15 +331,13 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
         const content: any = contentRefs.current[index];
         const button: any = buttonRefs.current[index];
 
-        // if (!content || !button) return;
-
-        // Toggle using display none/block
         if (content.style.display === "block") {
             button.style.transform = "rotate(180deg)";
             content.style.display = "none";
         } else {
             button.style.transform = "rotate(0deg)";
             content.style.display = "block";
+            fetchDayVideos(index);
         }
     };
 
@@ -377,7 +388,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                     </Button>
                 </Box>)}
                 {promt || workoutInfo ?
-                    (loader ? <CircularLoader text={t('routine.loaderGenerating')} /> : <Suspense fallback={<CircularLoader text={t('routine.loaderLoading')} />}>
+                    ((loader && !dataTrain) ? <CircularLoader text={t('routine.loaderGenerating')} /> : <Suspense fallback={<CircularLoader text={t('routine.loaderLoading')} />}>
                         <Box sx={{ maxWidth: '100%', mx: 'auto' }}>
                             {/* Personalized Routine Title */}
                             <Box sx={{ textAlign: 'center', mb: 4, mt: 2 }}>
@@ -596,15 +607,35 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                             </Box>
                                         </Paper>
                                         {/* <Collapse in={openAccordions[index]} timeout="auto" unmountOnExit> */}
-                                        <div ref={(el: any) => (contentRefs.current[index] = el)} className="w-full" style={{ display: `${index === 0 ? 'block' : 'none'}` }}>
-                                            {<Box sx={{ mb: 2 }}>
-                                                {item.exercises.map((exercise: Exercise) => {
-                                                    return (
-                                                        renderVideo(exercise, index)
-                                                    )
-                                                })}
-                                            </Box>}
-                                        </div>
+                                        { dataTrain?.routine.length > 0 && <div ref={(el: any) => (contentRefs.current[index] = el)} className="w-full" style={{ display: `${index === 0 ? 'block' : 'none'}` }}>
+                                            {loadingDays.has(index) ? (
+                                                <Box sx={{
+                                                    py: 6,
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                    gap: 2,
+                                                }}>
+                                                    <CircularProgress
+                                                        sx={{
+                                                            color: '#00ff87',
+                                                            filter: 'drop-shadow(0 0 8px rgba(0, 255, 135, 0.6))',
+                                                        }}
+                                                        size={44}
+                                                        thickness={3}
+                                                    />
+                                                    <Typography variant="body2" sx={{ color: '#c0c0d0', letterSpacing: '0.5px' }}>
+                                                        {t('routine.loaderVideo')}
+                                                    </Typography>
+                                                </Box>
+                                            ) : (
+                                                <Box sx={{ mb: 2 }}>
+                                                    {item.exercises.map((exercise: Exercise, exerciseIndex: number) => (
+                                                        renderVideo(exercise, index, exerciseIndex)
+                                                    ))}
+                                                </Box>
+                                            )}
+                                        </div> }
                                         {/* </Collapse> */}
                                     </>
                                 )

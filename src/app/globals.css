@@ -85,6 +85,11 @@ body {
   .bottomContainerButtons button {
     width: 50%;
   }
+
+  .bottomContainerButtons {
+    height: 215px;
+  }
+  
 }
 
 @media only screen and (max-width: 600px) {

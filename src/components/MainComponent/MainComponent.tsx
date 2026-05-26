@@ -229,11 +229,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
         try {
 
             const preferenceEnglish = userData?.preference_place === 'OUT' ? 'at home' : 'at the gym';
-            // const genderEnglish = userData?.gender === 'FEMALE' ? 'a woman' : 'a man';
             const preferenceSpanish = userData?.preference_place === 'OUT' ? 'en la casa' : 'en el gimnasio';
-            // const genderSpanish = userData?.gender === 'FEMALE' ? 'una mujer' : 'un hombre';
-            // const spanishPromt = `video de como hacer correctamente con buena técnica el ejercicio llamado ${item.name} ${preferenceSpanish} para ${genderSpanish}`;
-            // const englishPromt = `video about how to do correctly with good technique the exercise called ${item.name} ${preferenceEnglish} for a ${genderEnglish}`;
             const spanishPromt = `como hacer el ejercicio ${item.name} ${preferenceSpanish}`;
             const englishPromt = `how to do the exercise ${item.name} ${preferenceEnglish}`;
             const promt = locale === 'es' ? spanishPromt : englishPromt;
@@ -259,7 +255,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                             }}>
                                 <Suspense fallback={<CircularLoader text={t('routine.loaderVideo')} />}>
                                     <iframe
-                                        src={`https://www.youtube.com/embed/${videoId}`}
+                                        src={`https://www.youtube.com/embed/${videoId}??hl=${locale}`}
                                         frameBorder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen

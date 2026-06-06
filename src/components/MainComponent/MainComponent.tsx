@@ -137,6 +137,15 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
             startDayaccordion();
             setLoader(false);
             setDataTrain(workoutInfo);
+            setWorkoutData((prev: any) => {
+                return {
+                    ...prev,
+                    workout_routine: {
+                        ...prev.workout_routine,
+                        preference: userData?.preference_place,
+                    }
+                }
+            });
         }
     }, [workoutInfo]);
 
@@ -160,8 +169,8 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
             if (i > 0) await new Promise(resolve => setTimeout(resolve, 1000));
             const key = `${dayIndex}-${i}`;
             try {
-                const preferenceEnglish = userData?.preference_place === 'OUT' ? 'at home' : 'at the gym';
-                const preferenceSpanish = userData?.preference_place === 'OUT' ? 'en la casa' : 'en el gimnasio';
+                const preferenceEnglish = workoutData?.workout_routine?.preference === 'OUT' ? 'at home' : 'at the gym';
+                const preferenceSpanish = workoutData?.workout_routine?.preference === 'OUT' ? 'en la casa' : 'en el gimnasio';
                 const searchQuery = locale === 'es'
                     ? `como hacer el ejercicio ${exercise.name} ${preferenceSpanish}`
                     : `how to do the exercise ${exercise.name} ${preferenceEnglish}`;
@@ -200,7 +209,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
             }
         });
         setPromt(
-            `You are a sports training specialist who works helping people to achieve their goals in the shortest possible time, create a workout routine with a list of exercises organized in a JSON object writed in ${locale === 'en' ? 'English' : 'Spanish'}, The object should have the following keys:
+            `You are a sports training specialist who works helping people to achieve their goals in the shortest possible time, create a workout routine with a list of exercises organized in a JSON object writed in ${locale === 'en' ? 'English' : 'Spanish'}, simplify the exercises to be able to be searched in youtube videos, The object should have the following keys:
             - "initialRecomendations": initial recomendations and comments about the workout routine
             - "routine": An array where each item is an object that represents the exercises for each day and has the folloing keys:
                 - "day": number of the day, example:  day: "Day 1"

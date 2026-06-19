@@ -209,7 +209,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
             }
         });
         setPromt(
-            `You are a sports training specialist who works helping people to achieve their goals in the shortest possible time, create a workout routine with a list of exercises organized in a JSON object writed in ${locale === 'en' ? 'English' : 'Spanish'}, simplify the exercises to be able to be searched in youtube videos, The object should have the following keys:
+            `as an sports training expert who works helping people to achieve their goals in the shortest possible time, create a workout routine with a list of exercises organized in a JSON object writed in ${locale === 'en' ? 'English' : 'Spanish'}. Simplify the name of the exercises to be able to search the videos on youtube, The object should have the following keys:
             - "initialRecomendations": initial recomendations and comments about the workout routine
             - "routine": An array where each item is an object that represents the exercises for each day and has the folloing keys:
                 - "day": number of the day, example:  day: "Day 1"

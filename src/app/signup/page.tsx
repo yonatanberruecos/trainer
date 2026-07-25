@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useI18n } from '../context/I18nProvider';
+import { useBanner } from '../context/BannerProvider';
 
 interface FormData {
   name: string;
@@ -18,6 +19,7 @@ interface FormData {
 
 export default function Signup() {
   const { t } = useI18n();
+  const { showBanner } = useBanner();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -109,11 +111,25 @@ export default function Signup() {
     } catch (error: any) {
       console.error('Sign-up error:', error);
       setIsLoading(false);
-      if (error?.__type === 'UsernameExistsException') {
-        alert('User already exists. Redirecting to login page.');
-        router.push('/login');
+
+      // Cognito returns { "__type": "UsernameExistsException", ... } with a 400.
+      // Amplify surfaces that on the thrown error object (as `name`/`__type`/`message`),
+      // so inspect those fields instead of calling String methods on the object.
+      const isUserExists =
+        error?.name === 'UsernameExistsException' ||
+        error?.__type === 'UsernameExistsException' ||
+        (typeof error?.message === 'string' && error.message.includes('UsernameExistsException')) ||
+        (typeof error === 'string' && error.includes('UsernameExistsException'));
+
+      if (isUserExists) {
+        showBanner(t('signup.userExistsRedirect'), 'warning');
+        // Keep the banner visible for 5s before redirecting. The banner lives in
+        // a layout-level provider, so it stays on screen after navigation.
+        setTimeout(() => {
+          router.push('/login');
+        }, 5000);
       } else {
-        alert('There was an error during sign up. Please try again.');
+        showBanner(t('signup.signupError'), 'error');
       }
       return;
     }
@@ -156,10 +172,9 @@ export default function Signup() {
 
   /* ── style helpers ── */
   const inputClass = (field: string, hasError?: boolean) =>
-    `w-full px-4 py-3 pl-12 rounded-xl font-medium transition-all duration-300 focus:outline-none border-2 ${
-      hasError
-        ? 'border-[#ff6b6b] shadow-[0_0_0_3px_rgba(255,107,107,0.12)]'
-        : focusedField === field
+    `w-full px-4 py-3 pl-12 rounded-xl font-medium transition-all duration-300 focus:outline-none border-2 ${hasError
+      ? 'border-[#ff6b6b] shadow-[0_0_0_3px_rgba(255,107,107,0.12)]'
+      : focusedField === field
         ? 'border-[#00ff87] shadow-[0_0_0_3px_rgba(0,255,135,0.15)]'
         : 'border-[rgba(255,255,255,0.07)] hover:border-[rgba(255,255,255,0.15)]'
     }`;
@@ -368,10 +383,10 @@ export default function Signup() {
                 isLoading || !isFormValid()
                   ? { background: '#1a1a26', color: '#8888a0', cursor: 'not-allowed' }
                   : {
-                      background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)',
-                      color: '#09090f',
-                      boxShadow: '0 0 24px rgba(0, 255, 135, 0.35)',
-                    }
+                    background: 'linear-gradient(135deg, #00ff87 0%, #00d4ff 100%)',
+                    color: '#09090f',
+                    boxShadow: '0 0 24px rgba(0, 255, 135, 0.35)',
+                  }
               }
             >
               {isLoading ? (

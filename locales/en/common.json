@@ -75,7 +75,9 @@
     "passwordsDoNotMatch": "Passwords do not match",
     "confirmEmail": "Confirm Email Address",
     "confirmEmailPlaceholder": "Re-enter your email address",
-    "emailsDoNotMatch": "Email addresses do not match"
+    "emailsDoNotMatch": "Email addresses do not match",
+    "userExistsRedirect": "User already exists. Redirecting to login page.",
+    "signupError": "There was an error during sign up. Please try again."
   },
   "forgotPassword": {
     "title": "Forgot Password?",
@@ -210,6 +212,10 @@
     "heightRequired": "Height is required",
     "weightRequired": "Weight is required",
     "dobRequired": "Date of birth is required",
+    "daysRange": "Training days must be between 1 and 7",
+    "hoursRange": "Training minutes must be between 1 and 500",
+    "heightRange": "Height must be between 0.5 and 2.5 meters",
+    "weightRange": "Weight must be between 20 and 200 kg",
     "pobRequired": "Body part is required",
     "selectionRequired": "This selection is required",
     "conditionDetailsRequired": "Health condition details are required"

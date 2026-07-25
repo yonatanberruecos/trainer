@@ -5,6 +5,7 @@ import "./globals.css";
 import { COGNITO_CONFIG } from '../../aws-exports'
 import { ResourcesConfig } from "aws-amplify";
 import { MainContextAppProvider } from "./context/MainContextAppProvider";
+import { BannerProvider } from "./context/BannerProvider";
 import { I18nProvider } from "./context/I18nProvider";
 import AmplifyProvider from './AmplifyProvider';
 import Header from '../components/Header';
@@ -45,9 +46,11 @@ export default function RootLayout({
           <Header />
           <main className="pb-20 md:pb-[120px]">
           <AmplifyProvider>
-            <MainContextAppProvider>
-              {children}
-            </MainContextAppProvider>
+            <BannerProvider>
+              <MainContextAppProvider>
+                {children}
+              </MainContextAppProvider>
+            </BannerProvider>
           </AmplifyProvider>
           </main>
           <Footer />

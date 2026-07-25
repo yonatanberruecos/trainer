@@ -28,6 +28,18 @@ export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
 
     const onSubmit = (data: any) => onSubmitForm(data);
 
+    // Numeric field bounds — keeps users from submitting nonsensically high/low values.
+    const numericLimits: { [key: string]: { min: number; max: number } } = {
+        days: { min: 1, max: 7 },
+        hours: { min: 1, max: 500 },
+        height: { min: 0.5, max: 2.5 },
+        weight: { min: 20, max: 200 },
+    };
+
+    // Show a "required" message when empty, otherwise an out-of-range message.
+    const numericError = (field: string, requiredKey: string, rangeKey: string) =>
+        errors[field]?.type === 'required' ? t(requiredKey) : t(rangeKey);
+
     const watchShowExtraField = watch('haveillnes', '');
 
     useEffect(() => {
@@ -228,9 +240,9 @@ export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
                                     <FieldLabel>{t('trainingForm.trainingDays')}</FieldLabel>
                                     <div className="relative">
                                         <input
-                                            type="number" min="1" max="7"
+                                            type="number" min={numericLimits.days.min} max={numericLimits.days.max}
                                             placeholder={t('trainingForm.trainingDaysPlaceholder')}
-                                            {...register('days', { required: true, min: 1, max: 7 })}
+                                            {...register('days', { required: true, min: numericLimits.days.min, max: numericLimits.days.max, valueAsNumber: true })}
                                             onFocus={() => handleFocus('days')}
                                             onBlur={handleBlur}
                                             className={inputClass('days')}
@@ -238,7 +250,7 @@ export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
                                         />
                                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl">📅</span>
                                     </div>
-                                    <FieldError show={!!errors.days}>{t('trainingForm.daysRequired')}</FieldError>
+                                    <FieldError show={!!errors.days}>{numericError('days', 'trainingForm.daysRequired', 'trainingForm.daysRange')}</FieldError>
                                 </div>
 
                                 {/* Training Minutes */}
@@ -246,9 +258,9 @@ export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
                                     <FieldLabel>{t('trainingForm.trainingMinutes')}</FieldLabel>
                                     <div className="relative">
                                         <input
-                                            type="number"
+                                            type="number" min={numericLimits.hours.min} max={numericLimits.hours.max}
                                             placeholder={t('trainingForm.trainingMinutesPlaceholder')}
-                                            {...register('hours', { required: true })}
+                                            {...register('hours', { required: true, min: numericLimits.hours.min, max: numericLimits.hours.max, valueAsNumber: true })}
                                             onFocus={() => handleFocus('hours')}
                                             onBlur={handleBlur}
                                             className={inputClass('hours')}
@@ -256,7 +268,7 @@ export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
                                         />
                                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl">⏱️</span>
                                     </div>
-                                    <FieldError show={!!errors.hours}>{t('trainingForm.hoursRequired')}</FieldError>
+                                    <FieldError show={!!errors.hours}>{numericError('hours', 'trainingForm.hoursRequired', 'trainingForm.hoursRange')}</FieldError>
                                 </div>
 
                                 {/* Gender */}
@@ -295,9 +307,9 @@ export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
                                         <FieldLabel>{t('trainingForm.height')}</FieldLabel>
                                         <div className="relative">
                                             <input
-                                                type="number" step="0.01"
+                                                type="number" step="0.01" min={numericLimits.height.min} max={numericLimits.height.max}
                                                 placeholder={t('trainingForm.heightPlaceholder')}
-                                                {...register('height', { required: true })}
+                                                {...register('height', { required: true, min: numericLimits.height.min, max: numericLimits.height.max, valueAsNumber: true })}
                                                 onFocus={() => handleFocus('height')}
                                                 onBlur={handleBlur}
                                                 className={inputClass('height')}
@@ -305,15 +317,15 @@ export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
                                             />
                                             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">📏</span>
                                         </div>
-                                        <FieldError show={!!errors.height}>{t('trainingForm.heightRequired')}</FieldError>
+                                        <FieldError show={!!errors.height}>{numericError('height', 'trainingForm.heightRequired', 'trainingForm.heightRange')}</FieldError>
                                     </div>
                                     <div>
                                         <FieldLabel>{t('trainingForm.weight')}</FieldLabel>
                                         <div className="relative">
                                             <input
-                                                type="number"
+                                                type="number" min={numericLimits.weight.min} max={numericLimits.weight.max}
                                                 placeholder={t('trainingForm.weightPlaceholder')}
-                                                {...register('weight', { required: true })}
+                                                {...register('weight', { required: true, min: numericLimits.weight.min, max: numericLimits.weight.max, valueAsNumber: true })}
                                                 onFocus={() => handleFocus('weight')}
                                                 onBlur={handleBlur}
                                                 className={inputClass('weight')}
@@ -321,7 +333,7 @@ export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
                                             />
                                             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">⚖️</span>
                                         </div>
-                                        <FieldError show={!!errors.weight}>{t('trainingForm.weightRequired')}</FieldError>
+                                        <FieldError show={!!errors.weight}>{numericError('weight', 'trainingForm.weightRequired', 'trainingForm.weightRange')}</FieldError>
                                     </div>
                                 </div>
 

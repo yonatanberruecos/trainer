@@ -75,7 +75,9 @@
     "passwordsDoNotMatch": "Las contraseñas no coinciden",
     "confirmEmail": "Confirmar Correo Electrónico",
     "confirmEmailPlaceholder": "Vuelve a ingresar tu correo electrónico",
-    "emailsDoNotMatch": "Las direcciones de correo no coinciden"
+    "emailsDoNotMatch": "Las direcciones de correo no coinciden",
+    "userExistsRedirect": "El usuario ya existe. Redirigiendo a la página de inicio de sesión.",
+    "signupError": "Hubo un error durante el registro. Por favor, inténtalo de nuevo."
   },
   "forgotPassword": {
     "title": "¿Olvidaste tu Contraseña?",
@@ -210,6 +212,10 @@
     "heightRequired": "La altura es requerida",
     "weightRequired": "El peso es requerido",
     "dobRequired": "La fecha de nacimiento es requerida",
+    "daysRange": "Los días de entrenamiento deben estar entre 1 y 7",
+    "hoursRange": "Los minutos de entrenamiento deben estar entre 1 y 500",
+    "heightRange": "La estatura debe estar entre 0.5 y 2.5 metros",
+    "weightRange": "El peso debe estar entre 20 y 200 kg",
     "selectionRequired": "Esta selección es requerida",
     "conditionDetailsRequired": "Los detalles de la condición de salud son requeridos"
   }

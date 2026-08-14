@@ -41,6 +41,23 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Anchor offset so fixed navbar doesn't cover section titles */
+  .scroll-anchor {
+    scroll-margin-top: 88px;
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ── Legacy layout helpers ── */
@@ -96,6 +113,44 @@ body {
   .video-container {
     width: 100%;
   }
+}
+
+/* ── Date input (Safari) ──
+   Safari renders input[type="date"] as a native widget with an intrinsic
+   min-width from its value text + picker controls, which overrides `width: 100%`
+   and pushes the field past its container. Dropping the native appearance lets
+   the field shrink like every other text input. */
+.tx-date-input {
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 0;
+  max-width: 100%;
+  display: block;
+  box-sizing: border-box;
+  text-align: left;
+  /* Padding alone sizes a text input, but an appearance:none date input on iOS
+     has no intrinsic height — pin it to match the other fields (py-4 + border). */
+  min-height: 60px;
+}
+
+/* iOS Safari centers the value inside the field and adds its own side margins */
+.tx-date-input::-webkit-date-and-time-value {
+  text-align: left;
+  margin: 0;
+}
+
+/* Keep the picker trigger inside the field instead of at its intrinsic offset */
+.tx-date-input::-webkit-calendar-picker-indicator {
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Safari reserves space for these even when empty, widening the field */
+.tx-date-input::-webkit-inner-spin-button,
+.tx-date-input::-webkit-clear-button {
+  -webkit-appearance: none;
+  display: none;
 }
 
 /* ── Trainix glow utility ── */

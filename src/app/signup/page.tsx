@@ -17,6 +17,33 @@ interface FormData {
   repeatPassword: string;
 }
 
+// Colombian country code used for Cognito's E.164 `phone_number` attribute.
+const COUNTRY_CODE = '57';
+
+/**
+ * Returns the 10-digit national number, stripped of everything Cognito rejects
+ * (spaces, dashes, parentheses, a leading 0, or a duplicated +57 country code).
+ */
+const getNationalPhoneDigits = (raw: string) => {
+  let digits = raw.replace(/\D/g, ''); // keep digits only
+
+  // Drop the country code if the user already typed it (+57 / 57...).
+  if (digits.length > 10 && digits.startsWith(COUNTRY_CODE)) {
+    digits = digits.slice(COUNTRY_CODE.length);
+  }
+
+  // Drop any leading zero(s) sometimes used for local dialing.
+  digits = digits.replace(/^0+/, '');
+
+  return digits;
+};
+
+/** Builds a Cognito-compatible E.164 phone number, e.g. "+573001234567". */
+const formatPhoneE164 = (raw: string) => `+${COUNTRY_CODE}${getNationalPhoneDigits(raw)}`;
+
+/** Colombian mobile numbers have exactly 10 national digits. */
+const isValidPhone = (raw: string) => getNationalPhoneDigits(raw).length === 10;
+
 export default function Signup() {
   const { t } = useI18n();
   const { showBanner } = useBanner();
@@ -50,6 +77,9 @@ export default function Signup() {
     if (data.password && data.repeatPassword && data.password !== data.repeatPassword) {
       errors.repeatPassword = t('signup.passwordsDoNotMatch');
     }
+    if (data.phone && !isValidPhone(data.phone)) {
+      errors.phone = t('signup.invalidPhone');
+    }
 
     return errors;
   };
@@ -75,7 +105,8 @@ export default function Signup() {
       repeatPassword.trim() &&
       email === confirmEmail &&
       /[A-Z]/.test(password) &&
-      password === repeatPassword
+      password === repeatPassword &&
+      isValidPhone(phone)
     );
   };
 
@@ -98,7 +129,7 @@ export default function Signup() {
           userAttributes: {
             name: formData.name,
             email: formData.email,
-            phone_number: '+57' + formData.phone,
+            phone_number: formatPhoneE164(formData.phone),
           },
         },
       });
@@ -313,12 +344,13 @@ export default function Signup() {
                 <input
                   name="phone"
                   type="tel"
+                  inputMode="numeric"
                   placeholder={t('signup.phonePlaceholder')}
                   value={formData.phone}
                   onChange={handleChange}
                   onFocus={() => handleFocus('phone')}
                   onBlur={handleBlur}
-                  className={inputClass('phone')}
+                  className={inputClass('phone', !!formErrors.phone)}
                   style={{ background: '#1a1a26', color: '#f0f0f5' }}
                   required
                 />
@@ -326,6 +358,7 @@ export default function Signup() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </FieldIcon>
               </div>
+              {formErrors.phone && <FieldError>{formErrors.phone}</FieldError>}
             </Field>
 
             {/* Password */}

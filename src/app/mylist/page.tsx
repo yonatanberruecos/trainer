@@ -25,6 +25,7 @@ import {
 } from '@mui/material';
 import { useAuth } from '../hooks/useAuth';
 import { useI18n } from '../context/I18nProvider';
+import { getObjectiveTranslationKey } from '../../../lib/objective';
 
 
 interface Item {
@@ -32,6 +33,8 @@ interface Item {
   userworkout_routine_summary: string;
   userworkout_workout_routine: string;
   userworkout_workout_id: number,
+  WorkoutInformation_objective?: string;
+  WorkoutInformation_body_objective?: string;
 }
 
 const ItemsPage = () => {
@@ -197,6 +200,12 @@ const ItemsPage = () => {
       case 'Advanced': return 'error';
       default: return 'warning';
     }
+  };
+
+  // Helper function to get the objective label
+  const getObjectiveLabel = (objective: string) => {
+    const key = getObjectiveTranslationKey(objective);
+    return key ? t(key) : objective;
   };
 
   // Helper function to truncate text
@@ -400,6 +409,39 @@ const ItemsPage = () => {
                             />
                           </Box>
                         </Box>
+
+                        {/* Objective badges */}
+                        {(item.WorkoutInformation_objective || item.WorkoutInformation_body_objective) && (
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
+                            {item.WorkoutInformation_objective && (
+                              <Chip
+                                label={getObjectiveLabel(item.WorkoutInformation_objective)}
+                                size="small"
+                                sx={{
+                                  fontSize: '0.72rem',
+                                  fontWeight: 'bold',
+                                  textTransform: 'uppercase',
+                                  color: '#00ff87',
+                                  backgroundColor: 'rgba(0, 255, 135, 0.12)',
+                                  border: '1px solid rgba(0, 255, 135, 0.3)',
+                                }}
+                              />
+                            )}
+                            {item.WorkoutInformation_body_objective && (
+                              <Chip
+                                label={item.WorkoutInformation_body_objective}
+                                size="small"
+                                sx={{
+                                  fontSize: '0.72rem',
+                                  fontWeight: 'bold',
+                                  color: '#00d4ff',
+                                  backgroundColor: 'rgba(0, 212, 255, 0.12)',
+                                  border: '1px solid rgba(0, 212, 255, 0.3)',
+                                }}
+                              />
+                            )}
+                          </Box>
+                        )}
 
                         {/* Description */}
                         <Box sx={{ flex: 1, mb: 2 }}>

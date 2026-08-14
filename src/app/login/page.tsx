@@ -220,14 +220,14 @@ export default function Login() {
           </form>
 
           {/* Divider */}
-          <div className="my-6 flex items-center gap-3">
+          {/* <div className="my-6 flex items-center gap-3">
             <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.07)' }} />
             <span className="text-xs" style={{ color: '#8888a0' }}>{t('login.orContinueWith')}</span>
             <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.07)' }} />
-          </div>
+          </div> */}
 
           {/* Social */}
-          <div className="grid grid-cols-2 gap-3">
+          {/* <div className="grid grid-cols-2 gap-3">
             {[
               {
                 label: t('login.google'),
@@ -259,7 +259,7 @@ export default function Login() {
                 {label}
               </button>
             ))}
-          </div>
+          </div> */}
 
           {/* Sign up link */}
           <div className="mt-6 text-center">

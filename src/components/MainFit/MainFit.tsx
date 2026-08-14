@@ -12,11 +12,13 @@ interface IdataWorkout {
   userworkout_routine_summary: string;
   WorkoutInformation_preference_place: string;
   WorkoutInformation_gender: string;
+  WorkoutInformation_objective?: string;
 }
 
 export interface IuserData {
   preference_place: string;
   gender: string;
+  objective?: string;
 }
 
 export default function MainFit() {
@@ -40,7 +42,7 @@ export default function MainFit() {
             const routine = data.filter(item => item.userworkout_id === Number(routine_id));
             // const data = [{id: "1", description: " 5-Day Workout Routine for Weight Loss (Male, Obese, Junior Experience)"}, {id: "2", description: " 5-Day Workout Routine for Weight Loss (Male, Obese, Junior Experience)"}]
             setWorkoutInfo(JSON.parse(routine[0].userworkout_workout_routine));
-            setUserData({ preference_place: routine[0].WorkoutInformation_preference_place, gender: routine[0].WorkoutInformation_gender });
+            setUserData({ preference_place: routine[0].WorkoutInformation_preference_place, gender: routine[0].WorkoutInformation_gender, objective: routine[0].WorkoutInformation_objective });
           } catch (error) {
             console.error('Error fetching items:', error);
           }

@@ -13,7 +13,8 @@ import {
     Divider,
     Paper,
     IconButton,
-    Collapse
+    Collapse,
+    Chip
 } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CircularLoader from "@/components/CircularLoader/CircularLoader";
@@ -21,6 +22,7 @@ import { MainContext } from "../../app/context/MainContextAppProvider";
 import { useRouter } from 'next/navigation';
 import { useI18n } from "@/app/context/I18nProvider";
 import { IuserData } from "@/components/MainFit/MainFit";
+import { getObjectiveTranslationKey } from "../../../lib/objective";
 
 interface Exercise {
     name: string;
@@ -221,6 +223,14 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
             create the perfect training routine for the week to achieve the main goal in the shortest possible time, suitable, focused and personalized as an specialist for a person with the following characteristics: the person can workout ${data.days} days at week and the others days of seven day's week to rest, training Minutes per Day: ${data.hours} Minutes, gender: ${data.gender}, date of birth: ${data.dob}, height: ${data.height}m, weight: ${data.weight}kg, favorite place to practice: ${data.preference === 'IN' ? 'gym' : 'house'}, main goal: ${data.objective === 'LOSS' ? 'weight loss' : data.objective === 'BUILD' ? 'build muscle' : 'gain flexibility'}, target body part: ${data.pob || 'all body'}, workout experience: ${data.workout}. limitation: ${data.illness || 'none'}`
         );
     }
+
+    // Main objective of the routine (saved routine, or the one just generated from the form)
+    const objective = userData?.objective || workoutData?.workout_routine?.objective;
+
+    const getObjectiveLabel = (value: string) => {
+        const key = getObjectiveTranslationKey(value);
+        return key ? t(key) : value;
+    };
 
     const tittleDescription = (item: Exercise) => {
         return (
@@ -424,6 +434,23 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                     mx: 'auto',
                                     boxShadow: '0 0 12px rgba(0, 255, 135, 0.5)',
                                 }} />
+
+                                {/* Main objective badge */}
+                                {objective && (
+                                    <Chip
+                                        label={getObjectiveLabel(objective)}
+                                        size="small"
+                                        sx={{
+                                            mt: 2,
+                                            fontSize: '0.72rem',
+                                            fontWeight: 'bold',
+                                            textTransform: 'uppercase',
+                                            color: '#00ff87',
+                                            backgroundColor: 'rgba(0, 255, 135, 0.12)',
+                                            border: '1px solid rgba(0, 255, 135, 0.3)',
+                                        }}
+                                    />
+                                )}
                             </Box>
 
                             {/* Action buttons */}

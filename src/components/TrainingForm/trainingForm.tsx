@@ -338,7 +338,7 @@ export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
                                 </div>
 
                                 {/* Date of Birth */}
-                                <div className="max-w-[325px] sm:max-w-none">
+                                <div>
                                     <FieldLabel>{t('trainingForm.dateOfBirth')}</FieldLabel>
                                     <div className="relative">
                                         <input
@@ -346,7 +346,7 @@ export default function TrainingForm({ onSubmitForm }: ItrainingFormProps) {
                                             {...register('dob', { required: true })}
                                             onFocus={() => handleFocus('dob')}
                                             onBlur={handleBlur}
-                                            className={inputClass('dob')}
+                                            className={`${inputClass('dob')} tx-date-input`}
                                             style={{ background: '#1a1a26', color: '#f0f0f5', colorScheme: 'dark' }}
                                         />
                                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">🎂</span>

@@ -366,7 +366,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
             minHeight: '100vh',
             background: '#09090f',
             pt: 2,
-            paddingBottom: '145px'
+            // paddingBottom: '145px'
         }}>
             <Container maxWidth="lg">
                 {/* Header with My Routines Button */}
@@ -408,7 +408,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                 </Box>)}
                 {promt || workoutInfo ?
                     ((loader && !dataTrain) ? <CircularLoader text={t('routine.loaderGenerating')} /> : <Suspense fallback={<CircularLoader text={t('routine.loaderLoading')} />}>
-                        <Box sx={{ maxWidth: '100%', mx: 'auto' }}>
+                        <Box sx={{ maxWidth: '100%', mx: 'auto', paddingBottom: '145px' }}>
                             {/* Personalized Routine Title */}
                             <Box sx={{ textAlign: 'center', mb: 4, mt: 2 }}>
                                 <Typography

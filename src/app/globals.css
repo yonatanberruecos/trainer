@@ -83,7 +83,7 @@ body {
 /* ── Save-routine sticky bar ── */
 .bottomContainerButtons {
   position: fixed;
-  height: 178px;
+  /* height: 178px; */
   background: var(--tx-surface);
   border-top: 1px solid var(--tx-border-accent);
   width: 100%;
@@ -91,7 +91,8 @@ body {
   left: 0;
   right: 0;
   text-align: center;
-  padding-top: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .bottomContainerButtons button {

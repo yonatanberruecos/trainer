@@ -70,7 +70,7 @@ export default function Navbar() {
         {/* Desktop CTA */}
         <div className="hidden lg:block">
           <Link
-            href="/signup"
+            href="/fit"
             className="rounded-xl bg-trainix-gradient px-5 py-2.5 text-sm font-semibold text-trainix-bg shadow-lg shadow-trainix-green/20 transition-transform hover:scale-[1.03] active:scale-[0.98]"
           >
             Generar mi rutina
@@ -118,7 +118,7 @@ export default function Navbar() {
             ))}
             <li className="pt-2">
               <Link
-                href="/signup"
+                href="/fit"
                 onClick={() => setOpen(false)}
                 className="block rounded-xl bg-trainix-gradient px-5 py-3 text-center text-base font-semibold text-trainix-bg"
               >

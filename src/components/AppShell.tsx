@@ -22,7 +22,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <main className="pb-20 md:pb-[120px]">
+      <main className="pb-4 md:pb-[16px]">
         <AmplifyProvider>
           <BannerProvider>
             <MainContextAppProvider>{children}</MainContextAppProvider>

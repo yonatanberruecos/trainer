@@ -44,7 +44,7 @@ interface routine {
 }
 
 interface workoutRoutine {
-    initialRecomendations: string
+    initialRecommendations: string
     routine: routine[]
     lastRecommendations: string;
 };
@@ -87,10 +87,6 @@ The program should prioritize:
 8. Safe exercise selection.
 9. Sustainable progression.
 
-Do NOT attempt to promise the fastest possible physical transformation or guaranteed results.
-
-The routine is educational fitness guidance and must not be presented as medical treatment or diagnosis.
-
 ## LANGUAGE
 
 Return all user-facing content in:
@@ -112,7 +108,7 @@ ${locale === 'en' ? 'English' : 'Spanish'}
                 ? 'Muscle hypertrophy / muscle gain'
                 : 'Improve mobility and flexibility'
         }
-* Target body area: ${data.pob || 'Full body'}
+* Target body area: ${data.pob || 'arms, legs, back, chest'}
 * Training experience: ${data.workout}
 * Physical limitations or relevant conditions reported by the user: ${data.illness || 'None reported'}
 
@@ -120,17 +116,9 @@ ${locale === 'en' ? 'English' : 'Spanish'}
 
 Create exactly ${data.days} training sessions.
 
-The remaining days of the seven-day week are rest or active recovery days.
+The remaining days of the seven-day week are rest or active recovery days, add those to the routine with the target muscles "Rest day" or "Recovery day".
 
 Choose the training split that best fits the number of available days, experience level, goal, and target muscles.
-
-Examples may include:
-
-* Full body
-* Upper / lower
-* Push / pull / legs
-* Upper / lower / full body
-* Other appropriate structures
 
 Do not force a particular split if another structure would be more appropriate.
 
@@ -180,7 +168,7 @@ Provide adequate recovery before heavily training the same muscle groups again.
 
 ### Goal-specific programming
 
-If the primary goal is MUSCLE GAIN:
+If the ${data.objective} is MUSCLE GAIN:
 
 * prioritize progressive resistance training
 * emphasize major movement patterns
@@ -188,7 +176,7 @@ If the primary goal is MUSCLE GAIN:
 * include sufficient weekly volume without excessive fatigue
 * prioritize the requested body area when appropriate while maintaining overall muscular balance
 
-If the primary goal is FAT LOSS / WEIGHT MANAGEMENT:
+If the ${data.objective}  is FAT LOSS / WEIGHT MANAGEMENT:
 
 * maintain resistance training as the foundation
 * use compound and accessory movements
@@ -196,7 +184,7 @@ If the primary goal is FAT LOSS / WEIGHT MANAGEMENT:
 * do not prescribe extreme exercise volume
 * explain that nutrition and total energy balance are important contributors to fat loss
 
-If the primary goal is FLEXIBILITY / MOBILITY:
+If the ${data.objective}  is FLEXIBILITY / MOBILITY:
 
 * prioritize controlled mobility and flexibility exercises
 * include appropriate active and static mobility work
@@ -932,7 +920,7 @@ Before returning the JSON, internally verify that:
                                             fontSize: '1rem',
                                         }}
                                     >
-                                        {dataTrain?.initialRecomendations}
+                                        {dataTrain?.initialRecommendations}
                                     </Typography>
                                 </Box>
                             </Paper>

@@ -149,7 +149,10 @@
     "lastRecommendations": "Final Recommendations",
     "loaderGenerating": "Generating routine...",
     "loaderLoading": "Loading...",
-    "loaderVideo": "Video is loading..."
+    "loaderVideo": "Video is loading...",
+    "sets": "Sets",
+    "reps": "Repetitions",
+    "restSeconds": "Rest seconds"
   },
   "trainingForm": {
     "title": "Your Fitness Journey",

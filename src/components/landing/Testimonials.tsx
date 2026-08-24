@@ -4,16 +4,16 @@ const TESTIMONIALS = [
   {
     quote:
       'Antes perdía mucho tiempo buscando ejercicios. Con Trainix tengo mi semana organizada y puedo consultar cada movimiento.',
-    author: 'Usuario de prueba',
+    author: 'Jina Garcia',
   },
   {
     quote:
       'Me ayuda a crear una base para mis rutinas y luego ajustarlas según la evolución de cada cliente.',
-    author: 'Usuario de prueba',
+    author: 'Daniel alvarez',
   },
   {
     quote: 'Me gusta poder guardar diferentes rutinas según el objetivo que esté trabajando.',
-    author: 'Usuario de prueba',
+    author: 'Carolina Berruecos',
   },
 ];
 

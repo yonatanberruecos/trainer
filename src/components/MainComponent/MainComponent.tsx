@@ -27,11 +27,19 @@ import { getObjectiveTranslationKey } from "../../../lib/objective";
 interface Exercise {
     name: string;
     description: string;
+    searchQuery: string;
+    targetMuscles?: string[];
+    sets?: number;
+    reps?: string;
+    restSeconds?: number;
 }
 
 interface routine {
     day: string;
-    targetMuscle: string;
+    /** Legacy shape (saved routines): a single muscle string */
+    targetMuscle?: string;
+    /** Current shape: a list of target muscles */
+    targetMuscles?: string[];
     exercises: Exercise[]
 }
 
@@ -61,6 +69,293 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
     const mainContainer = useRef();
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
+
+
+    const promptBuild = (data: any) => `You are an expert strength and conditioning coach specializing in safe, evidence-informed, individualized exercise programming.
+
+Your task is to generate an effective, progressive, realistic, and personalized weekly workout program based exclusively on the information provided by the user.
+
+The program should prioritize:
+
+1. The user's primary goal.
+2. The user's experience level.
+3. The number of available training days.
+4. Available training time.
+5. Training location.
+6. Target body areas.
+7. Adequate recovery between sessions.
+8. Safe exercise selection.
+9. Sustainable progression.
+
+Do NOT attempt to promise the fastest possible physical transformation or guaranteed results.
+
+The routine is educational fitness guidance and must not be presented as medical treatment or diagnosis.
+
+## LANGUAGE
+
+Return all user-facing content in:
+
+${locale === 'en' ? 'English' : 'Spanish'}
+
+## USER INFORMATION
+
+* Training days per week: ${data.days}
+* Training minutes per session: ${data.hours}
+* Gender: ${data.gender}
+* Age: ${data.age}
+* Height: ${data.height} m
+* Weight: ${data.weight} kg
+* Training location: ${data.preference === 'IN' ? 'Gym' : 'Home'}
+* Main goal: ${data.objective === 'LOSS'
+            ? 'Fat loss / weight management'
+            : data.objective === 'BUILD'
+                ? 'Muscle hypertrophy / muscle gain'
+                : 'Improve mobility and flexibility'
+        }
+* Target body area: ${data.pob || 'Full body'}
+* Training experience: ${data.workout}
+* Physical limitations or relevant conditions reported by the user: ${data.illness || 'None reported'}
+
+## PROGRAMMING RULES
+
+Create exactly ${data.days} training sessions.
+
+The remaining days of the seven-day week are rest or active recovery days.
+
+Choose the training split that best fits the number of available days, experience level, goal, and target muscles.
+
+Examples may include:
+
+* Full body
+* Upper / lower
+* Push / pull / legs
+* Upper / lower / full body
+* Other appropriate structures
+
+Do not force a particular split if another structure would be more appropriate.
+
+### Session duration
+
+Design each session so that it can realistically be completed within approximately ${data.hours} minutes.
+
+Account for:
+
+* warm-up
+* exercises
+* rest periods
+* cool-down when appropriate
+
+Do not create an unrealistic number of exercises for the available time.
+
+### Exercise selection
+
+Select exercises appropriate for:
+
+* the user's experience
+* training location
+* available equipment normally expected at that location
+* main goal
+* target muscles
+* reported limitations
+
+For home training, prefer exercises using bodyweight or commonly available home equipment unless equipment information has explicitly been provided.
+
+For gym training, standard commercial gym equipment may be used.
+
+Avoid unnecessary exercise complexity.
+
+Beginners should receive exercises that are relatively simple to learn and control.
+
+More experienced users may receive moderately more complex movements when appropriate.
+
+### Training volume
+
+Select a reasonable number of exercises, sets, and repetitions according to the user's goal and experience.
+
+Avoid excessive volume.
+
+Distribute training stress throughout the week instead of unnecessarily concentrating it into one session.
+
+Provide adequate recovery before heavily training the same muscle groups again.
+
+### Goal-specific programming
+
+If the primary goal is MUSCLE GAIN:
+
+* prioritize progressive resistance training
+* emphasize major movement patterns
+* use an appropriate hypertrophy repetition range
+* include sufficient weekly volume without excessive fatigue
+* prioritize the requested body area when appropriate while maintaining overall muscular balance
+
+If the primary goal is FAT LOSS / WEIGHT MANAGEMENT:
+
+* maintain resistance training as the foundation
+* use compound and accessory movements
+* optionally include reasonable cardiovascular or conditioning work
+* do not prescribe extreme exercise volume
+* explain that nutrition and total energy balance are important contributors to fat loss
+
+If the primary goal is FLEXIBILITY / MOBILITY:
+
+* prioritize controlled mobility and flexibility exercises
+* include appropriate active and static mobility work
+* avoid turning the program into a hypertrophy routine unless resistance training supports the user's goal
+
+### Progression
+
+Provide a simple progression strategy.
+
+Where appropriate, use progressive overload such as:
+
+* increasing repetitions within the prescribed range
+* gradually increasing resistance
+* improving exercise control
+* adding sets only when appropriate
+
+Avoid recommending large jumps in training volume or resistance.
+
+### Intensity
+
+For resistance exercises provide either RIR or RPE guidance.
+
+Prefer RIR.
+
+Typical working sets should generally finish with approximately 1–3 repetitions in reserve unless there is a specific reason otherwise.
+
+Do not recommend routine training to absolute muscular failure, especially for beginners or technically demanding exercises.
+
+### Limitations and safety
+
+If the user reports an injury, medical condition, pain, or physical limitation:
+
+* avoid exercises that clearly conflict with the reported limitation
+* do not diagnose the condition
+* do not claim that exercise will treat or cure it
+* provide conservative recommendations
+* recommend professional medical or physiotherapy evaluation when the limitation may materially affect safe training
+
+If the available information is insufficient to safely personalize around a serious limitation, reflect that uncertainty in the recommendations.
+
+## YOUTUBE VIDEO SEARCH
+
+Every exercise must include a 'searchQuery'.
+
+The 'searchQuery' is NOT user-facing.
+
+It must be a short, conventional exercise name optimized for finding a technically correct demonstration using the YouTube API.
+
+Examples:
+
+Display name:
+"Press de banca con barra"
+
+searchQuery:
+"barbell bench press"
+
+Display name:
+"Sentadilla goblet"
+
+searchQuery:
+"goblet squat"
+
+Do not include:
+
+* sets
+* repetitions
+* motivational text
+* the user's goal
+* unnecessary adjectives
+
+in 'searchQuery'.
+
+Prefer internationally recognized English exercise terminology for 'searchQuery' even when the interface language is Spanish, because it generally provides more reliable search results.
+
+## RESPONSE FORMAT
+
+Return ONLY valid JSON.
+
+Do not return Markdown.
+
+Do not use code fences.
+
+Do not add text before or after the JSON.
+
+The JSON must follow this structure:
+
+{
+"initialRecommendations": [
+"string"
+],
+"weeklyPlan": {
+"trainingDays": number,
+"split": "string",
+"estimatedSessionMinutes": number
+},
+"routine": [
+{
+"day": "Day 1",
+"targetMuscles": [
+"string"
+],
+"estimatedDurationMinutes": number,
+"warmup": [
+{
+"name": "string",
+"duration": "string"
+}
+],
+"exercises": [
+{
+"name": "string",
+"searchQuery": "string",
+"targetMuscles": [
+"string"
+],
+"sets": number,
+"reps": "string",
+"restSeconds": number,
+"rir": "string",
+"description": "string",
+"techniqueTips": [
+"string"
+]
+}
+],
+"optionalCardio": {
+"enabled": boolean,
+"type": "string",
+"durationMinutes": number,
+"intensity": "string"
+}
+}
+],
+"progression": {
+"strategy": "string",
+"whenToIncreaseLoad": "string"
+},
+"lastRecommendations": [
+"string"
+],
+"safetyNote": "string"
+}
+
+## FINAL VALIDATION
+
+Before returning the JSON, internally verify that:
+
+* The number of training days equals ${data.days}.
+* Each workout fits approximately within ${data.hours} minutes.
+* Exercises match the training location.
+* The program matches the user's experience level.
+* The routine prioritizes the main goal.
+* The requested body area receives appropriate emphasis.
+* There is adequate recovery between similar muscle groups.
+* Sets and repetitions are realistic.
+* Every exercise contains a valid 'searchQuery'.
+* No exercise clearly conflicts with a reported limitation.
+* The result contains valid JSON only.
+`;
 
     const handleOnSave = async () => {
         setLoader(true);
@@ -174,8 +469,8 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                 const preferenceEnglish = workoutData?.workout_routine?.preference === 'OUT' ? 'at home' : 'at the gym';
                 const preferenceSpanish = workoutData?.workout_routine?.preference === 'OUT' ? 'en la casa' : 'en el gimnasio';
                 const searchQuery = locale === 'es'
-                    ? `como hacer el ejercicio ${exercise.name} ${preferenceSpanish}`
-                    : `how to do the exercise ${exercise.name} ${preferenceEnglish}`;
+                    ? `como hacer el ejercicio ${exercise.searchQuery} ${preferenceSpanish}`
+                    : `how to do the exercise ${exercise.searchQuery} ${preferenceEnglish}`;
                 const videoData: any = await (await fetch(`${apiUrl}/youtube/search?q=${searchQuery}`)).json();
                 const videoId: string | null = videoData?.items?.[0]?.id?.videoId ?? null;
                 setVideoIds(prev => ({ ...prev, [key]: videoId }));
@@ -210,18 +505,19 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                 }
             }
         });
-        setPromt(
-            `as an sports training expert who works helping people to achieve their goals in the shortest possible time, create a workout routine with a list of exercises organized in a JSON object writed in ${locale === 'en' ? 'English' : 'Spanish'}. Simplify the name of the exercises to be able to search the videos on youtube, The object should have the following keys:
-            - "initialRecomendations": initial recomendations and comments about the workout routine
-            - "routine": An array where each item is an object that represents the exercises for each day and has the folloing keys:
-                - "day": number of the day, example:  day: "Day 1"
-                - "targetMuscle" the muscles target for the day routine.
-                - "exercises": an array of objects for each exercise where each objet has the following keys:
-                    - "name": name of the exercise
-                    - "description" description of the exercise, target muscles and repetitions
-            - "lastRecommendations": last recommedations about the routine and stretch
-            create the perfect training routine for the week to achieve the main goal in the shortest possible time, suitable, focused and personalized as an specialist for a person with the following characteristics: the person can workout ${data.days} days at week and the others days of seven day's week to rest, training Minutes per Day: ${data.hours} Minutes, gender: ${data.gender}, date of birth: ${data.dob}, height: ${data.height}m, weight: ${data.weight}kg, favorite place to practice: ${data.preference === 'IN' ? 'gym' : 'house'}, main goal: ${data.objective === 'LOSS' ? 'weight loss' : data.objective === 'BUILD' ? 'build muscle' : 'gain flexibility'}, target body part: ${data.pob || 'all body'}, workout experience: ${data.workout}. limitation: ${data.illness || 'none'}`
-        );
+        // setPromt(
+        //     `as an sports training expert who works helping people to achieve their goals in the shortest possible time, create a workout routine with a list of exercises organized in a JSON object writed in ${locale === 'en' ? 'English' : 'Spanish'}. Simplify the name of the exercises to be able to search the videos on youtube, The object should have the following keys:
+        //     - "initialRecomendations": initial recomendations and comments about the workout routine
+        //     - "routine": An array where each item is an object that represents the exercises for each day and has the folloing keys:
+        //         - "day": number of the day, example:  day: "Day 1"
+        //         - "targetMuscle" the muscles target for the day routine.
+        //         - "exercises": an array of objects for each exercise where each objet has the following keys:
+        //             - "name": name of the exercise
+        //             - "description" description of the exercise, target muscles and repetitions
+        //     - "lastRecommendations": last recommedations about the routine and stretch
+        //     create the perfect training routine for the week to achieve the main goal in the shortest possible time, suitable, focused and personalized as an specialist for a person with the following characteristics: the person can workout ${data.days} days at week and the others days of seven day's week to rest, training Minutes per Day: ${data.hours} Minutes, gender: ${data.gender}, date of birth: ${data.dob}, height: ${data.height}m, weight: ${data.weight}kg, favorite place to practice: ${data.preference === 'IN' ? 'gym' : 'house'}, main goal: ${data.objective === 'LOSS' ? 'weight loss' : data.objective === 'BUILD' ? 'build muscle' : 'gain flexibility'}, target body part: ${data.pob || 'all body'}, workout experience: ${data.workout}. limitation: ${data.illness || 'none'}`
+        // );
+        setPromt(promptBuild(data));
     }
 
     // Main objective of the routine (saved routine, or the one just generated from the form)
@@ -230,6 +526,31 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
     const getObjectiveLabel = (value: string) => {
         const key = getObjectiveTranslationKey(value);
         return key ? t(key) : value;
+    };
+
+    // Normalizes to a list: supports the current `targetMuscles` array and the legacy `targetMuscle` string
+    const getTargetMuscles = (item: routine): string[] => {
+        if (Array.isArray(item.targetMuscles)) {
+            return item.targetMuscles.filter(Boolean);
+        }
+        return item.targetMuscle ? [item.targetMuscle] : [];
+    };
+
+    const metricChipStyles = {
+        fontSize: '0.72rem',
+        fontWeight: 'bold',
+        color: '#00ff87',
+        backgroundColor: 'rgba(0, 255, 135, 0.12)',
+        border: '1px solid rgba(0, 255, 135, 0.3)',
+    };
+
+    // Cyan variant so muscles read as a different kind of data than sets/reps/rest
+    const muscleChipStyles = {
+        fontSize: '0.72rem',
+        fontWeight: 'bold',
+        color: '#00d4ff',
+        backgroundColor: 'rgba(0, 212, 255, 0.12)',
+        border: '1px solid rgba(0, 212, 255, 0.3)',
     };
 
     const tittleDescription = (item: Exercise) => {
@@ -269,6 +590,61 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                 >
                     {item.description}
                 </Typography>
+
+                {/* Target muscles */}
+                {item.targetMuscles && item.targetMuscles.length > 0 && (
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexWrap: 'wrap',
+                        gap: 1,
+                        padding: '0px 20px 0 20px',
+                        mb: 2,
+                    }}>
+                        <Typography component="span" sx={{ fontSize: '1rem', lineHeight: 1 }}>🏋️</Typography>
+                        {item.targetMuscles.filter(Boolean).map((muscle: string, muscleIndex: number) => (
+                            <Chip
+                                key={`ex-muscle-${muscleIndex}`}
+                                size="small"
+                                label={muscle}
+                                sx={muscleChipStyles}
+                            />
+                        ))}
+                    </Box>
+                )}
+
+                {/* Sets / reps / rest */}
+                {(item.sets || item.reps || item.restSeconds) && (
+                    <Box sx={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: 1,
+                        padding: '0px 20px 0 20px',
+                        mb: 2,
+                    }}>
+                        {item.sets && (
+                            <Chip
+                                size="small"
+                                label={`${t('routine.sets')}: ${item.sets}`}
+                                sx={metricChipStyles}
+                            />
+                        )}
+                        {item.reps && (
+                            <Chip
+                                size="small"
+                                label={`${t('routine.reps')}: ${item.reps}`}
+                                sx={metricChipStyles}
+                            />
+                        )}
+                        {item.restSeconds && (
+                            <Chip
+                                size="small"
+                                label={`${t('routine.restSeconds')}: ${item.restSeconds}`}
+                                sx={metricChipStyles}
+                            />
+                        )}
+                    </Box>
+                )}
             </>
         )
     }
@@ -561,6 +937,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                 </Box>
                             </Paper>
                             {dataTrain?.routine?.map((item: routine, index: number) => {
+                                const targetMuscles = getTargetMuscles(item);
                                 return (
                                     <>
                                         <Box key={`space-${index}`} sx={{ height: 16 }} />
@@ -613,20 +990,31 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                                     📅 {item.day}
                                                 </Typography>
 
-                                                <Typography
-                                                    variant="h6"
-                                                    component="h3"
-                                                    sx={{
-                                                        fontWeight: 600,
-                                                        color: '#c0c0d0',
-                                                        mb: 1,
+                                                {targetMuscles.length > 0 && (
+                                                    <Box sx={{
                                                         display: 'flex',
                                                         alignItems: 'center',
-                                                        gap: 1
-                                                    }}
-                                                >
-                                                    🏋️ {item.targetMuscle}
-                                                </Typography>
+                                                        justifyContent: 'center',
+                                                        flexWrap: 'wrap',
+                                                        gap: 1,
+                                                        mb: 1,
+                                                    }}>
+                                                        <Typography
+                                                            component="span"
+                                                            sx={{ fontSize: '1.15rem', lineHeight: 1 }}
+                                                        >
+                                                            🏋️
+                                                        </Typography>
+                                                        {targetMuscles.map((muscle: string, muscleIndex: number) => (
+                                                            <Chip
+                                                                key={`muscle-${index}-${muscleIndex}`}
+                                                                size="small"
+                                                                label={muscle}
+                                                                sx={muscleChipStyles}
+                                                            />
+                                                        ))}
+                                                    </Box>
+                                                )}
 
                                                 {item.exercises.length > 0 && (<IconButton
                                                     onClick={() => toggle(index)}
@@ -643,7 +1031,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                             </Box>
                                         </Paper>
                                         {/* <Collapse in={openAccordions[index]} timeout="auto" unmountOnExit> */}
-                                        { dataTrain?.routine.length > 0 && <div ref={(el: any) => (contentRefs.current[index] = el)} className="w-full" style={{ display: `${index === 0 ? 'block' : 'none'}` }}>
+                                        {dataTrain?.routine.length > 0 && <div ref={(el: any) => (contentRefs.current[index] = el)} className="w-full" style={{ display: `${index === 0 ? 'block' : 'none'}` }}>
                                             {loadingDays.has(index) ? (
                                                 <Box sx={{
                                                     py: 6,
@@ -671,7 +1059,7 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
                                                     ))}
                                                 </Box>
                                             )}
-                                        </div> }
+                                        </div>}
                                         {/* </Collapse> */}
                                     </>
                                 )

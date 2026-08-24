@@ -149,7 +149,10 @@
     "lastRecommendations": "Recomendaciones Finales",
     "loaderGenerating": "Generando rutina...",
     "loaderLoading": "Cargando...",
-    "loaderVideo": "Cargando video..."
+    "loaderVideo": "Cargando video...",
+    "sets": "Series",
+    "reps": "Repeticiones",
+    "restSeconds": "Segundos de descanso"
   },
   "trainingForm": {
     "title": "Tu Viaje Fitness",

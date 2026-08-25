@@ -120,31 +120,13 @@ The remaining days of the seven-day week are rest or active recovery days, add t
 
 Choose the training split that best fits the number of available days, experience level, goal, and target muscles.
 
-Do not force a particular split if another structure would be more appropriate.
-
 ### Session duration
 
 Design each session so that it can realistically be completed within approximately ${data.hours} minutes.
 
-Account for:
-
-* warm-up
-* exercises
-* rest periods
-* cool-down when appropriate
-
 Do not create an unrealistic number of exercises for the available time.
 
 ### Exercise selection
-
-Select exercises appropriate for:
-
-* the user's experience
-* training location
-* available equipment normally expected at that location
-* main goal
-* target muscles
-* reported limitations
 
 For home training, prefer exercises using bodyweight or commonly available home equipment unless equipment information has explicitly been provided.
 
@@ -159,10 +141,6 @@ More experienced users may receive moderately more complex movements when approp
 ### Training volume
 
 Select a reasonable number of exercises, sets, and repetitions according to the user's goal and experience.
-
-Avoid excessive volume.
-
-Distribute training stress throughout the week instead of unnecessarily concentrating it into one session.
 
 Provide adequate recovery before heavily training the same muscle groups again.
 
@@ -194,24 +172,11 @@ If the ${data.objective}  is FLEXIBILITY / MOBILITY:
 
 Provide a simple progression strategy.
 
-Where appropriate, use progressive overload such as:
-
-* increasing repetitions within the prescribed range
-* gradually increasing resistance
-* improving exercise control
-* adding sets only when appropriate
-
-Avoid recommending large jumps in training volume or resistance.
-
 ### Intensity
 
 For resistance exercises provide either RIR or RPE guidance.
 
 Prefer RIR.
-
-Typical working sets should generally finish with approximately 1–3 repetitions in reserve unless there is a specific reason otherwise.
-
-Do not recommend routine training to absolute muscular failure, especially for beginners or technically demanding exercises.
 
 ### Limitations and safety
 

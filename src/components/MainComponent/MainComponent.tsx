@@ -92,25 +92,19 @@ USER:
       ? 'Muscle gain'
       : 'Flexibility/mobility'
 }
-- Target area: ${data.pob || 'Full body'}
+- Target area: ${data.pob || 'Legs, Arms, Chest, Core, Biceps, Triceps, Glutes'}
 - Experience: ${data.workout}
 - Limitations: ${data.illness || 'None'}
 
 RULES:
-- Create exactly ${data.days} training days.
+- Create exactly ${data.days} training days and for the remaining days of the week, add them like "Rest day", "Recovery active day".
 - Each session must fit within about ${data.hours} minutes.
 - Choose the most appropriate split for the goal, experience and number of days.
 - Select exercises appropriate for the training location and experience.
 - Prioritize the main goal and target area while keeping the routine balanced.
-- Avoid excessive volume and allow adequate recovery between muscle groups.
-- Beginners should receive simpler exercises.
-- For muscle gain, prioritize progressive resistance training.
-- For fat loss, prioritize resistance training and optionally add reasonable conditioning.
-- For flexibility, prioritize mobility and flexibility work.
-- Use approximately 1–3 RIR for resistance exercises when appropriate.
-- Do not routinely prescribe absolute muscular failure.
 - If limitations are reported, avoid clearly conflicting exercises and do not diagnose or treat medical conditions.
-- Include a simple progression strategy.
+- Include a simple progression strategy inside "lastRecommendations".
+- add the targetMuscles for each day, appliyng the correct split for working the correct muscles each day.
 
 YOUTUBE:
 For every exercise return:
@@ -121,37 +115,17 @@ Do not add sets, reps, goals or unnecessary words to searchQuery.
 
 ## RESPONSE FORMAT
 
-Return ONLY valid JSON.
-
-Do not return Markdown.
-
-Do not use code fences.
-
 Do not add text before or after the JSON.
 
 The JSON must follow this structure:
 
 {
-"initialRecommendations": [
-"string"
-],
-"weeklyPlan": {
-"trainingDays": number,
-"split": "string",
-"estimatedSessionMinutes": number
-},
+"initialRecommendations": "string",
 "routine": [
 {
 "day": "Day 1",
 "targetMuscles": [
 "string"
-],
-"estimatedDurationMinutes": number,
-"warmup": [
-{
-"name": "string",
-"duration": "string"
-}
 ],
 "exercises": [
 {
@@ -163,30 +137,19 @@ The JSON must follow this structure:
 "sets": number,
 "reps": "string",
 "restSeconds": number,
-"rir": "string",
-"description": "string",
-"techniqueTips": [
-"string"
+"description": "string"
+}
 ]
 }
 ],
-"optionalCardio": {
-"enabled": boolean,
-"type": "string",
-"durationMinutes": number,
-"intensity": "string"
+"lastRecommendations": "string"
 }
-}
-],
-"progression": {
-"strategy": "string",
-"whenToIncreaseLoad": "string"
-},
-"lastRecommendations": [
-"string"
-],
-"safetyNote": "string"
-}
+
+Return ONLY these fields. Do not add any other field.
+
+"initialRecommendations" and "lastRecommendations" are single paragraphs of text, not lists.
+
+For rest or active recovery days return an empty "exercises" array.
 
 ## FINAL VALIDATION
 

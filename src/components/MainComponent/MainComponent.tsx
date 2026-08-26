@@ -71,158 +71,53 @@ export default function MainComponent({ workoutInfo, userData }: { workoutInfo?:
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
 
-    const promptBuild = (data: any) => `You are an expert strength and conditioning coach specializing in safe, evidence-informed, individualized exercise programming.
+    const promptBuild = (data: any) => `You are an expert strength and conditioning coach.
 
-Your task is to generate an effective, progressive, realistic, and personalized weekly workout program based exclusively on the information provided by the user.
+Create a safe, evidence-informed, personalized weekly workout program based on the user data below.
 
-The program should prioritize:
+Return ALL user-facing text in ${locale === 'en' ? 'English' : 'Spanish'}.
 
-1. The user's primary goal.
-2. The user's experience level.
-3. The number of available training days.
-4. Available training time.
-5. Training location.
-6. Target body areas.
-7. Adequate recovery between sessions.
-8. Safe exercise selection.
-9. Sustainable progression.
+USER:
+- Days/week: ${data.days}
+- Minutes/session: ${data.hours}
+- Gender: ${data.gender}
+- Age: ${data.age}
+- Height: ${data.height} m
+- Weight: ${data.weight} kg
+- Location: ${data.preference === 'IN' ? 'Gym' : 'Home'}
+- Goal: ${
+  data.objective === 'LOSS'
+    ? 'Fat loss'
+    : data.objective === 'BUILD'
+      ? 'Muscle gain'
+      : 'Flexibility/mobility'
+}
+- Target area: ${data.pob || 'Full body'}
+- Experience: ${data.workout}
+- Limitations: ${data.illness || 'None'}
 
-## LANGUAGE
+RULES:
+- Create exactly ${data.days} training days.
+- Each session must fit within about ${data.hours} minutes.
+- Choose the most appropriate split for the goal, experience and number of days.
+- Select exercises appropriate for the training location and experience.
+- Prioritize the main goal and target area while keeping the routine balanced.
+- Avoid excessive volume and allow adequate recovery between muscle groups.
+- Beginners should receive simpler exercises.
+- For muscle gain, prioritize progressive resistance training.
+- For fat loss, prioritize resistance training and optionally add reasonable conditioning.
+- For flexibility, prioritize mobility and flexibility work.
+- Use approximately 1–3 RIR for resistance exercises when appropriate.
+- Do not routinely prescribe absolute muscular failure.
+- If limitations are reported, avoid clearly conflicting exercises and do not diagnose or treat medical conditions.
+- Include a simple progression strategy.
 
-Return all user-facing content in:
+YOUTUBE:
+For every exercise return:
+- "name": localized name shown to the user.
+- "searchQuery": short conventional English exercise name optimized for YouTube search.
 
-${locale === 'en' ? 'English' : 'Spanish'}
-
-## USER INFORMATION
-
-* Training days per week: ${data.days}
-* Training minutes per session: ${data.hours}
-* Gender: ${data.gender}
-* Age: ${data.age}
-* Height: ${data.height} m
-* Weight: ${data.weight} kg
-* Training location: ${data.preference === 'IN' ? 'Gym' : 'Home'}
-* Main goal: ${data.objective === 'LOSS'
-            ? 'Fat loss / weight management'
-            : data.objective === 'BUILD'
-                ? 'Muscle hypertrophy / muscle gain'
-                : 'Improve mobility and flexibility'
-        }
-* Target body area: ${data.pob || 'arms, legs, back, chest'}
-* Training experience: ${data.workout}
-* Physical limitations or relevant conditions reported by the user: ${data.illness || 'None reported'}
-
-## PROGRAMMING RULES
-
-Create exactly ${data.days} training sessions.
-
-The remaining days of the seven-day week are rest or active recovery days, add those to the routine with the target muscles "Rest day" or "Recovery day".
-
-Choose the training split that best fits the number of available days, experience level, goal, and target muscles.
-
-### Session duration
-
-Design each session so that it can realistically be completed within approximately ${data.hours} minutes.
-
-Do not create an unrealistic number of exercises for the available time.
-
-### Exercise selection
-
-For home training, prefer exercises using bodyweight or commonly available home equipment unless equipment information has explicitly been provided.
-
-For gym training, standard commercial gym equipment may be used.
-
-Avoid unnecessary exercise complexity.
-
-Beginners should receive exercises that are relatively simple to learn and control.
-
-More experienced users may receive moderately more complex movements when appropriate.
-
-### Training volume
-
-Select a reasonable number of exercises, sets, and repetitions according to the user's goal and experience.
-
-Provide adequate recovery before heavily training the same muscle groups again.
-
-### Goal-specific programming
-
-If the ${data.objective} is MUSCLE GAIN:
-
-* prioritize progressive resistance training
-* emphasize major movement patterns
-* use an appropriate hypertrophy repetition range
-* include sufficient weekly volume without excessive fatigue
-* prioritize the requested body area when appropriate while maintaining overall muscular balance
-
-If the ${data.objective}  is FAT LOSS / WEIGHT MANAGEMENT:
-
-* maintain resistance training as the foundation
-* use compound and accessory movements
-* optionally include reasonable cardiovascular or conditioning work
-* do not prescribe extreme exercise volume
-* explain that nutrition and total energy balance are important contributors to fat loss
-
-If the ${data.objective}  is FLEXIBILITY / MOBILITY:
-
-* prioritize controlled mobility and flexibility exercises
-* include appropriate active and static mobility work
-* avoid turning the program into a hypertrophy routine unless resistance training supports the user's goal
-
-### Progression
-
-Provide a simple progression strategy.
-
-### Intensity
-
-For resistance exercises provide either RIR or RPE guidance.
-
-Prefer RIR.
-
-### Limitations and safety
-
-If the user reports an injury, medical condition, pain, or physical limitation:
-
-* avoid exercises that clearly conflict with the reported limitation
-* do not diagnose the condition
-* do not claim that exercise will treat or cure it
-* provide conservative recommendations
-* recommend professional medical or physiotherapy evaluation when the limitation may materially affect safe training
-
-If the available information is insufficient to safely personalize around a serious limitation, reflect that uncertainty in the recommendations.
-
-## YOUTUBE VIDEO SEARCH
-
-Every exercise must include a 'searchQuery'.
-
-The 'searchQuery' is NOT user-facing.
-
-It must be a short, conventional exercise name optimized for finding a technically correct demonstration using the YouTube API.
-
-Examples:
-
-Display name:
-"Press de banca con barra"
-
-searchQuery:
-"barbell bench press"
-
-Display name:
-"Sentadilla goblet"
-
-searchQuery:
-"goblet squat"
-
-Do not include:
-
-* sets
-* repetitions
-* motivational text
-* the user's goal
-* unnecessary adjectives
-
-in 'searchQuery'.
-
-Prefer internationally recognized English exercise terminology for 'searchQuery' even when the interface language is Spanish, because it generally provides more reliable search results.
+Do not add sets, reps, goals or unnecessary words to searchQuery.
 
 ## RESPONSE FORMAT
 

@@ -79,7 +79,7 @@ Return ALL user-facing text in ${locale === 'en' ? 'English' : 'Spanish'}.
 
 USER:
 - Days/week: ${data.days}
-- Minutes/session: ${data.hours}
+- Minutes/session: ${data.hours} minutes
 - Gender: ${data.gender}
 - Age: ${data.age}
 - Height: ${data.height} m
@@ -109,7 +109,7 @@ RULES:
 YOUTUBE:
 For every exercise return:
 - "name": localized name shown to the user.
-- "searchQuery": short conventional English exercise name optimized for YouTube search.
+- "searchQuery": short conventional exercise name optimized for YouTube search.
 
 Do not add sets, reps, goals or unnecessary words to searchQuery.
 
@@ -280,8 +280,8 @@ Before returning the JSON, internally verify that:
                 const preferenceEnglish = workoutData?.workout_routine?.preference === 'OUT' ? 'at home' : 'at the gym';
                 const preferenceSpanish = workoutData?.workout_routine?.preference === 'OUT' ? 'en la casa' : 'en el gimnasio';
                 const searchQuery = locale === 'es'
-                    ? `como hacer el ejercicio ${exercise.searchQuery} ${preferenceSpanish}`
-                    : `how to do the exercise ${exercise.searchQuery} ${preferenceEnglish}`;
+                    ? `${exercise.searchQuery} ${preferenceSpanish}`
+                    : `${exercise.searchQuery} ${preferenceEnglish}`;
                 const videoData: any = await (await fetch(`${apiUrl}/youtube/search?q=${searchQuery}`)).json();
                 const videoId: string | null = videoData?.items?.[0]?.id?.videoId ?? null;
                 setVideoIds(prev => ({ ...prev, [key]: videoId }));
@@ -949,7 +949,8 @@ Before returning the JSON, internally verify that:
                                 elevation={0}
                                 sx={{
                                     mt: 2,
-                                    mb: 3,
+                                    // 24px on tablet and below, 80px from desktop up
+                                    mb: { xs: '24px', md: '80px' },
                                     borderRadius: 3,
                                     overflow: 'hidden',
                                     border: '1px solid rgba(0, 212, 255, 0.2)',
